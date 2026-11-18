@@ -198,13 +198,17 @@
   .koyomi-detail img { width:64px; height:auto; flex:none; }
   .koyomi-detail .koyomi-date { font-size:12px; font-weight:900; color:#A9832F; }
   .koyomi-detail p { margin-top:4px; font-size:14px; font-weight:700; line-height:1.9; color:#4d442e; }
-  .kokyu-box { background:#F2F8FB; border:2px solid #DCEBF3; border-radius:20px; padding:28px 20px; text-align:center; margin-top:6px; }
-  .kokyu-circle { width:130px; height:130px; margin:6px auto 0; border-radius:50%; background:radial-gradient(circle at 35% 35%, #DFF2FB, #A9D3EA); }
-  .kokyu-cue { margin-top:20px; font-size:16px; font-weight:900; color:#33513c; min-height:24px; }
-  .kokyu-leaves { margin-top:12px; display:flex; gap:8px; justify-content:center; }
-  .kokyu-leaves span { width:14px; height:14px; border-radius:50% 50% 50% 4px; background:#DCE8DC; transform:rotate(45deg); }
-  .kokyu-leaves span.on { background:#5E9C63; }
-  .kokyu-btn { margin-top:16px; border:2px solid #A9D3EA; background:#fff; color:#2B6CB0; font-size:15px; font-weight:900; font-family:inherit; border-radius:999px; padding:10px 28px; cursor:pointer; }
+  .hamon-box { position:relative; height:280px; background:linear-gradient(180deg, #EAF4FA, #DCEBF3); border:2px solid #DCEBF3; border-radius:20px; margin-top:6px; overflow:hidden; cursor:pointer; }
+  .hamon-hint { position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); text-align:center; font-size:13.5px; font-weight:700; color:#7d97a8; pointer-events:none; transition:opacity 1.2s ease; margin:0; padding:0 20px; }
+  .hamon-ring { position:absolute; border:2px solid rgba(70, 130, 170, .45); border-radius:50%; transform:translate(-50%, -50%); pointer-events:none; }
+  .hamon-ring.r1 { animation:hamon-spread1 3.6s ease-out forwards; }
+  .hamon-ring.r2 { animation:hamon-spread2 4.4s ease-out forwards; }
+  @keyframes hamon-spread1 { 0% { width:12px; height:12px; opacity:.85; } 100% { width:170px; height:170px; opacity:0; } }
+  @keyframes hamon-spread2 { 0% { width:12px; height:12px; opacity:.7; } 100% { width:225px; height:225px; opacity:0; } }
+  .hamon-drop { position:absolute; width:7px; height:7px; border-radius:50%; background:rgba(70, 130, 170, .5); transform:translate(-50%, -50%); pointer-events:none; animation:hamon-dropfade 1s ease-out forwards; }
+  @keyframes hamon-dropfade { 0% { opacity:.9; } 100% { opacity:0; } }
+  .hamon-leaf { position:absolute; width:16px; height:16px; border-radius:0 60% 0 60%; background:#8FBF7A; pointer-events:none; opacity:0; animation:hamon-leafdrift 6.5s ease-in-out forwards; }
+  @keyframes hamon-leafdrift { 0% { transform:translate(0, 0) rotate(0deg); opacity:0; } 12% { opacity:.9; } 100% { transform:translate(56px, 14px) rotate(38deg); opacity:0; } }
   .yakusoku-box { background:#fff; border:2px solid #E4EFE6; border-radius:20px; padding:22px; margin-top:6px; }
   .yakusoku-box p { font-size:14px; font-weight:700; line-height:2.2; color:#33513c; text-align:center; }
   .closing { margin-top:36px; text-align:center; font-size:14px; font-weight:700; line-height:2.1; color:#7d8b74; }
@@ -352,14 +356,11 @@
     </div>
   </section>
 
-  <section id="kokyu">
-    <h2>こきゅうの泉</h2>
-    <p class="sec-lead">丸の動きに合わせて、ゆっくり深呼吸。ざわざわする日に、どうぞ。</p>
-    <div class="kokyu-box">
-      <div class="kokyu-circle" id="kokyu-circle"></div>
-      <p class="kokyu-cue" id="kokyu-cue">ボタンを押すと、始まります。</p>
-      <div class="kokyu-leaves" id="kokyu-leaves"><span></span><span></span><span></span></div>
-      <button type="button" class="kokyu-btn" id="kokyu-btn">はじめる</button>
+  <section id="hamon">
+    <h2>波紋の泉</h2>
+    <p class="sec-lead">水面に、そっと触れてみてください。波紋が広がって、消えていきます。それだけの場所です。</p>
+    <div class="hamon-box" id="hamon-box">
+      <p class="hamon-hint" id="hamon-hint">水面をタップすると、波紋が出ます</p>
     </div>
   </section>
 
@@ -1126,50 +1127,38 @@
   }
   renderKoyomi();
 
-  // こきゅうの泉: 丸の動きに合わせた、ゆっくり深呼吸
-  var kBtn = document.getElementById('kokyu-btn');
-  var kCircle = document.getElementById('kokyu-circle');
-  var kCue = document.getElementById('kokyu-cue');
-  var kLeaves = document.getElementById('kokyu-leaves');
-  if (kBtn && kCircle && kCue) {
-    var kRunning = false, kTimers = [];
-    function kLater(fn, ms){ kTimers.push(setTimeout(fn, ms)); }
-    function kStop(endMsg){
-      kTimers.forEach(clearTimeout); kTimers = [];
-      kRunning = false;
-      kCircle.style.transition = 'transform 1.2s ease';
-      kCircle.style.transform = 'scale(1)';
-      kBtn.textContent = 'はじめる';
-      if (endMsg) kCue.textContent = endMsg;
-    }
-    function kRound(r){
-      if (!kRunning) return;
-      kCue.textContent = 'すって…';
-      kCircle.style.transition = 'transform 4s ease-in-out';
-      kCircle.style.transform = 'scale(1.35)';
-      kLater(function(){
-        if (!kRunning) return;
-        kCue.textContent = 'とめて…';
-        kLater(function(){
-          if (!kRunning) return;
-          kCue.textContent = 'はいて…';
-          kCircle.style.transition = 'transform 6s ease-in-out';
-          kCircle.style.transform = 'scale(1)';
-          kLater(function(){
-            if (!kRunning) return;
-            if (kLeaves) { var sp = kLeaves.children[r]; if (sp) sp.classList.add('on'); }
-            if (r < 2) { kRound(r + 1); }
-            else { kStop('おつかれさまでした。肩の力が、少し抜けましたか。'); }
-          }, 6200);
-        }, 4000);
-      }, 4200);
-    }
-    kBtn.addEventListener('click', function(){
-      if (kRunning) { kStop('とちゅうで、やめても大丈夫ですよ。'); return; }
-      kRunning = true;
-      kBtn.textContent = 'やめる';
-      if (kLeaves) { for (var j = 0; j < kLeaves.children.length; j++) kLeaves.children[j].classList.remove('on'); }
-      kRound(0);
+  // 波紋の泉: 水面をタップすると、波紋が広がるだけの場所
+  var hBox = document.getElementById('hamon-box');
+  if (hBox) {
+    var hTaps = 0;
+    var hHint = document.getElementById('hamon-hint');
+    hBox.addEventListener('click', function(e){
+      var rect = hBox.getBoundingClientRect();
+      var x = e.clientX - rect.left, y = e.clientY - rect.top;
+      hTaps++;
+      if (hHint) hHint.style.opacity = '0';
+      function ring(cls, delay){
+        var r = document.createElement('span');
+        r.className = 'hamon-ring ' + cls;
+        r.style.left = x + 'px'; r.style.top = y + 'px';
+        if (delay) r.style.animationDelay = delay + 's';
+        hBox.appendChild(r);
+        setTimeout(function(){ r.remove(); }, 5000);
+      }
+      ring(hTaps % 2 ? 'r1' : 'r2', 0);
+      ring('r1', 0.35);
+      var d = document.createElement('span');
+      d.className = 'hamon-drop';
+      d.style.left = x + 'px'; d.style.top = y + 'px';
+      hBox.appendChild(d);
+      setTimeout(function(){ d.remove(); }, 1200);
+      if (hTaps % 5 === 0) {
+        var leaf = document.createElement('span');
+        leaf.className = 'hamon-leaf';
+        leaf.style.left = x + 'px'; leaf.style.top = y + 'px';
+        hBox.appendChild(leaf);
+        setTimeout(function(){ leaf.remove(); }, 7000);
+      }
     });
   }
 
