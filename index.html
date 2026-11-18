@@ -64,6 +64,27 @@
   .wm-btn:active { transform:scale(.97); }
   .wm-btn.done { background:#2B6CB0; color:#fff; cursor:default; }
   .wm-count { font-size:13px; font-weight:700; color:#2B6CB0; }
+
+  .season { margin-top:14px; font-size:13px; font-weight:700; color:#4a7a52; }
+  .komorebi {
+    background:#FFF9EC; border:2px solid #F3E9C8; border-radius:20px;
+    padding:26px 22px; text-align:center;
+  }
+  .komorebi .k-title { font-size:13px; font-weight:900; letter-spacing:.14em; color:#A9832F; }
+  .komorebi p { margin-top:12px; font-size:17px; font-weight:700; line-height:2.0; color:#4d442e; }
+  .komorebi .k-note { margin-top:10px; font-size:12px; font-weight:500; color:#a4936b; }
+  .wm-total { margin-top:18px; text-align:center; font-size:14px; font-weight:900; color:#2B6CB0; }
+  .leaves { margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .leaf-btn {
+    border:2px solid #9CC49F; background:#fff; color:#33513c;
+    font-size:15px; font-weight:900; border-radius:999px; padding:13px 8px;
+    cursor:pointer; font-family:inherit; line-height:1.4;
+  }
+  .leaf-btn:active { transform:scale(.97); }
+  .leaf-btn.chosen { background:#5E9C63; border-color:#5E9C63; color:#fff; }
+  .leaf-btn:disabled { opacity:.55; cursor:default; }
+  .leaf-btn.chosen:disabled { opacity:1; }
+  .leaf-msg { margin-top:18px; text-align:center; font-size:14px; font-weight:700; color:#33513c; line-height:2.0; min-height:28px; }
   .after {
     margin-top:26px; background:#EEF4FB; border-radius:20px; padding:24px 22px;
     font-size:15px; font-weight:500; color:#2B4C7E; line-height:2.1;
@@ -98,8 +119,17 @@
     <img class="main" src="hero.jpg" alt="森の広場に集まる水女子たち">
     <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
     <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
+    <p class="season" id="season-line"></p>
     <a class="btn" href="#aruaru">森をあるく</a>
   </div>
+
+  <section>
+    <div class="komorebi">
+      <div class="k-title">今日の木漏れ日</div>
+      <p id="komorebi-line"></p>
+      <div class="k-note">毎日、少しずつ変わります</div>
+    </div>
+  </section>
 
   <section id="aruaru">
     <h2><span class="water">水女子</span>あるある</h2>
@@ -161,6 +191,23 @@
       もし「これ、私だ」と思うものがあったら、それは性格が弱いからではありません。感じすぎるほど感じて、言葉が遅れてくる。それは、水の強さのサインかもしれません。<br>
       「私、水女子だったんだ」と気づくこと。それが、第一歩です。
     </div>
+    <p class="wm-total" id="wm-total"></p>
+  </section>
+
+  <section>
+    <h2>気持ちの葉っぱ</h2>
+    <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってください。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
+    <div class="leaves">
+      <button type="button" class="leaf-btn" data-leaf="1">つかれた</button>
+      <button type="button" class="leaf-btn" data-leaf="2">モヤモヤする</button>
+      <button type="button" class="leaf-btn" data-leaf="3">ほっとしたい</button>
+      <button type="button" class="leaf-btn" data-leaf="4">さみしい</button>
+      <button type="button" class="leaf-btn" data-leaf="5">イライラする</button>
+      <button type="button" class="leaf-btn" data-leaf="6">かなしい</button>
+      <button type="button" class="leaf-btn" data-leaf="7">なんとなく不安</button>
+      <button type="button" class="leaf-btn" data-leaf="8">がんばった</button>
+    </div>
+    <p class="leaf-msg" id="leaf-msg"></p>
   </section>
 
   <section>
@@ -238,6 +285,132 @@
         if (typeof cnt === 'number') render(scene, cnt);
       })
       .catch(function(){ btn.disabled = false; });
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var SB = 'https://twxxcjjffznjaeyconoc.supabase.co/rest/v1';
+  var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3eHhjampmZnpuamFleWNvbm9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMTc1NTcsImV4cCI6MjExMDU5MzU1N30.MIVvDvZx03ai7mshyP3FR8JP0xe9Yu-7BgUjtIvvpew';
+  var H = { apikey: KEY, Authorization: 'Bearer ' + KEY };
+
+  // JST now
+  var nowJst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+  var todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
+
+  // --- seasonal forest line (monthly) ---
+  var seasons = [
+    '冬の森。静かに、春を待っています。',
+    'まだ寒い森。小さな芽が、土の中で目覚めています。',
+    '春の森。やわらかな芽が、出てきました。',
+    '新緑の森。若葉のにおいがします。',
+    '初夏の森。木漏れ日が、きらきらしています。',
+    '梅雨の森。雨の音が、森を潤しています。',
+    '夏の森。木陰で、一休みしていってください。',
+    '盛夏の森。セミの声と、深い緑です。',
+    '秋のはじまりの森。風が、少し涼しくなりました。',
+    '秋の森。葉が、色づきはじめています。',
+    '晩秋の森。落ち葉が、ふかふかです。',
+    '冬のはじまりの森。静けさが、戻ってきました。'
+  ];
+  var seasonEl = document.getElementById('season-line');
+  if (seasonEl) seasonEl.textContent = 'いまの森：' + seasons[nowJst.getMonth()];
+
+  // --- today's komorebi (daily rotation) ---
+  var lines = [
+    'うまく言えなくても、大丈夫。その気持ちは、ちゃんとあります。',
+    '今日は、休む日でもいいんです。',
+    '感じすぎるのは、弱さじゃありません。',
+    '言葉になるまで、時間がかかってもいいんです。',
+    '自分を後回しにしてきた人ほど、優しい人です。',
+    'モヤモヤは、心が何かを伝えようとしている合図です。',
+    '泣きたい日は、泣いていい日です。',
+    '誰かの機嫌より、自分の気持ちを先に見てあげてください。',
+    '言えなかった言葉は、消えたわけじゃありません。',
+    'ここでは、何者にもならなくて大丈夫です。',
+    '疲れたら、立ち止まっていいんです。',
+    'あなたの感じ方は、あなたの味方です。',
+    '小さな「いやだ」も、大事な気持ちです。',
+    '今日も、よくがんばりました。'
+  ];
+  var start = new Date(nowJst.getFullYear(), 0, 0);
+  var doy = Math.floor((nowJst - start) / 86400000);
+  var kEl = document.getElementById('komorebi-line');
+  if (kEl) kEl.textContent = lines[doy % lines.length];
+
+  // --- watashimo total ---
+  fetch(SB + '/mori_watashimo?select=cnt', { headers: H })
+    .then(function(r){ return r.json(); })
+    .then(function(rows){
+      if (!Array.isArray(rows)) return;
+      var total = rows.reduce(function(a, x){ return a + Number(x.cnt || 0); }, 0);
+      var el = document.getElementById('wm-total');
+      if (el && total > 0) el.textContent = 'これまで ' + total.toLocaleString('ja-JP') + ' 人が「わたしも」と言っています';
+    })
+    .catch(function(){});
+
+  // --- feeling leaves ---
+  var counts = {};
+  var totalToday = 0;
+  var msg = document.getElementById('leaf-msg');
+  var storeKey = 'mori_leaf_' + todayStr;
+  var chosen = null;
+  try { chosen = localStorage.getItem(storeKey); } catch(e) {}
+
+  function leafName(id){
+    var b = document.querySelector('.leaf-btn[data-leaf="' + id + '"]');
+    return b ? b.textContent : '';
+  }
+  function showMsg(){
+    if (!msg) return;
+    if (chosen) {
+      var c = counts[chosen] || 0;
+      msg.innerHTML = '「' + leafName(chosen) + '」を、森に置きました。<br>' +
+        '今日、同じ気持ちの人が ' + c.toLocaleString('ja-JP') + ' 人います。' +
+        (totalToday > 0 ? '<br>今日は ' + totalToday.toLocaleString('ja-JP') + ' 人が、森に気持ちを置いていきました。' : '');
+    } else if (totalToday > 0) {
+      msg.textContent = '今日は ' + totalToday.toLocaleString('ja-JP') + ' 人が、森に気持ちを置いていきました。';
+    } else {
+      msg.textContent = '今日は、まだ誰も来ていません。最初の葉っぱを、どうぞ。';
+    }
+  }
+  function applyChosen(){
+    document.querySelectorAll('.leaf-btn').forEach(function(b){
+      if (chosen && b.getAttribute('data-leaf') === String(chosen)) b.classList.add('chosen');
+      if (chosen) b.disabled = true;
+    });
+  }
+  fetch(SB + '/mori_leaves?select=leaf,cnt&day=eq.' + todayStr, { headers: H })
+    .then(function(r){ return r.json(); })
+    .then(function(rows){
+      if (Array.isArray(rows)) rows.forEach(function(x){
+        counts[x.leaf] = Number(x.cnt || 0);
+        totalToday += Number(x.cnt || 0);
+      });
+      applyChosen(); showMsg();
+    })
+    .catch(function(){ applyChosen(); showMsg(); });
+
+  document.querySelectorAll('.leaf-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (chosen) return;
+      var id = b.getAttribute('data-leaf');
+      b.disabled = true;
+      fetch(SB + '/rpc/increment_leaf', {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_leaf: Number(id) })
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(cnt){
+        chosen = id;
+        if (typeof cnt === 'number') { totalToday += (cnt - (counts[id] || 0)); counts[id] = cnt; }
+        try { localStorage.setItem(storeKey, id); } catch(e) {}
+        applyChosen(); showMsg();
+      })
+      .catch(function(){ b.disabled = false; });
     });
   });
 })();
