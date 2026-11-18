@@ -140,7 +140,7 @@
   .diary-more { margin-top:6px; }
   .diary-more summary { text-align:center; font-size:14px; font-weight:900; color:#4a7a52; cursor:pointer; padding:12px 8px 4px; }
   .uranai { margin-top:24px; background:#FDF6EC; border-radius:20px; padding:28px 22px; text-align:center; }
-  .uranai img { width:110px; height:auto; }
+  .uranai img { width:110px; height:auto; transition:opacity .6s ease; }
   .uranai-msg { margin:20px auto 0; max-width:440px; background:#fff; border:2px solid #E8C87E; border-radius:18px; padding:16px 18px; font-size:15px; font-weight:700; line-height:2.0; color:#6b5f4f; position:relative; min-height:60px; }
   .uranai-msg::before { content:''; position:absolute; top:-12px; left:50%; margin-left:-9px; border:9px solid transparent; border-bottom-color:#E8C87E; border-top:0; }
   .uranai-msg::after { content:''; position:absolute; top:-7px; left:50%; margin-left:-7px; border:7px solid transparent; border-bottom-color:#fff; border-top:0; }
@@ -847,19 +847,20 @@
 
   // 水女子うらない: ランダムで1つ出ます
   var MSGS = [
-    '今日は、断ってよしの日。断ったあとの静けさが、心を休ませてくれますよ。',
-    '今日は、言葉がゆっくり育つ日。言えなくても、感じているだけで十分ですよ。',
-    '今日は、休むのがお仕事の日。何もしない時間も、大事な時間ですよ。',
-    '今日は、温かい飲みものが味方の日。両手で包んで、ほっと一息どうぞ。',
-    '今日は、小さな「うれしい」が見つかる日。空の色に、気づける日ですよ。',
-    '今日は、無理に笑わなくていい日。素の顔が、いちばんやさしい日ですよ。',
-    '今日は、自分のペースで進める日。急ぐ人は、そっと見送って大丈夫ですよ。',
-    '今日は、気持ちを置いていける日。森の葉っぱが、受け取ってくれますよ。',
-    '今日は、好きなものに近づける日。小さなごほうびが、似合う日ですよ。',
-    '今日は、言えたら花丸の日。言えなくても、思えただけで一歩ですよ。',
-    '今日は、部屋を少し整えると、気持ちも整う日。1か所だけで、十分ですよ。',
-    '今日は、早く寝るのが吉の日。お布団が、いちばんの味方ですよ。'
+    { t:'今日は、断ってよしの日。断ったあとの静けさが、心を休ませてくれますよ。', img:'nikki-img-42.png' },
+    { t:'今日は、言葉がゆっくり育つ日。言えなくても、感じているだけで十分ですよ。', img:'nikki-img-45.png' },
+    { t:'今日は、休むのがお仕事の日。何もしない時間も、大事な時間ですよ。', img:'nikki-img-29.png' },
+    { t:'今日は、温かい飲みものが味方の日。両手で包んで、ほっと一息どうぞ。', img:'nikki-img-57.png' },
+    { t:'今日は、小さな「うれしい」が見つかる日。空の色に、気づける日ですよ。', img:'nikki-img-15.png' },
+    { t:'今日は、無理に笑わなくていい日。素の顔が、いちばんやさしい日ですよ。', img:'nikki-img-40.png' },
+    { t:'今日は、自分のペースで進める日。急ぐ人は、そっと見送って大丈夫ですよ。', img:'nikki-img-46.png' },
+    { t:'今日は、気持ちを置いていける日。森の葉っぱが、受け取ってくれますよ。', img:'nikki-img-22.png' },
+    { t:'今日は、好きなものに近づける日。小さなごほうびが、似合う日ですよ。', img:'nikki-img-06.png' },
+    { t:'今日は、言えたら花丸の日。言えなくても、思えただけで一歩ですよ。', img:'nikki-img-44.png' },
+    { t:'今日は、部屋を少し整えると、気持ちも整う日。1か所だけで、十分ですよ。', img:'nikki-img-58.png' },
+    { t:'今日は、早く寝るのが吉の日。お布団が、いちばんの味方ですよ。', img:'nikki-img-01.png' }
   ];
+  MSGS.forEach(function(m){ var im = new Image(); im.src = m.img; });
   // 時間帯で変わる あいさつ（BGMと同じ時間帯です）
   var gEl = document.getElementById('greeting-line');
   if (gEl) {
@@ -896,11 +897,12 @@
       var i;
       do { i = Math.floor(Math.random() * MSGS.length); } while (MSGS.length > 1 && i === last);
       last = i;
-      if (uimg) { uimg.classList.remove('thinking'); void uimg.offsetWidth; uimg.classList.add('thinking'); }
+      if (uimg) { uimg.classList.remove('thinking'); void uimg.offsetWidth; uimg.classList.add('thinking'); uimg.style.opacity = '0.25'; }
       msg.classList.remove('pop');
       btn.disabled = true;
       setTimeout(function(){
-        msg.textContent = MSGS[i];
+        if (uimg) { uimg.src = MSGS[i].img; uimg.style.opacity = '1'; }
+        msg.textContent = MSGS[i].t;
         void msg.offsetWidth;
         msg.classList.add('pop');
         btn.disabled = false;
