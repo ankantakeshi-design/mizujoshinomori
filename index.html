@@ -104,6 +104,7 @@
   .koyomi-cell.tensha { background:#EFE9FA; }
   .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#9B7ED9; box-shadow:0 0 0 1.5px #fff; }
   .moon-tag.tensha-tag { background:#9B7ED9; color:#fff; }
+  .moon-shun { margin-top:10px; font-size:12.5px; font-weight:700; color:#B0722E; line-height:1.7; }
   .moon-legend { display:flex; gap:18px; justify-content:center; margin-top:9px; font-size:11px; font-weight:700; color:#8a7d99; }
   .legend-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#9B7ED9; margin-right:5px; vertical-align:1px; }
   .legend-box { display:inline-block; width:10px; height:10px; border-radius:3px; background:#EFE9FA; border:1.5px solid #9B7ED9; margin-right:5px; vertical-align:-1px; }
@@ -1060,7 +1061,7 @@
         if (gToday === r[0]) { var ep = r[1].split('-'); mercMsg = '今日から水星逆行です（' + (+ep[1]) + '月' + (+ep[2]) + '日まで）。言葉や連絡は、確認をていねいに。'; }
         if (gToday === r[1]) mercMsg = '水星は、今日から順行に戻ります。止まっていたことが、動き出す頃です。';
       });
-      var SEKKI = {0:'春分|昼と夜が同じ長さの日です。バランスを整える日に。',15:'清明|草木が清らかに芽吹く頃です。深呼吸が気持ちいい季節です。',30:'穀雨|雨が穀物を育てる頃です。しっとりした空気を楽しんで。',45:'立夏|暦の上では夏の始まりです。日差しに気をつけてくださいね。',60:'小満|草木が茂ってくる頃です。緑が濃くなる季節です。',75:'芒種|田植えの頃です。梅雨の気配に、体調を整えて。',90:'夏至|一年でいちばん昼が長い日です。夕方の明るさを楽しんで。',105:'小暑|暑さが本格化する頃です。水分を、こまめにどうぞ。',120:'大暑|一年でいちばん暑い頃です。無理をしないでくださいね。',135:'立秋|暦の上では秋の始まりです。夕方の風に、秋の気配です。',150:'処暑|暑さが和らいでくる頃です。夏の疲れを、癒してくださいね。',165:'白露|朝露が光る頃です。朝晩は冷えるので、一枚羽織って。',180:'秋分|昼と夜が同じ長さの日です。実りの季節が深まります。',195:'寒露|露が冷たくなる頃です。あたたかい飲みものが嬉しい季節です。',210:'霜降|霜が降り始める頃です。首元をあたためてくださいね。',225:'立冬|暦の上では冬の始まりです。あたたかくして過ごしてくださいね。',240:'小雪|雪がちらつき始める頃です。冬支度を、少しずつ。',255:'大雪|雪が本格的になる頃です。足元と体調に気をつけて。',270:'冬至|一年でいちばん夜が長い日です。あたたかいお風呂で、ゆっくりと。',285:'小寒|寒さが厳しくなる頃です。体を冷やさないでくださいね。',300:'大寒|一年でいちばん寒い頃です。春は、もうすぐそこです。',315:'立春|暦の上では春の始まりです。まだ寒いので、あたたかくしてくださいね。',330:'雨水|雪が雨に変わる頃です。足元に気をつけてくださいね。',345:'啓蟄|土の中の虫が目覚める頃です。少しずつ、動き出す季節です。'};
+      var SEKKI = {0:'春分|昼と夜が同じ長さの日です。バランスを整える日に。',15:'清明|草木が清らかに芽吹く頃です。深呼吸が気持ちいい季節です。',30:'穀雨|雨が穀物を育てる頃です。しっとりした空気を楽しんで。',45:'立夏|暦の上では夏の始まりです。日差しに気をつけてくださいね。',60:'小満|草木が茂ってくる頃です。緑が濃くなる季節です。',75:'芒種|田植えの頃です。梅雨の気配に、体調を整えて。',90:'夏至|一年でいちばん昼が長い日です。夕方の明るさを楽しんで。',105:'小暑|暑さが本格化する頃です。水分を、こまめにどうぞ。',120:'大暑|一年でいちばん暑い頃です。無理をしないでくださいね。',135:'立秋|暦の上では秋の始まりです。夕方の風に、秋の気配です。',150:'処暑|暑さが和らいでくる頃です。夏の疲れを、癒してくださいね。',165:'白露|朝露が光る頃です。朝晩は冷えるので、一枚羽織って。',180:'秋分|昼と夜が同じ長さの日です。実りの季節が深まります。',195:'寒露|露が冷たくなる頃です。あたたかい飲みものが嬉しい季節です。',210:'霜降|霜が降り始める頃です。首元をあたためてくださいね。',225:'立冬|暦の上では冬の始まりです。あたたかくして過ごしてくださいね。',240:'小雪|雪がちらつき始める頃です。冬支度を、少しずつ。',255:'大雪|雪が本格的になる頃です。足元と体調に気をつけて。',270:'冬至|柚子湯と、かぼちゃの日です。あたたかくして過ごしてくださいね。',285:'小寒|寒さが厳しくなる頃です。体を冷やさないでくださいね。',300:'大寒|一年でいちばん寒い頃です。春は、もうすぐそこです。',315:'立春|暦の上では春の始まりです。まだ寒いので、あたたかくしてくださいね。',330:'雨水|雪が雨に変わる頃です。足元に気をつけてくださいね。',345:'啓蟄|土の中の虫が目覚める頃です。少しずつ、動き出す季節です。'};
       var yDate = new Date(gy, gm, gd - 1);
       var glonY = gSunLon(yDate.getFullYear(), yDate.getMonth(), yDate.getDate());
       var sekkiMsg = '';
@@ -1068,7 +1069,20 @@
         var sk = SEKKI[(Math.floor(glon / 15) * 15) % 360];
         if (sk) { var skp = sk.split('|'); sekkiMsg = '今日は' + skp[0] + 'です。' + skp[1]; }
       }
+      var sekkiIn = function(daysAhead, bLon) {
+        var td = new Date(gy, gm, gd + daysAhead);
+        var tl = gSunLon(td.getFullYear(), td.getMonth(), td.getDate());
+        var pd = new Date(gy, gm, gd + daysAhead - 1);
+        var pl = gSunLon(pd.getFullYear(), pd.getMonth(), pd.getDate());
+        return Math.floor(tl / 15) !== Math.floor(pl / 15) && (Math.floor(tl / 15) * 15) % 360 === bLon;
+      };
+      var CUSTOMS = {'1-7':'今日は人日の節句です。七草粥で、胃腸を休める日です。','2-3':'今日は節分です。豆まきと恵方巻きで、福を呼ぶ日です。','5-5':'今日は端午の節句です。菖蒲湯で、すっきりする日です。','9-9':'今日は重陽の節句です。栗ご飯が美味しい頃です。','11-15':'今日は七五三です。子どもの成長を祝う日です。','2026-10-06':'今夜は中秋の名月です。お月見の夜です。','2027-09-25':'今夜は中秋の名月です。お月見の夜です。'};
+      var customMsg = CUSTOMS[(gm + 1) + '-' + gd] || CUSTOMS[gToday] || '';
+      if (!customMsg && glon >= 116.5 && glon < 135 && gEto(gy, gm, gd) % 12 === 1) customMsg = '今日は土用の丑の日です。うなぎで、力をつける日とされています。';
+      if (!customMsg && (sekkiIn(3, 0) || sekkiIn(3, 180))) customMsg = '今日からお彼岸です。お墓参りの頃です。';
+      if (!customMsg && (sekkiIn(-3, 0) || sekkiIn(-3, 180))) customMsg = '今日でお彼岸が明けます。';
       if (gEto(gy, gm, gd) === gTarget) sText = '今日は天赦日です。何かを始めるのに、とてもよい日です。';
+      else if (customMsg) sText = customMsg;
       else if (mercMsg) sText = mercMsg;
       else if (sekkiMsg) sText = sekkiMsg;
       else if (G_SETS[gSeg(glon)].indexOf(gEto(gy, gm, gd) % 12) >= 0) sText = '今日は一粒万倍日です。小さな一歩が、大きく実る日です。';
@@ -1433,6 +1447,10 @@
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
         llines.push('寅の日は、' + toraDays.join('日・') + '日。巳の日は、' + miDays.join('日・') + '日です。');
+        var SHUN = {0:'たけのこ・あさり・さわら・よもぎ',15:'新じゃが・そら豆・かつお・たけのこ',30:'そら豆・新茶・かつお・グリーンピース',45:'新茶・そら豆・えんどう・びわ',60:'びわ・さくらんぼ・そら豆・あゆ',75:'梅・あゆ・トマト・きゅうり',90:'トマト・なす・とうもろこし・あゆ',105:'とうもろこし・枝豆・うなぎ・桃',120:'うなぎ・桃・すいか・ゴーヤ',135:'桃・ぶどう・なす・梨',150:'梨・ぶどう・さんま・栗',165:'栗・さんま・さつまいも・梨',180:'さつまいも・きのこ・さんま・新米',195:'新米・栗・さば・柿',210:'柿・りんご・さば・里芋',225:'りんご・白菜・大根・牡蠣',240:'牡蠣・白菜・みかん・ほうれん草',255:'みかん・ぶり・大根・小松菜',270:'かぼちゃ・ゆず・ぶり・れんこん',285:'せり・春菊・たら・みかん',300:'金柑・ねぎ・たら・いちご',315:'菜の花・ふきのとう・いちご・はまぐり',330:'菜の花・春キャベツ・わかめ・しらす',345:'たけのこ・新玉ねぎ・さわら・いちご'};
+        var nowJ = jstParts(Date.now());
+        var shunSeg = (Math.floor(luckySunLon(nowJ.y, nowJ.m, nowJ.d) / 15) * 15) % 360;
+        document.getElementById('moon-shun').textContent = 'いまの旬：' + SHUN[shunSeg] + 'です。';
         document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
@@ -1553,6 +1571,7 @@
       <p class="moon-event" id="moon-events"></p>
       <p class="moon-next" id="moon-next"></p>
       <p class="moon-lucky" id="moon-lucky"></p>
+      <p class="moon-shun" id="moon-shun"></p>
       <button type="button" class="modal-close-bottom" id="moon-close-b">閉じる</button>
     </div>
   </div>
