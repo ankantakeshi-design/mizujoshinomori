@@ -1261,8 +1261,8 @@
         }
         grid.innerHTML = html;
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日は、' + ns + 'の新月です。' + NEW_MSG[ns]); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。' + FULL_MSG[fs]); }
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日は、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>');
         var nm = jp.m + 1, ny = jp.y;
         if (nm > 11) { nm = 0; ny++; }
