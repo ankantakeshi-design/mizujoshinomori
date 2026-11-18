@@ -75,6 +75,11 @@
   .wm-count { font-size:13px; font-weight:700; color:#2B6CB0; }
 
   .season { margin-top:14px; font-size:13px; font-weight:700; color:#4a7a52; }
+  .kou { margin-top:6px; font-size:12.5px; font-weight:700; color:#7d8b74; }
+  .kou .moon { display:inline-block; width:13px; height:13px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid #D8C98F; }
+  .yesterday { margin-top:8px; font-size:13px; font-weight:700; color:#5E7A63; }
+  body[data-band="morning"] { background:#FFFDF2; }
+  body[data-band="night"] { background:#EBF0E7; }
   .komorebi {
     background:#FFF9EC; border:2px solid #F3E9C8; border-radius:20px;
     padding:26px 22px; text-align:center;
@@ -215,8 +220,10 @@
   <div class="hero">
     <button type="button" class="intro-btn" id="intro-open">はじめましての方へ</button>
     <p class="season" id="season-line"></p>
+    <p class="kou" id="kou-line"></p>
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
+    <p class="yesterday" id="yesterday-line"></p>
     <a id="today-diary" class="today-diary" href="#nikki" style="display:none">
       <img id="today-diary-img" alt="今日のみーちゃん">
       <span class="td-body">
@@ -233,12 +240,19 @@
       <a class="sub-btn" href="#nikki">みーちゃんの日記</a>
       <a class="sub-btn" href="#uranai">水女子うらない</a>
     </div>
+    <a id="osusume" class="today-diary" href="" style="display:none">
+      <img id="osusume-img" alt="">
+      <span class="td-body">
+        <span class="td-label">今日のおすすめ</span>
+        <span class="td-text" id="osusume-text"></span>
+      </span>
+    </a>
   </div>
 
   <div class="intro-overlay" id="intro-modal" style="display:none">
     <div class="intro-card" role="dialog" aria-modal="true" aria-label="はじめまして">
       <button type="button" class="intro-close" id="intro-close" aria-label="とじる">×</button>
-      <img class="intro-img" src="hero.jpg" alt="森の広場に集まる水女子たち">
+      <img class="intro-img" id="intro-img" src="hero.jpg" alt="森の広場に集まる水女子たち">
       <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
       <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
       <button type="button" class="btn" id="intro-ok">森へ入る</button>
@@ -582,6 +596,23 @@
       applyChosen(); showMsg();
     })
     .catch(function(){ applyChosen(); showMsg(); });
+
+  // yesterday's forest: the most-placed leaf yesterday, told as scenery
+  (function(){
+    var yStr = new Date(nowJst.getTime() - 86400000).toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+    fetch(SB + '/mori_leaves?select=leaf,cnt&day=eq.' + yStr, { headers: H })
+      .then(function(r){ return r.json(); })
+      .then(function(rows){
+        if (!Array.isArray(rows) || !rows.length) return;
+        var yc = {}, yt = 0, top = null, topN = 0;
+        rows.forEach(function(x){ var n = Number(x.cnt || 0); yc[x.leaf] = (yc[x.leaf] || 0) + n; yt += n; });
+        Object.keys(yc).forEach(function(k){ if (yc[k] > topN) { topN = yc[k]; top = k; } });
+        if (yt < 3 || !top) return;
+        var el = document.getElementById('yesterday-line');
+        if (el) el.textContent = '昨日の森では、『' + leafName(top) + '』の葉っぱが、いちばん置かれていました。同じ気持ちの人が、いたんですね。';
+      })
+      .catch(function(){});
+  })();
 
   document.querySelectorAll('.leaf-btn').forEach(function(b){
     b.addEventListener('click', function(){
@@ -1147,6 +1178,53 @@
       if (tdDate) document.getElementById('today-diary-date').textContent = '（' + tdDate.textContent.replace('NEW', '').trim() + '）';
       tdBox.style.display = 'flex';
     }
+  }
+})();
+</script>
+<script>
+(function(){
+  var now = new Date();
+  // time-of-day tint
+  var h = now.getHours();
+  document.body.setAttribute('data-band', (h >= 5 && h < 12) ? 'morning' : (h >= 12 && h < 21) ? 'day' : 'night');
+  // seasonal intro picture (autumn is the default hero.jpg)
+  var im = document.getElementById('intro-img');
+  if (im) {
+    var mo = now.getMonth() + 1;
+    im.src = (mo >= 3 && mo <= 5) ? 'hero-spring.jpg' : (mo >= 6 && mo <= 8) ? 'hero-summer.jpg' : (mo === 12 || mo <= 2) ? 'hero-winter.jpg' : 'hero.jpg';
+  }
+  // 72 micro-seasons + tonight's moon
+  var KOU = [[1,1,'雪下出麦'],[1,6,'芹乃栄'],[1,11,'水泉動'],[1,16,'雉始雊'],[1,20,'款冬華'],[1,25,'水沢腹堅'],[1,30,'鶏始乳'],[2,4,'東風解凍'],[2,9,'黄鶯睍睆'],[2,14,'魚上氷'],[2,19,'土脉潤起'],[2,24,'霞始靆'],[3,1,'草木萌動'],[3,6,'蟄虫啓戸'],[3,11,'桃始笑'],[3,16,'菜虫化蝶'],[3,21,'雀始巣'],[3,26,'櫻始開'],[3,31,'雷乃発声'],[4,5,'玄鳥至'],[4,10,'鴻雁北'],[4,15,'虹始見'],[4,20,'葭始生'],[4,25,'霜止出苗'],[4,30,'牡丹華'],[5,5,'蛙始鳴'],[5,10,'蚯蚓出'],[5,15,'竹笋生'],[5,21,'蚕起食桑'],[5,26,'紅花栄'],[5,31,'麦秋至'],[6,6,'蟷螂生'],[6,11,'腐草為螢'],[6,16,'梅子黄'],[6,21,'乃東枯'],[6,27,'菖蒲華'],[7,2,'半夏生'],[7,7,'温風至'],[7,12,'蓮始開'],[7,17,'鷹乃学習'],[7,23,'桐始結花'],[7,28,'土潤溽暑'],[8,2,'大雨時行'],[8,8,'涼風至'],[8,13,'寒蟬鳴'],[8,18,'蒙霧升降'],[8,23,'綿柎開'],[8,28,'天地始粛'],[9,2,'禾乃登'],[9,8,'草露白'],[9,13,'鶺鴒鳴'],[9,18,'玄鳥去'],[9,23,'雷乃収声'],[9,28,'蟄虫坏戸'],[10,3,'水始涸'],[10,8,'鴻雁来'],[10,13,'菊花開'],[10,18,'蟋蟀在戸'],[10,23,'霜始降'],[10,28,'霎時施'],[11,2,'楓蔦黄'],[11,7,'山茶始開'],[11,12,'地始凍'],[11,17,'金盞香'],[11,22,'虹蔵不見'],[11,27,'朔風払葉'],[12,2,'橘始黄'],[12,7,'閉塞成冬'],[12,12,'熊蟄穴'],[12,17,'鱖魚群'],[12,22,'乃東生'],[12,27,'麋角解']];
+  var md = (now.getMonth() + 1) * 100 + now.getDate();
+  var kou = KOU[KOU.length - 1][2];
+  for (var i = 0; i < KOU.length; i++) {
+    if (KOU[i][0] * 100 + KOU[i][1] <= md) kou = KOU[i][2]; else break;
+  }
+  var age = ((now - new Date(2000, 0, 6, 18, 14)) / 86400000) % 29.530588853;
+  if (age < 0) age += 29.530588853;
+  var f = age / 29.530588853;
+  var illum = (1 - Math.cos(2 * Math.PI * f)) / 2;
+  var pct = Math.round(illum * 100);
+  var grad = f <= 0.5
+    ? 'linear-gradient(90deg, #B9AC83 ' + (100 - pct) + '%, #F6EBC0 ' + (100 - pct) + '%)'
+    : 'linear-gradient(90deg, #F6EBC0 ' + pct + '%, #B9AC83 ' + pct + '%)';
+  var phase = age < 1.5 ? '新月' : age < 5 ? '三日月' : age < 9 ? '上弦の月' : age < 13 ? '満ちていく月' : age < 16.5 ? '満月' : age < 20.5 ? '欠けていく月' : age < 24.5 ? '下弦の月' : age < 28 ? '有明の月' : '新月';
+  var kel = document.getElementById('kou-line');
+  if (kel) kel.innerHTML = '<span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。七十二候は『' + kou + '』の頃です。';
+  // today's recommendation shelf (rotates daily)
+  var REC = [
+    { href:'https://kasuiehon.pages.dev/?s=mori', img:'guide-ehon.jpg', t:'火水の絵本『ひーくんと みーちゃん』' },
+    { href:'https://note.com/takekasui/m/mca7ae9c34dd7', img:'guide-aruaru.jpg', t:'水女子あるある相談（note）' },
+    { href:'https://hisodate.pages.dev/', img:'guide-hisodate.jpg', t:'水女子のための火育て塾🔥' }
+  ];
+  var doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+  var rec = REC[doy % REC.length];
+  var oc = document.getElementById('osusume');
+  if (oc) {
+    oc.href = rec.href; oc.target = '_blank'; oc.rel = 'noopener';
+    document.getElementById('osusume-img').src = rec.img;
+    document.getElementById('osusume-text').textContent = rec.t;
+    oc.style.display = '';
   }
 })();
 </script>
