@@ -104,6 +104,9 @@
   .koyomi-cell.tensha { background:#EFE9FA; }
   .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#9B7ED9; box-shadow:0 0 0 1.5px #fff; }
   .moon-tag.tensha-tag { background:#9B7ED9; color:#fff; }
+  .moon-nav { flex:none; width:34px; height:34px; border-radius:50%; border:1.5px solid #C9D8C2; background:#fff; color:#4a7a52; font-size:19px; font-weight:900; cursor:pointer; line-height:1; padding:0; }
+  .moon-nav.off { opacity:.3; pointer-events:none; }
+  #moon-title { flex:1; }
   .moon-shun { margin-top:10px; font-size:12.5px; font-weight:700; color:#B0722E; line-height:1.7; }
   .moon-legend { display:flex; gap:18px; justify-content:center; margin-top:9px; font-size:11px; font-weight:700; color:#8a7d99; }
   .legend-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#9B7ED9; margin-right:5px; vertical-align:1px; }
@@ -1404,9 +1407,13 @@
     kel.addEventListener('click', function(){
       var modal = document.getElementById('moon-modal');
       if (!modal) return;
+      var todayJ = jstParts(now.getTime());
+      var baseIdx = todayJ.y * 12 + todayJ.m;
       if (!modal.getAttribute('data-built')) {
         modal.setAttribute('data-built', '1');
-        var jp = jstParts(now.getTime());
+        modal._viewIdx = baseIdx;
+        modal._renderMoon = function(vy, vm){
+          var jp = { y: vy, m: vm, d: (vy === todayJ.y && vm === todayJ.m) ? todayJ.d : 0 };
         document.getElementById('moon-title').textContent = jp.y + '年' + (jp.m + 1) + '月の月';
         var ev = findEvents(jp.y, jp.m);
         var grid = document.getElementById('moon-grid');
@@ -1446,7 +1453,7 @@
         if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日' + jstHM(nev.newT) + '（' + moonSign(nev.newT) + '）' }); }
         if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日' + jstHM(nev.fullT) + '（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
         nitems.sort(function(a, b){ return a.d - b.d; });
-        document.getElementById('moon-next').innerHTML = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
+        document.getElementById('moon-next').innerHTML = nitems.length ? ((vy === todayJ.y && vm === todayJ.m) ? '来月の' : (nm + 1) + '月の') + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
@@ -1457,11 +1464,31 @@
         var HANA = {0:'桜・チューリップ・れんげ',15:'桜・チューリップ・藤',30:'藤・牡丹・つつじ',45:'牡丹・あやめ・バラ',60:'バラ・あじさい・花菖蒲',75:'あじさい・花菖蒲・くちなし',90:'ゆり・あじさい・桔梗',105:'桔梗・朝顔・ひまわり',120:'ひまわり・朝顔・百日紅',135:'百日紅・すすき・桔梗',150:'すすき・秋桜・萩',165:'萩・秋桜・彼岸花',180:'彼岸花・金木犀・秋桜',195:'金木犀・秋バラ・秋桜',210:'菊・秋バラ・山茶花',225:'山茶花・菊・寒椿',240:'山茶花・水仙・寒椿',255:'水仙・シクラメン・ポインセチア',270:'水仙・蝋梅・シクラメン',285:'蝋梅・水仙・寒牡丹',300:'蝋梅・梅・福寿草',315:'梅・水仙・福寿草',330:'梅・沈丁花・菜の花',345:'沈丁花・木蓮・菜の花'};
         document.getElementById('moon-shun').textContent = 'いまの旬：' + SHUN[shunSeg] + '。花は、' + HANA[shunSeg] + 'です。';
         document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
+          document.getElementById('moon-prev').classList.toggle('off', modal._viewIdx <= baseIdx - 12);
+          document.getElementById('moon-next-btn').classList.toggle('off', modal._viewIdx >= baseIdx + 12);
+        };
+        var shiftMoon = function(delta){
+          var ni = modal._viewIdx + delta;
+          if (ni < baseIdx - 12 || ni > baseIdx + 12) return;
+          modal._viewIdx = ni;
+          modal._renderMoon(Math.floor(ni / 12), ni % 12);
+        };
+        document.getElementById('moon-prev').addEventListener('click', function(){ shiftMoon(-1); });
+        document.getElementById('moon-next-btn').addEventListener('click', function(){ shiftMoon(1); });
+        var card = modal.querySelector('.intro-card');
+        var tx = 0, ty = 0;
+        card.addEventListener('touchstart', function(e){ tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY; }, { passive: true });
+        card.addEventListener('touchend', function(e){
+          var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+          if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) shiftMoon(dx < 0 ? 1 : -1);
+        }, { passive: true });
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
         document.getElementById('moon-close-b').addEventListener('click', hideMoon);
         modal.addEventListener('click', function(e){ if (e.target === modal) hideMoon(); });
       }
+      modal._viewIdx = baseIdx;
+      modal._renderMoon(todayJ.y, todayJ.m);
       modal.style.display = 'flex';
     });
   }
@@ -1570,7 +1597,7 @@
   <div class="intro-overlay" id="moon-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="moon-close" aria-label="とじる">×</button>
-      <div class="moon-head"><img src="moon-mii.jpg" alt=""><div class="koyomi-title" id="moon-title"></div></div>
+      <div class="moon-head"><img src="moon-mii.jpg" alt=""><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
       <p class="moon-event" id="moon-events"></p>
