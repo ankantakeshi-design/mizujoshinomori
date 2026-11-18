@@ -86,6 +86,8 @@
   .moon-star { color:#E8B93E; }
   #moon-title::before, #moon-title::after { content:'✦'; color:#E8B93E; margin:0 8px; font-size:13px; }
   .moon-event { margin-top:14px; font-size:13.5px; font-weight:700; color:#33513c; line-height:2.0; text-align:left; }
+  .moon-next { margin-top:12px; padding-top:10px; border-top:1px dashed #DCE8DC; font-size:12px; font-weight:700; color:#7d8b74; line-height:1.9; text-align:left; }
+  .komorebi p, .today-diary .td-text, .sec-lead, .greeting, .kou, .uranai-msg, .diary-entry p, .moon-event, h2 { text-wrap: balance; }
   .letter-new { text-align:center; margin-top:14px; }
   .letter-new span { display:inline-block; background:#FDF6EC; border:1.5px solid #E8C87E; color:#8a6d1f; border-radius:999px; padding:5px 14px; font-size:12.5px; font-weight:900; }
   .kou .moon { display:inline-block; width:13px; height:13px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid #E3B94E; }
@@ -1150,6 +1152,7 @@
     : 'linear-gradient(90deg, #FFDE59 ' + pct + '%, #D9CEA3 ' + pct + '%)';
   var phase = age < 1.5 ? '新月' : age < 5 ? '三日月' : age < 9 ? '上弦の月' : age < 13 ? '満ちていく月' : age < 16.5 ? '満月' : age < 20.5 ? '欠けていく月' : age < 24.5 ? '下弦の月' : age < 28 ? '有明の月' : '新月';
   var SIGNS = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座','天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
+  var MOON_NAMES = ['ウルフムーン','スノームーン','ワームムーン','ピンクムーン','フラワームーン','ストロベリームーン','バックムーン','スタージョンムーン','コーンムーン','ハンターズムーン','ビーバームーン','コールドムーン'];
   var NEW_MSG = { '牡羊座':'新しい一歩を、踏み出す日です。', '牡牛座':'好きなものを、大事にしはじめる日です。', '双子座':'感じたことを、言葉にしてみる日です。', '蟹座':'大切な人を、思い浮かべる日です。', '獅子座':'自分を表現してみる日です。', '乙女座':'暮らしを、少し整える日です。', '天秤座':'バランスを取り戻す日です。', '蠍座':'本当の気持ちと、向き合う日です。', '射手座':'小さな冒険を、はじめる日です。', '山羊座':'目標を、そっと立てる日です。', '水瓶座':'自分らしいやり方を、試す日です。', '魚座':'感じるままに、願う日です。' };
   var FULL_MSG = { '牡羊座':'がんばってきた自分を、認めてあげる日です。', '牡牛座':'心地よさに、感謝する日です。', '双子座':'伝わったことに、気づく日です。', '蟹座':'やさしさを受け取る日です。', '獅子座':'輝いてきた自分を、ほめる日です。', '乙女座':'できたことに、目を向ける日です。', '天秤座':'人とのつながりに、感謝する日です。', '蠍座':'抱えてきたものを、手放す日です。', '射手座':'広がった世界に、気づく日です。', '山羊座':'積み重ねてきたことを、認める日です。', '水瓶座':'新しい自分に、気づく日です。', '魚座':'やさしい気持ちで、いっぱいの日です。' };
   function ageAt(t){
@@ -1232,7 +1235,7 @@
   if (kel) {
     var nf = nextFull ? jstParts(nextFull) : null;
     kel.innerHTML = '<span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。' +
-      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '）です。' : '') +
+      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・' + MOON_NAMES[nf.m] + '）です。' : '') +
       ' <span class="kou-more">月のカレンダー</span>';
     kel.addEventListener('click', function(){
       var modal = document.getElementById('moon-modal');
@@ -1262,8 +1265,16 @@
         grid.innerHTML = html;
         var lines = [];
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日は、' + ns + 'の新月です。' + NEW_MSG[ns]); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月です。' + FULL_MSG[fs]); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『' + MOON_NAMES[jp.m] + '』です。' + FULL_MSG[fs]); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>');
+        var nm = jp.m + 1, ny = jp.y;
+        if (nm > 11) { nm = 0; ny++; }
+        var nev = findEvents(ny, nm);
+        var nitems = [];
+        if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日（' + moonSign(nev.newT) + '）' }); }
+        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日（' + moonSign(nev.fullT) + '・' + MOON_NAMES[nm] + '）' }); }
+        nitems.sort(function(a, b){ return a.d - b.d; });
+        document.getElementById('moon-next').textContent = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
         document.getElementById('moon-close-b').addEventListener('click', hideMoon);
@@ -1380,6 +1391,7 @@
       <div class="koyomi-title" id="moon-title"></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <p class="moon-event" id="moon-events"></p>
+      <p class="moon-next" id="moon-next"></p>
       <button type="button" class="modal-close-bottom" id="moon-close-b">閉じる</button>
     </div>
   </div>
