@@ -293,7 +293,7 @@
     <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
-    <p class="onepoint" id="onepoint"></p>
+    <p class="onepoint" id="soon-line" style="display:none"></p>
     <p class="yesterday" id="yesterday-line"></p>
     <a id="today-diary" class="today-diary" href="#nikki" style="display:none">
       <img id="today-diary-img" alt="今日のみーちゃん">
@@ -1094,9 +1094,69 @@
     }
     if (sText) { sEl.textContent = sText; sEl.style.display = 'inline-block'; }
     else sEl.style.display = 'none';
-    var FACTS = ['今夜の月は、今夜だけの月。昨日とも、明日とも違います。','満月の夜は、街灯がなくても足元が見えるほど明るいです。','海の満ち引きは、月のリズムで動いています。','朝、カーテンを開けて光を浴びると、体がすっと起きてきます。','雨上がりの空は、洗いたてのように澄んでいます。','月の満ち欠けは、昔の人のカレンダーでした。','湯船につかる時間は、体も心もゆるむ時間です。','桜は、暖かい日が続くと、そろそろだなと咲きはじめます。','紅葉の色は、もともと葉っぱの中に隠れていた色です。','「旬」は、もともと10日間という意味の言葉です。','私たちの体は、半分以上が水でできています。','夕焼けのきれいな日は、明日も晴れることが多いです。','虹は、雨上がりに太陽と反対側の空で会えます。','月は、いつも同じ顔を見せてくれています。','遠くの星の光は、何年も旅して届いています。','かぼちゃは夏に採れて、冬まで置いておける、昔の人の知恵の野菜です。','ミツバチは、ダンスで花の場所を仲間に伝えます。','渡り鳥は、星空を目印に飛ぶと言われています。','雨の日の土の匂いには、名前がついています。','雪の結晶は、ひとつひとつ形が違います。','ホタルが光るのは、求愛のサインです。','竹は、ぐんぐん伸びて、あっという間に背を抜かします。','蓮の葉の上では、水が玉になって、ころころ転がります。','泣いたあとは、なんだかすっきりすることがあります。','大潮の日は、海が大きく息をしているみたいです。','冬至のころは、1年でいちばん影が長くなります。','風のある日の洗濯物は、気持ちよく乾きます。','流れ星は、宇宙の小さな粒が光る、一瞬の出来事です。','金木犀は、姿を見る前に、香りで咲いたとわかります。','朝顔は、夜の長さをはかって、咲く日を決めています。','あじさいの色は、土の性質で変わります。','松ぼっくりは、雨の日は閉じて、晴れの日は開きます。','月の光で虹ができることもあります。月虹といいます。','氷が水に浮くのは、水の不思議な性質です。','露は、晴れて風のない朝に、できやすいです。','秋の虫の声は、日本人には「声」のように聞こえると言われています。'];
-    var dayNo = Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000);
-    document.getElementById('onepoint').textContent = '今日のワンポイント：' + FACTS[dayNo % FACTS.length];
+    // 近日のお知らせ（ある日だけ表示）
+    var soonEl = document.getElementById('soon-line');
+    function sAgeAt(t){
+      var rad = Math.PI / 180;
+      var dd = (t - Date.UTC(2000, 0, 1, 12, 0)) / 86400000;
+      var Lp = 218.316 + 13.176396 * dd;
+      var M = (134.963 + 13.064993 * dd) * rad;
+      var F = (93.272 + 13.350350 * dd) * rad;
+      var D = (297.850 + 12.190749 * dd) * rad;
+      var Ms = (357.529 + 0.98560028 * dd) * rad;
+      var mlon = Lp + 6.289 * Math.sin(M) + 1.274 * Math.sin(2 * D - M) + 0.658 * Math.sin(2 * D) + 0.214 * Math.sin(2 * M) - 0.186 * Math.sin(Ms) - 0.114 * Math.sin(2 * F);
+      var Ls = 280.460 + 0.9856474 * dd;
+      var slon = Ls + 1.915 * Math.sin(Ms) + 0.020 * Math.sin(2 * Ms);
+      return (((mlon - slon) % 360) + 360) % 360 / 360 * 29.530588853;
+    }
+    function sekkiOn(y, m, d){
+      var lon = gSunLon(y, m, d);
+      var pd = new Date(y, m, d - 1);
+      var plon = gSunLon(pd.getFullYear(), pd.getMonth(), pd.getDate());
+      if (Math.floor(lon / 15) !== Math.floor(plon / 15)) return (Math.floor(lon / 15) * 15) % 360;
+      return -1;
+    }
+    var SEKKI_NAMES = {0:'春分',15:'清明',30:'穀雨',45:'立夏',60:'小満',75:'芒種',90:'夏至',105:'小暑',120:'大暑',135:'立秋',150:'処暑',165:'白露',180:'秋分',195:'寒露',210:'霜降',225:'立冬',240:'小雪',255:'大雪',270:'冬至',285:'小寒',300:'大寒',315:'立春',330:'雨水',345:'啓蟄'};
+    var SOON_CUSTOMS = {'1-7':['人日の節句','七草粥の日です'],'2-3':['節分','豆まきの日です'],'5-5':['端午の節句','菖蒲湯がいい日です'],'9-9':['重陽の節句','栗ご飯が美味しい頃です'],'11-15':['七五三','子どもの成長を祝う日です'],'2026-10-06':['中秋の名月','お月見の夜です'],'2027-09-25':['中秋の名月','お月見の夜です']};
+    var SHOWERS = {'1-4':'しぶんぎ座流星群','4-22':'こと座流星群','5-6':'みずがめ座流星群','7-30':'みずがめ座流星群','8-13':'ペルセウス座流星群','10-21':'オリオン座流星群','11-17':'しし座流星群','12-14':'ふたご座流星群'};
+    var STATIONS = [['水星','2026-02-26','2026-03-21'],['金星','2026-10-03','2026-11-14'],['火星','2027-01-10','2027-04-01'],['木星','2025-11-12','2026-03-11'],['木星','2026-12-13','2027-04-13'],['土星','2026-07-27','2026-12-11'],['土星','2027-08-10','2027-12-24'],['天王星','2025-09-06','2026-02-04'],['天王星','2026-09-11','2027-02-08'],['天王星','2027-09-15','2028-02-13'],['海王星','2026-07-07','2026-12-13'],['海王星','2027-07-10','2027-12-15'],['冥王星','2026-05-07','2026-10-16'],['冥王星','2027-05-08','2027-10-18'],['水星','2026-06-30','2026-07-24'],['水星','2026-10-24','2026-11-14'],['水星','2027-02-10','2027-03-03'],['水星','2027-06-11','2027-07-05'],['水星','2027-10-07','2027-10-28']];
+    function pad2(n){ return ('0' + n).slice(-2); }
+    function soonFor(y, m, d){
+      var cands = [];
+      var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
+      var a0 = sAgeAt(t0), a1 = sAgeAt(t0 + 86400000);
+      if (a1 < a0 - 20) cands.push([1, '新月です']);
+      else if (a0 < 14.7653 && a1 >= 14.7653) cands.push([1, '満月です。お月見の夜です']);
+      var sk = sekkiOn(y, m, d);
+      if (sk >= 0) cands.push([2, SEKKI_NAMES[sk] + 'です。' + (sk === 270 ? '柚子湯がいい日です' : '季節の変わり目です')]);
+      var ckey = (m + 1) + '-' + d, fkey = y + '-' + pad2(m + 1) + '-' + pad2(d);
+      var cu = SOON_CUSTOMS[ckey] || SOON_CUSTOMS[fkey];
+      if (cu) cands.push([2, cu[0] + 'です。' + cu[1]]);
+      var lon = gSunLon(y, m, d), eto = gEto(y, m, d);
+      if (lon >= 116.5 && lon < 135 && eto % 12 === 1) cands.push([2, '土用の丑の日です。うなぎで力をつける日です']);
+      if (sekkiOn(y, m, d + 3) === 0 || sekkiOn(y, m, d + 3) === 180) cands.push([3, 'お彼岸の入りです。お墓参りの頃です']);
+      if (sekkiOn(y, m, d - 3) === 0 || sekkiOn(y, m, d - 3) === 180) cands.push([3, 'お彼岸の明けです']);
+      var tg = (lon >= 315 || lon < 45) ? 14 : (lon < 135 ? 30 : (lon < 225 ? 44 : 0));
+      if (eto === tg) cands.push([3, '天赦日です。何かを始めるのに、とてもよい日です']);
+      STATIONS.forEach(function(r){
+        if (fkey === r[1]) cands.push([4, r[0] + 'の逆行が始まります']);
+        if (fkey === r[2]) cands.push([4, r[0] + 'が順行に戻ります']);
+      });
+      if (SHOWERS[ckey]) cands.push([4, SHOWERS[ckey] + 'の見ごろです']);
+      if (!cands.length) return null;
+      cands.sort(function(a, b){ return a[0] - b[0]; });
+      return cands[0][1];
+    }
+    var ty = nd.getFullYear(), tm = nd.getMonth(), td = nd.getDate();
+    for (var off = 1; off <= 3 && !soonEl.textContent; off++) {
+      var sd = new Date(ty, tm, td + off);
+      var msg = soonFor(sd.getFullYear(), sd.getMonth(), sd.getDate());
+      if (msg) {
+        var prefix = off === 1 ? '明日は、' : off === 2 ? 'あさっては、' : (sd.getMonth() + 1) + '月' + sd.getDate() + '日は、';
+        soonEl.textContent = prefix + msg;
+        soonEl.style.display = 'block';
+      }
+    }
   }
 
   var btn = document.getElementById('uranai-btn');
