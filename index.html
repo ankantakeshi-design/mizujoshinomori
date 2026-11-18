@@ -98,6 +98,22 @@
   #moon-title::before, #moon-title::after { content:'✦'; color:#E8B93E; margin:0 8px; font-size:13px; }
   .moon-event { margin-top:14px; font-size:13.5px; font-weight:700; color:#33513c; line-height:2.0; text-align:left; }
   .moon-next { margin-top:12px; padding-top:10px; border-top:1px dashed #DCE8DC; font-size:12px; font-weight:700; color:#7d8b74; line-height:1.9; text-align:left; }
+  .moon-head { display:flex; align-items:center; justify-content:center; gap:10px; }
+  .moon-head img { width:56px; height:56px; object-fit:cover; object-position:50% 40%; border-radius:16px; flex:none; }
+  .moon-head img.planet-img { object-position:50% 84%; }
+  .koyomi-cell.tensha { background:#FFEFC4; }
+  .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#E8B93E; box-shadow:0 0 0 1.5px #fff; }
+  .moon-tag.tensha-tag { background:#E8B93E; color:#5c4303; }
+  .moon-lucky { margin-top:10px; font-size:12.5px; font-weight:700; color:#8a6d1f; line-height:2.0; text-align:left; text-wrap:balance; word-break:auto-phrase; }
+  .planet-link-btn { margin-top:14px; width:100%; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:10px 18px; font-size:13.5px; font-weight:900; cursor:pointer; font-family:inherit; }
+  .planet-row { display:flex; align-items:flex-start; gap:10px; padding:10px 2px; border-bottom:1px dashed #E3EDE4; text-align:left; }
+  .planet-row:last-of-type { border-bottom:none; }
+  .planet-name { font-weight:900; font-size:14.5px; color:#33513c; min-width:50px; padding-top:2px; }
+  .planet-body { flex:1; }
+  .planet-chip { display:inline-block; font-size:11px; font-weight:900; border-radius:999px; padding:3px 10px; }
+  .planet-chip.retro { background:#FDF0E2; color:#B25E09; border:1.5px solid #EFC07F; }
+  .planet-chip.direct { background:#EEF4EE; color:#7A8B7A; border:1.5px solid #D5E2D5; }
+  .planet-msg { margin-top:5px; font-size:12.5px; color:#5A6B5A; line-height:1.8; font-weight:700; }
   .komorebi p, .today-diary .td-text, .sec-lead, .greeting, .kou, .uranai-msg, .diary-entry p, .moon-event, .moon-next, h2 { text-wrap: balance; word-break: auto-phrase; }
   .nw { white-space: nowrap; }
   .letter-new { text-align:center; margin-top:14px; }
@@ -999,18 +1015,40 @@
   // 特別な日の小さな仕掛け
   var SPECIALS = {
     '1-1': 'あけましておめでとうございます。今年も、森で待っていますね。',
+    '1-4': '今夜は、しぶんぎ座流星群が見ごろです。',
     '2-14': '今日はバレンタイン。自分にも、あまいものをどうぞ。',
     '3-3': '今日はひなまつり。自分にも、やさしくしてあげてくださいね。',
+    '4-22': '今夜は、こと座流星群が見ごろです。',
+    '5-6': '今夜は、みずがめ座流星群が見ごろです。',
     '7-7': '今日は七夕。願いごとは、葉っぱにそっと置いていけますよ。',
+    '7-30': '今夜は、みずがめ座流星群が見ごろです。',
+    '8-13': '今夜は、ペルセウス座流星群が見ごろです。',
+    '10-21': '今夜は、オリオン座流星群が見ごろです。',
+    '11-17': '今夜は、しし座流星群が見ごろです。',
+    '12-14': '今夜は、ふたご座流星群が見ごろです。',
     '12-24': 'クリスマスイブ。静かな夜も、森は開いていますよ。',
     '12-25': 'メリークリスマス。今日は、自分にも小さな贈りものをどうぞ。',
     '12-31': '大晦日。今年も、よくがんばりましたね。森で、ほっと一息どうぞ。'
   };
+  function gEto(y, m, d){ var days = Math.round((Date.UTC(y, m, d) - Date.UTC(2024, 0, 1)) / 86400000); return ((days % 60) + 60) % 60; }
+  function gSunLon(y, m, d){ var t = Date.UTC(y, m, d, 14, 59, 0); var n = t / 86400000 - 10957.5; var L = (280.460 + 0.9856474 * n) % 360; if (L < 0) L += 360; var M = (357.528 + 0.9856003 * n) * Math.PI / 180; var lon = L + 1.915 * Math.sin(M) + 0.020 * Math.sin(2 * M); lon %= 360; if (lon < 0) lon += 360; return lon; }
+  var G_STARTS = [315, 345, 15, 45, 75, 105, 135, 165, 195, 225, 255, 285];
+  var G_SETS = [[1,6],[9,2],[0,3],[3,4],[5,6],[9,6],[0,7],[3,8],[9,6],[9,10],[11,0],[3,0]];
+  function gSeg(lon){ for (var i = 0; i < 12; i++) { var s = G_STARTS[i]; var e = (s + 30) % 360; if (s < e ? (lon >= s && lon < e) : (lon >= s || lon < e)) return i; } return -1; }
   var sEl = document.getElementById('special-line');
   if (sEl) {
     var nd = new Date();
     var key = (nd.getMonth() + 1) + '-' + nd.getDate();
-    if (SPECIALS[key]) sEl.textContent = SPECIALS[key];
+    var sText = SPECIALS[key] || '';
+    if (!sText) {
+      var gy = nd.getFullYear(), gm = nd.getMonth(), gd = nd.getDate();
+      var glon = gSunLon(gy, gm, gd);
+      var gTarget = (glon >= 315 || glon < 45) ? 14 : (glon < 135 ? 30 : (glon < 225 ? 44 : 0));
+      if (gEto(gy, gm, gd) === gTarget) sText = '今日は天赦日です。何かを始めるのに、とてもよい日です。';
+      else if (G_SETS[gSeg(glon)].indexOf(gEto(gy, gm, gd) % 12) >= 0) sText = '今日は一粒万倍日です。小さな一歩が、大きく実る日です。';
+    }
+    if (sText) { sEl.textContent = sText; sEl.style.display = 'inline-block'; }
+    else sEl.style.display = 'none';
   }
 
   var btn = document.getElementById('uranai-btn');
@@ -1242,6 +1280,54 @@
     }
     return ev;
   }
+  // 開運日（一粒万倍日・天赦日）: 節月×干支で計算（はねつーる等の公開暦と14か月分照合済み）
+  function luckyEto(y, m, d){ var days = Math.round((Date.UTC(y, m, d) - Date.UTC(2024, 0, 1)) / 86400000); return ((days % 60) + 60) % 60; }
+  function luckySunLon(y, m, d){ var t = Date.UTC(y, m, d, 14, 59, 0); var n = t / 86400000 - 10957.5; var L = (280.460 + 0.9856474 * n) % 360; if (L < 0) L += 360; var M = (357.528 + 0.9856003 * n) * Math.PI / 180; var lon = L + 1.915 * Math.sin(M) + 0.020 * Math.sin(2 * M); lon %= 360; if (lon < 0) lon += 360; return lon; }
+  var LUCKY_STARTS = [315, 345, 15, 45, 75, 105, 135, 165, 195, 225, 255, 285];
+  var LUCKY_SETS = [[1,6],[9,2],[0,3],[3,4],[5,6],[9,6],[0,7],[3,8],[9,6],[9,10],[11,0],[3,0]];
+  function luckySeg(lon){ for (var i = 0; i < 12; i++) { var s = LUCKY_STARTS[i]; var e = (s + 30) % 360; if (s < e ? (lon >= s && lon < e) : (lon >= s || lon < e)) return i; } return -1; }
+  function isIchiryuDay(y, m, d){ return LUCKY_SETS[luckySeg(luckySunLon(y, m, d))].indexOf(luckyEto(y, m, d) % 12) >= 0; }
+  function isTenshaDay(y, m, d){ var lon = luckySunLon(y, m, d); var target = (lon >= 315 || lon < 45) ? 14 : (lon < 135 ? 30 : (lon < 225 ? 44 : 0)); return luckyEto(y, m, d) === target; }
+  // 惑星の逆行（JST・複数ソース照合済みデータ）
+  var PLANETS = [
+    { name: '水星', ranges: [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']], msg: '言葉や連絡は、確認をていねいに。伝える前に、ひと呼吸。' },
+    { name: '金星', ranges: [['2026-10-03','2026-11-14']], msg: '好きなものや、大事な人との関係を、見直す時期です。' },
+    { name: '火星', ranges: [['2027-01-10','2027-04-01']], msg: 'がんばり方を、見直す時期です。無理はしないでくださいね。' },
+    { name: '木星', ranges: [['2025-11-12','2026-03-11'],['2026-12-13','2027-04-13']], msg: '広げてきたことを、整える時期です。' },
+    { name: '土星', ranges: [['2026-07-27','2026-12-11'],['2027-08-10','2027-12-24']], msg: '積み重ねてきたことを、見直す時期です。' },
+    { name: '天王星', ranges: [['2025-09-06','2026-02-04'],['2026-09-11','2027-02-08'],['2027-09-15','2028-02-13']], msg: '変化と、ゆっくり向き合う時期です。' },
+    { name: '海王星', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。' },
+    { name: '冥王星', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。' }
+  ];
+  function openPlanets(){
+    var modal = document.getElementById('planet-modal');
+    if (!modal) return;
+    if (!modal.getAttribute('data-built')) {
+      modal.setAttribute('data-built', '1');
+      var now2 = new Date();
+      function p2(n){ return (n < 10 ? '0' : '') + n; }
+      var today = now2.getFullYear() + '-' + p2(now2.getMonth() + 1) + '-' + p2(now2.getDate());
+      var html = '';
+      PLANETS.forEach(function(p){
+        var retroEnd = null;
+        p.ranges.forEach(function(r){ if (today >= r[0] && today <= r[1]) retroEnd = r[1]; });
+        html += '<div class="planet-row"><div class="planet-name">' + p.name + '</div><div class="planet-body">';
+        if (retroEnd) {
+          var ep = retroEnd.split('-');
+          html += '<span class="planet-chip retro">逆行中</span><div class="planet-msg">' + (+ep[1]) + '月' + (+ep[2]) + '日まで。' + p.msg + '</div>';
+        } else {
+          html += '<span class="planet-chip direct">順行中</span>';
+        }
+        html += '</div></div>';
+      });
+      document.getElementById('planet-list').innerHTML = html;
+      function hideP(){ modal.style.display = 'none'; }
+      document.getElementById('planet-close').addEventListener('click', hideP);
+      document.getElementById('planet-close-b').addEventListener('click', hideP);
+      modal.addEventListener('click', function(e){ if (e.target === modal) hideP(); });
+    }
+    modal.style.display = 'flex';
+  }
   // next full moon (for the hero line)
   var nextFull = null;
   (function(){
@@ -1273,15 +1359,20 @@
         var lead = first.getUTCDay();
         var daysIn = new Date(Date.UTC(jp.y, jp.m + 1, 0)).getUTCDate();
         for (var i = 0; i < lead; i++) html += '<div class="koyomi-cell empty"></div>';
+        var ichiryuDays = [], tenshaDays = [];
         for (var d = 1; d <= daysIn; d++) {
           var noon = Date.UTC(jp.y, jp.m, d, 3, 0);
-          var tag = '';
+          var tag = '', tagCls = '';
           if (ev.newT && jstParts(ev.newT).d === d) tag = '新月';
           if (ev.fullT && jstParts(ev.fullT).d === d) tag = '満月';
-          html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + '">' +
+          var isI = isIchiryuDay(jp.y, jp.m, d), isT = isTenshaDay(jp.y, jp.m, d);
+          if (isI) ichiryuDays.push(d);
+          if (isT) { tenshaDays.push(d); if (!tag) { tag = '天赦日'; tagCls = ' tensha-tag'; } }
+          html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + (isT ? ' tensha' : '') + '">' +
             '<span class="koyomi-day">' + d + '</span>' +
             '<span class="moon-dot' + (tag === '満月' ? ' full' : '') + '" style="background:' + gradFor(ageAt(noon)) + '"></span>' +
-            (tag ? '<span class="moon-tag">' + tag + '</span>' : '') + '</div>';
+            (isI ? '<span class="lucky-dot"></span>' : '') +
+            (tag ? '<span class="moon-tag' + tagCls + '">' + tag + '</span>' : '') + '</div>';
         }
         grid.innerHTML = html;
         var lines = [];
@@ -1296,9 +1387,14 @@
         if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
         nitems.sort(function(a, b){ return a.d - b.d; });
         document.getElementById('moon-next').innerHTML = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
+        var llines = [];
+        tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
+        if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
+        document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
         document.getElementById('moon-close-b').addEventListener('click', hideMoon);
+        document.getElementById('planet-open').addEventListener('click', function(){ hideMoon(); openPlanets(); });
         modal.addEventListener('click', function(e){ if (e.target === modal) hideMoon(); });
       }
       modal.style.display = 'flex';
@@ -1409,11 +1505,22 @@
   <div class="intro-overlay" id="moon-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="moon-close" aria-label="とじる">×</button>
-      <div class="koyomi-title" id="moon-title"></div>
+      <div class="moon-head"><img src="moon-mii.jpg" alt=""><div class="koyomi-title" id="moon-title"></div></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <p class="moon-event" id="moon-events"></p>
       <p class="moon-next" id="moon-next"></p>
+      <p class="moon-lucky" id="moon-lucky"></p>
+      <button type="button" class="planet-link-btn" id="planet-open">惑星のようすを見る</button>
       <button type="button" class="modal-close-bottom" id="moon-close-b">閉じる</button>
+    </div>
+  </div>
+  <div class="intro-overlay" id="planet-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="planet-close" aria-label="とじる">×</button>
+      <div class="moon-head"><img class="planet-img" src="planet-mii.jpg" alt=""><div class="koyomi-title">惑星のようす</div></div>
+      <div id="planet-list"></div>
+      <p class="moon-lucky" style="text-align:center">逆行の時期は、見直しや確認に向く<br>と言われています。</p>
+      <button type="button" class="modal-close-bottom" id="planet-close-b">閉じる</button>
     </div>
   </div>
 </body>
