@@ -101,9 +101,12 @@
   .moon-head { display:flex; align-items:center; justify-content:center; gap:10px; }
   .moon-head img { width:56px; height:56px; object-fit:cover; object-position:50% 40%; border-radius:16px; flex:none; }
   .moon-head img.planet-img { object-position:50% 84%; }
-  .koyomi-cell.tensha { background:#FFEFC4; }
-  .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#E8B93E; box-shadow:0 0 0 1.5px #fff; }
-  .moon-tag.tensha-tag { background:#E8B93E; color:#5c4303; }
+  .koyomi-cell.tensha { background:#EFE9FA; }
+  .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#9B7ED9; box-shadow:0 0 0 1.5px #fff; }
+  .moon-tag.tensha-tag { background:#9B7ED9; color:#fff; }
+  .moon-legend { display:flex; gap:18px; justify-content:center; margin-top:9px; font-size:11px; font-weight:700; color:#8a7d99; }
+  .legend-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#9B7ED9; margin-right:5px; vertical-align:1px; }
+  .legend-box { display:inline-block; width:10px; height:10px; border-radius:3px; background:#EFE9FA; border:1.5px solid #9B7ED9; margin-right:5px; vertical-align:-1px; }
   .moon-lucky { margin-top:10px; font-size:12.5px; font-weight:700; color:#8a6d1f; line-height:2.0; text-align:left; text-wrap:balance; word-break:auto-phrase; }
   .planet-link-btn { margin-top:14px; width:100%; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:10px 18px; font-size:13.5px; font-weight:900; cursor:pointer; font-family:inherit; }
   .planet-row { display:flex; align-items:flex-start; gap:10px; padding:10px 2px; border-bottom:1px dashed #E3EDE4; text-align:left; }
@@ -226,7 +229,7 @@
   .uranai-card-btn { margin-top:6px; border:2px solid #9CC49F; background:#fff; color:#33513c; font-size:13px; font-weight:900; font-family:inherit; border-radius:999px; padding:8px 20px; cursor:pointer; }
   .koyomi-box { background:#fff; border:2px solid #E4EFE6; border-radius:20px; padding:20px 16px; margin-top:6px; }
   .koyomi-title { text-align:center; font-size:15px; font-weight:900; color:#33513c; }
-  .koyomi-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; margin-top:14px; }
+  .koyomi-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:4px; margin-top:14px; }
   .koyomi-wd { text-align:center; font-size:11px; font-weight:900; color:#7d8b74; padding:2px 0; }
   .koyomi-cell { position:relative; aspect-ratio:1; border-radius:10px; background:#F7FAF5; border:1px solid #EDF3EA; display:flex; align-items:flex-start; justify-content:flex-start; padding:3px 5px; box-sizing:border-box; font-family:inherit; }
   .koyomi-cell.empty { background:transparent; border-color:transparent; }
@@ -1524,6 +1527,7 @@
       <button type="button" class="intro-close" id="moon-close" aria-label="とじる">×</button>
       <div class="moon-head"><img src="moon-mii.jpg" alt=""><div class="koyomi-title" id="moon-title"></div></div>
       <div class="koyomi-grid" id="moon-grid"></div>
+      <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
       <p class="moon-event" id="moon-events"></p>
       <p class="moon-next" id="moon-next"></p>
       <p class="moon-lucky" id="moon-lucky"></p>
