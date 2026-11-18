@@ -136,6 +136,8 @@
   .diary-entry p { font-size:15px; font-weight:700; line-height:2.0; color:#33513c; }
   .diary-date { font-size:12px; font-weight:900; color:#8aa88f; margin-bottom:2px; }
   .diary-new { background:#F0502E; color:#fff; border-radius:6px; padding:1px 7px; font-size:11px; margin-right:8px; vertical-align:middle; }
+  .diary-more { margin-top:6px; }
+  .diary-more summary { text-align:center; font-size:14px; font-weight:900; color:#4a7a52; cursor:pointer; padding:12px 8px 4px; }
   .uranai { margin-top:24px; background:#FDF6EC; border-radius:20px; padding:28px 22px; text-align:center; }
   .uranai img { width:110px; height:auto; }
   .uranai-msg { margin:20px auto 0; max-width:440px; background:#fff; border:2px solid #E8C87E; border-radius:18px; padding:16px 18px; font-size:15px; font-weight:700; line-height:2.0; color:#6b5f4f; position:relative; min-height:60px; }
@@ -566,29 +568,207 @@
 </script>
 <script>
 (function(){
-  // みーちゃんの水女子日記: 2026/11/17 を1日目として、1日1つずつ公開されます
-  var DIARY = [
+  // みーちゃんの水女子日記: 2026/11/17〜19は固定3件、11/20からはプール方式で1日1件ずつ公開されます
+  var DIARY_FIXED = [
     { img:'nikki-1.png', lines:['「だいじょうぶ？」って きかれて','「うん」って いっちゃった','ほんとは すこし なきたかったのに'] },
     { img:'nikki-2.png', lines:['おさそいを ことわってみた','むねが どきどきしたけど','かえりみち、足が かるかった'] },
     { img:'nikki-3.png', lines:['つかれた日は はやく ねる','だれにも あわせなくていい夜','おふとんが いちばん やさしい'] }
   ];
-  var epoch = new Date(2026, 10, 17); epoch.setHours(0,0,0,0);
-  var today = new Date(); today.setHours(0,0,0,0);
-  var count = Math.floor((today - epoch) / 86400000) + 1;
-  if (count > DIARY.length) count = DIARY.length;
-  if (count < 1) count = 1;
-  var box = document.getElementById('diary-list');
-  if (box) {
-    var html = '';
-    for (var i = count - 1; i >= 0; i--) {
-      var d = new Date(epoch.getTime() + i * 86400000);
-      var label = (d.getMonth() + 1) + '月' + d.getDate() + '日';
-      var badge = (i === count - 1) ? '<span class="diary-new">NEW</span>' : '';
-      html += '<div class="diary-entry"><img src="' + DIARY[i].img + '" alt="みーちゃん">'
-        + '<div><div class="diary-date">' + badge + label + '</div>'
-        + '<p>' + DIARY[i].lines.join('<br>') + '</p></div></div>';
+  var DIARY_ANYTIME = [
+    { img:'nikki-img-01.png', lines:['かえって すぐ ソファに すわった','くつも ぬげないまま','すこしだけ 目を とじた'] },
+    { img:'nikki-img-19.png', lines:['おひるすぎから まぶたが おもい','あくびを なんども こらえた','はやく 夜に なりたかった'] },
+    { img:'nikki-img-29.png', lines:['せんたくものが たまっている','見て 見ないふりを した','今日は そのままに した'] },
+    { img:'nikki-img-43.png', lines:['おふろに 入る気力も なくて','顔だけ あらって ねた','それでも 朝は きた'] },
+    { img:'nikki-img-56.png', lines:['電車で せきに すわったら','いつのまにか うとうと','おりる駅で はっとした'] },
+    { img:'nikki-img-59.png', lines:['休みの日 おひるまで パジャマ','時計を 見ても うごけない','体が かたくなってる'] },
+    { img:'nikki-img-67.png', lines:['スマホを とおくに おいて','ごろんと よこに なった','天井を ぼんやり 見てた'] },
+    { img:'nikki-img-12.png', lines:['人と はなした日の 夜は','声が 出なくなるくらい つかれる','しずかな 部屋が ほしい'] },
+    { img:'nikki-img-21.png', lines:['買いものから かえったら','ふくろを おいて 座りこんだ','手も 足も おもたかった'] },
+    { img:'nikki-img-22.png', lines:['日曜の 夜になると','もう つかれている きがする','明日のことは 明日 見よう'] },
+    { img:'nikki-img-05.png', lines:['みんなが わらっているのに','わたしだけ 入っていけなくて','笑顔のまま 心が さみしい'] },
+    { img:'nikki-img-13.png', lines:['雨の かえりみち 一人','かさに あたる音だけ きこえる','だれかに 会いたくなった'] },
+    { img:'nikki-img-14.png', lines:['お母さんと 電話したのに','さみしいって 言えなかった','切ったあと すこし ないた'] },
+    { img:'nikki-img-17.png', lines:['送ったLINEの へんじが こない','何度も 画面を 見てしまう','夕方まで 胸が ざわざわ'] },
+    { img:'nikki-img-26.png', lines:['台所で 一人で ごはん','お茶わんの音が ひびいた','今日は なんだか さみしい'] },
+    { img:'nikki-img-30.png', lines:['ごめんねって 言いすぎた日','おふろで 思いだして','ぽろっと なみだが 出た'] },
+    { img:'nikki-img-31.png', lines:['むかしの写真を 見てたら','わらってる自分が とおくて','そっと アルバムを とじた'] },
+    { img:'nikki-img-11.png', lines:['夜中に 目が さめて','理由もなく 胸が くるしい','まくらを ぎゅっと した'] },
+    { img:'nikki-img-02.png', lines:['「今日は むりです」って','同僚に はじめて 言えた','言ったあと 手が ふるえた'] },
+    { img:'nikki-img-24.png', lines:['好きなケーキを 買った','だれの 言いわけも なしで','わたしが 食べたいから'] },
+    { img:'nikki-img-42.png', lines:['集まりを 早めに 出た','みんなに 手を ふって','夜風が 気持ちよかった'] },
+    { img:'nikki-img-03.png', lines:['すぐ「いいよ」と 言わずに','「考えさせて」と 言えた','小さなことだけど うれしい'] },
+    { img:'nikki-img-07.png', lines:['友達に「つかれてる」と 送った','本当のことを 書くのは こわい','でも 肩が すこし おりた'] },
+    { img:'nikki-img-09.png', lines:['お店で「これください」と','食べたいものを 自分で 選んだ','いつもと ちがう味が した'] },
+    { img:'nikki-img-10.png', lines:['モヤモヤを ノートに 書いた','たった 一行だけだけど','頭のなかが すこし 静か'] },
+    { img:'nikki-img-15.png', lines:['仕事で「手伝って」と 言えた','小さな声に なっちゃったけど','聞いてもらえて ほっとした'] },
+    { img:'nikki-img-16.png', lines:['窓ぎわの席が よくて','「ここがいい」と 言ってみた','景色が 近くに 見えた'] },
+    { img:'nikki-img-36.png', lines:['思ったことを LINEに 書いた','送る前 何度も 読みなおして','送信を おす指が ふるえた'] },
+    { img:'nikki-img-04.png', lines:['姉が 何も きかずに','あたたかい お茶を くれた','両手で 持ったら ほっとした'] },
+    { img:'nikki-img-06.png', lines:['友達が おぼえていてくれた','前に話した 小さなこと','それだけで 胸が あたたかい'] },
+    { img:'nikki-img-08.png', lines:['お父さんから 短いLINE','「寒いから 気をつけて」だけ','何度も 読みかえした'] },
+    { img:'nikki-img-23.png', lines:['近所のねこが 近づいてきた','足もとで まるくなった','しばらく 一緒に 座ってた'] },
+    { img:'nikki-img-25.png', lines:['ねむっていたら 誰かが','そっと 毛布を かけてくれた','目が さめても そのままいた'] },
+    { img:'nikki-img-27.png', lines:['同僚が「ゆっくりでいいよ」と','急いでいた手を とめてくれた','涙が 出そうに なった'] },
+    { img:'nikki-img-28.png', lines:['おばあちゃんの みそ汁','具が ごろごろ 入ってて','おなかから あたたまった'] },
+    { img:'nikki-img-44.png', lines:['友達が わたしに あわせて','ゆっくり 歩いてくれた','何も 言わずに 並んで'] },
+    { img:'nikki-img-37.png', lines:['好きなパンが 最後の一個','わたしが 買えた','袋を 大事に 持って かえった'] },
+    { img:'nikki-img-46.png', lines:['朝の空が きれいで','思わず 写真を とった','だれかに 見せたくなった'] },
+    { img:'nikki-img-60.png', lines:['新しいシャンプーの 香り','髪を かわかしながら','何度も くんくん した'] },
+    { img:'nikki-img-66.png', lines:['「髪きった？」って 気づいてもらえた','小さな変化なのに','一日 ちょっと うれしかった'] },
+    { img:'nikki-img-39.png', lines:['夕ごはんのあとの プリン','一口で にっこりした','冷蔵庫に あって よかった'] },
+    { img:'nikki-img-40.png', lines:['シャッフルで 流れた曲が','大好きな あの曲だった','電車で 口もとが ゆるんだ'] },
+    { img:'nikki-img-45.png', lines:['植木に 新しい葉が 出てた','毎朝 水を あげてたから','小さく「おはよう」と 言った'] },
+    { img:'nikki-img-57.png', lines:['友達からの 手紙が とどいた','ポストを 開けて びっくり','すぐには 開けずに ながめた'] },
+    { img:'nikki-img-58.png', lines:['新しい くつ下が ふかふか','足が よろこんでるみたい','歩くのが すこし 楽しい'] },
+    { img:'nikki-img-18.png', lines:['発表の 前の日から','心臓の音が うるさい','資料を 何度も 見なおす'] },
+    { img:'nikki-img-20.png', lines:['LINEの 返信の 言葉','書いては 消してを くりかえす','結局 短い文に なった'] },
+    { img:'nikki-img-32.png', lines:['昼に 言った 一言が','帰りの電車で 気になって','言いすぎたかなと 考えてた'] },
+    { img:'nikki-img-33.png', lines:['はじめての お店の 入口で','入るか まよって 立ちどまった','深呼吸して ドアを 開けた'] },
+    { img:'nikki-img-34.png', lines:['メールを 送る ボタンの前で','指が ずっと とまってる','宛先を 三回 たしかめた'] },
+    { img:'nikki-img-35.png', lines:['友達の ため息を 聞くと','わたしのせいかなと 思う','ちがうと 分かっても ドキッとする'] },
+    { img:'nikki-img-41.png', lines:['明日の 予定を 思うと','夜から おなかが キュッとなる','カレンダーを 閉じて ねた'] },
+    { img:'nikki-img-65.png', lines:['窓の外の 雨の音を','お茶を 飲みながら 聞いてた','何もしない時間が あった'] },
+    { img:'nikki-img-01.png', lines:['朝 顔を あらう 水が つめたくて','目が すっと さめた','鏡の自分に 小さく 笑った'] },
+    { img:'nikki-img-19.png', lines:['図書館の すみの席','まわりが しずかで','呼吸が ゆっくりになった'] },
+    { img:'nikki-img-29.png', lines:['みそ汁の 湯気を 見てた','台所が いいにおい','夕ごはんが 待ち遠しい'] },
+    { img:'nikki-img-43.png', lines:['川ぞいを 歩いたら','風が 頬を 通っていった','足どりが 自然と ゆるんだ'] },
+    { img:'nikki-img-56.png', lines:['引き出し 一つだけ 片づけた','ほかは そのままだけど','開けるたび 気持ちがいい'] },
+    { img:'nikki-img-59.png', lines:['夕方の 空の色が','少しずつ 変わっていくのを','ベランダで 最後まで 見てた'] },
+    { img:'nikki-img-67.png', lines:['本屋で ぶらぶらして','何も 買わずに 出たけど','表紙を ながめただけで 満足'] }
+  ];
+  var DIARY_SEASONAL = [
+    { months:[3,4,5], img:'nikki-img-63.png', lines:['さくらが ひらひら おちてきた','かみに ついてて うれしい','そのまま あるいていた'] },
+    { months:[3,4,5], img:'nikki-img-64.png', lines:['はるの あめは おとが やさしい','まどの そとを ながめてた','こころも しっとり した'] },
+    { months:[3,4,5], img:'nikki-img-52.png', lines:['あたたかい ひざしの ベンチ','ぼーっと すわってた だけ','かぜが やさしく ふいた'] },
+    { months:[3,4,5], img:'nikki-img-12.png', lines:['すきな パンを かってきた','そとで たべたら おいしかった','はるの においが したよ'] },
+    { months:[3,4,5], img:'nikki-img-21.png', lines:['ともだちと たくさん わらった','なんでもない ことで わらえた','ほっぺが すこし いたい'] },
+    { months:[3,4,5], img:'nikki-img-22.png', lines:['かふんで めが かゆい日','おうちで ごろごろ してた','おひるね たくさん した'] },
+    { months:[3,4,5], img:'nikki-img-04.png', lines:['はるの ひるまは ねむい','ソファで うとうと しちゃう','ゆめの なかも ぽかぽか'] },
+    { months:[3,4,5], img:'nikki-img-05.png', lines:['みんな たのしそうで','わたしだけ とりのこされた きぶん','さくらを みて すこし なけた'] },
+    { months:[3,4,5], img:'nikki-img-13.png', lines:['あたらしい ばしょは どきどき','なまえを おぼえるのが ゆっくり','きょうも そわそわ してた'] },
+    { months:[3,4,5], img:'nikki-img-03.png', lines:['かれと はるかぜの なかを','なにも いわなくても へいきで','てを つないだら あたたかい'] },
+    { months:[6,7,8], img:'nikki-img-38.png', lines:['ゆうだちの あとの におい','つちの かおりが ふわっと','すこし すずしく なった'] },
+    { months:[6,7,8], img:'nikki-img-54.png', lines:['せみの こえを ききながら','アイスを ゆっくり たべた','なつの ひるは ながいね'] },
+    { months:[6,7,8], img:'nikki-img-07.png', lines:['まどを あけたら すずしい かぜ','ほっと いきを ついた','よるが きもちよく なった'] },
+    { months:[6,7,8], img:'nikki-img-09.png', lines:['すいかを たべた ひるま','あまくて にこっと しちゃった','なつの あじが した'] },
+    { months:[6,7,8], img:'nikki-img-10.png', lines:['かきごおりの あおい シロップ','したが あおくなって わらった','こどもの ころ みたいだった'] },
+    { months:[6,7,8], img:'nikki-img-06.png', lines:['あつくて なにも できない日','すずしい へやで ごろごろ','からだが とけて しまいそう'] },
+    { months:[6,7,8], img:'nikki-img-08.png', lines:['ねむれない よるが つづいた','あせを かいて めが さめた','あさが くるのが はやかった'] },
+    { months:[6,7,8], img:'nikki-img-14.png', lines:['ひとりで かえる なつの よる','せみの こえが とおくに きこえる','なんだか すこし さみしかった'] },
+    { months:[6,7,8], img:'nikki-img-17.png', lines:['あつさで ぼーっと しちゃう','ひとの はなしが はいってこない','あとで きになって そわそわ'] },
+    { months:[6,7,8], img:'nikki-img-15.png', lines:['かれと かきごおり はんぶんこ','あじが まざって おいしかった','なつの おもいでが ふえた'] },
+    { months:[9,10,11], img:'nikki-img-68.png', lines:['つきが きれいな よるだった','まどを あけて ながめてた','すずしい かぜが きもちいい'] },
+    { months:[9,10,11], img:'nikki-img-53.png', lines:['きんもくせいの においが した','あるいてたら ふわっと きた','あきだなあって おもった'] },
+    { months:[9,10,11], img:'nikki-img-16.png', lines:['ほんを よむのが たのしい','ページを めくる おとが すき','じかんが ゆっくり ながれた'] },
+    { months:[9,10,11], img:'nikki-img-36.png', lines:['やきいもを かってきた','あつあつで ほくほく してた','たべたら にこっと しちゃった'] },
+    { months:[9,10,11], img:'nikki-img-23.png', lines:['あたらしい ニットを きた日','かがみを みて にこっと した','あきいろが にあってた みたい'] },
+    { months:[9,10,11], img:'nikki-img-25.png', lines:['すずしくて よく ねむれる','おふとんが きもちよすぎて','あさまで ぐっすり だった'] },
+    { months:[9,10,11], img:'nikki-img-27.png', lines:['ソファで ほんを よみながら','ごろごろ してたら うとうと','そのまま すこし ねてた'] },
+    { months:[9,10,11], img:'nikki-img-26.png', lines:['ひが みじかく なってきた','ゆうがたが すこし さみしい','だれかの こえが ききたくなる'] },
+    { months:[9,10,11], img:'nikki-img-30.png', lines:['ころもがえが むずかしい','あついか さむいか わからない','てんきと まいにち にらめっこ'] },
+    { months:[9,10,11], img:'nikki-img-28.png', lines:['かれと あたたかい スープを','ふたりで フーフー しながら','おなかも こころも ぽかぽか'] },
+    { months:[12,1,2], img:'nikki-img-50.png', lines:['ゆきが しんしん ふる よる','おとが なくて しずかだった','まどから ずっと みてた'] },
+    { months:[12,1,2], img:'nikki-img-51.png', lines:['あたたかい おちゃの ゆげ','りょうてで カップを もって','かおが ほわっと あたたかい'] },
+    { months:[12,1,2], img:'nikki-img-55.png', lines:['ふゆの あさの ひかりが','カーテンから もれて きれい','おふとんで ぼーっと してた'] },
+    { months:[12,1,2], img:'nikki-img-44.png', lines:['ゆきに さわってみた','つめたくて すぐ とけちゃった','てのひらが きらきら した'] },
+    { months:[12,1,2], img:'nikki-img-37.png', lines:['あたたかい ココアを のんだ','あまくて ほっと わらえた','ふゆの よるの たのしみ'] },
+    { months:[12,1,2], img:'nikki-img-46.png', lines:['こたつから でられなくて','みかんを たべて ごろごろ','そのまま おひるね しちゃった'] },
+    { months:[12,1,2], img:'nikki-img-60.png', lines:['おふろに ゆっくり つかった','からだが ぽかぽか してきて','そのまま すぐ ねむくなった'] },
+    { months:[12,1,2], img:'nikki-img-31.png', lines:['ふゆの よるは ながくて','ひとりだと すこし さみしい','あたたかい こえが こいしい'] },
+    { months:[12,1,2], img:'nikki-img-11.png', lines:['ねんまつは なんだか そわそわ','やることが いっぱいに みえる','きもちだけ あせってしまう'] },
+    { months:[12,1,2], img:'nikki-img-66.png', lines:['かれと おなじ マフラーを','まきあって わらいあった','さむいのに あたたかかった'] }
+  ];
+  var DIARY_SPECIAL = [
+    { month:1, day:1, img:'nikki-img-47.png', lines:['あけまして おめでとう','みんなの声が にぎやかで','おもちを たべて ほっとした'] },
+    { month:2, day:3, img:'nikki-img-15.png', lines:['まめを まいたら わらえた','おには そと、って いえた','ひーくんと 福を わけあった'] },
+    { month:2, day:14, img:'nikki-img-06.png', lines:['チョコを わたすか まよった','どきどきして 手が ふるえた','「ありがとう」で うれしかった'] },
+    { month:3, day:3, img:'nikki-img-37.png', lines:['おひなさまが にこにこ','ピンクの おかしが かわいい','わたしも 笑えて うれしいな'] },
+    { month:4, day:1, img:'nikki-img-52.png', lines:['さくらが ひらひら まう','ひとが 多くて つかれたけど','ベンチで そっと ながめた'] },
+    { month:7, day:7, img:'nikki-img-40.png', lines:['ねがいごとが 書けないな','小さく 一文字だけ 書いた','星に とどくといいな'] },
+    { month:8, day:15, img:'nikki-img-65.png', lines:['なつが すこし 静かになる','家族の 声が やさしい','ゆっくり 休める 夜だった'] },
+    { month:9, day:15, img:'nikki-img-53.png', lines:['お月さまが まんまるだ','外の 風が きもちいい','おだんご 半分こした'] },
+    { month:10, day:31, img:'nikki-img-49.png', lines:['かぼちゃが いっぱいだね','にぎやかで どきどきする','小さな 仮装で 笑えたよ'] },
+    { month:12, day:24, img:'nikki-img-48.png', lines:['街の あかりが きらきら','人が 多くて つかれたけど','ひーくんと 静かに 帰った'] },
+    { month:12, day:25, img:'nikki-img-61.png', lines:['ケーキが あまくて おいしい','プレゼント ひらいて 笑った','あたたかい 一日だったな'] },
+    { month:12, day:31, img:'nikki-img-62.png', lines:['一年が ゆっくり 終わる','つかれたことも あったけど','今日は はやく ねようかな'] }
+  ];
+  function diaryRng(seed) {
+    return function() {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function diaryShuffled(n, seed) {
+    var a = [], r = diaryRng(seed), i, j, t;
+    for (i = 0; i < n; i++) a.push(i);
+    for (i = a.length - 1; i > 0; i--) { j = Math.floor(r() * (i + 1)); t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function diaryQueue(n, seed) {
+    return { n: n, seed: seed, order: [], pos: 0,
+      next: function() {
+        if (this.pos >= this.order.length) { this.order = diaryShuffled(this.n, this.seed); this.seed += 1; this.pos = 0; }
+        return this.order[this.pos++];
+      } };
+  }
+  function diarySeasonKey(month) {
+    if (month >= 3 && month <= 5) return 0;
+    if (month >= 6 && month <= 8) return 1;
+    if (month >= 9 && month <= 11) return 2;
+    return 3;
+  }
+  var diaryBox = document.getElementById('diary-list');
+  if (diaryBox) {
+    var epoch = new Date(2026, 10, 17); epoch.setHours(0, 0, 0, 0);
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var published = [];
+    var di;
+    for (di = 0; di < DIARY_FIXED.length; di++) {
+      var fd = new Date(epoch.getTime() + di * 86400000);
+      if (fd <= today) published.push({ date: fd, entry: DIARY_FIXED[di] });
     }
-    box.innerHTML = html;
+    var seasonPools = [[], [], [], []];
+    DIARY_SEASONAL.forEach(function(e) { seasonPools[diarySeasonKey(e.months[0])].push(e); });
+    var seasonQueues = seasonPools.map(function(p, i) { return diaryQueue(p.length, 20261120 + i * 77); });
+    var anytimeQueue = diaryQueue(DIARY_ANYTIME.length, 20261120 + 999);
+    var specialMap = {};
+    DIARY_SPECIAL.forEach(function(e) { specialMap[e.month + '-' + e.day] = e; });
+    var phase = 0;
+    var start = new Date(2026, 10, 20); start.setHours(0, 0, 0, 0);
+    for (var d = new Date(start); d <= today; d = new Date(d.getTime() + 86400000)) {
+      var key = (d.getMonth() + 1) + '-' + d.getDate();
+      var entry;
+      if (specialMap[key]) {
+        entry = specialMap[key];
+      } else if (phase === 0) {
+        var sk = diarySeasonKey(d.getMonth() + 1);
+        entry = seasonPools[sk][seasonQueues[sk].next()];
+        phase = 1;
+      } else {
+        entry = DIARY_ANYTIME[anytimeQueue.next()];
+        phase = 0;
+      }
+      published.push({ date: new Date(d), entry: entry });
+    }
+    function diaryEntryHtml(item, isNew) {
+      var d = item.date;
+      var label = (d.getFullYear() !== today.getFullYear() ? d.getFullYear() + '年' : '') + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+      var badge = isNew ? '<span class="diary-new">NEW</span>' : '';
+      return '<div class="diary-entry"><img src="' + item.entry.img + '" alt="みーちゃん" loading="lazy">'
+        + '<div><div class="diary-date">' + badge + label + '</div>'
+        + '<p>' + item.entry.lines.join('<br>') + '</p></div></div>';
+    }
+    var newestFirst = published.slice().reverse();
+    var dhtml = '';
+    newestFirst.forEach(function(item, i) { if (i < 7) dhtml += diaryEntryHtml(item, i === 0); });
+    if (newestFirst.length > 7) {
+      dhtml += '<details class="diary-more"><summary>これまでの日記をひらく</summary>';
+      newestFirst.forEach(function(item, i) { if (i >= 7) dhtml += diaryEntryHtml(item, false); });
+      dhtml += '</details>';
+    }
+    diaryBox.innerHTML = dhtml;
   }
 
   // 水女子うらない: ランダムで1つ出ます
