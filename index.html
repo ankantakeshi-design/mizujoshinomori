@@ -114,6 +114,11 @@
   .planet-chip.retro { background:#FDF0E2; color:#B25E09; border:1.5px solid #EFC07F; }
   .planet-chip.direct { background:#EEF4EE; color:#7A8B7A; border:1.5px solid #D5E2D5; }
   .planet-msg { margin-top:5px; font-size:12.5px; color:#5A6B5A; line-height:1.8; font-weight:700; }
+  .kou-flex { display:flex !important; align-items:center; gap:10px; text-align:left !important; }
+  .kou-img { width:46px; height:46px; border-radius:12px; object-fit:cover; object-position:50% 40%; flex:none; }
+  .kou-img.planet { object-position:50% 84%; }
+  .kou-text { flex:1; }
+  .planet-thumb { width:34px; height:34px; border-radius:50%; object-fit:cover; flex:none; }
   .komorebi p, .today-diary .td-text, .sec-lead, .greeting, .kou, .uranai-msg, .diary-entry p, .moon-event, .moon-next, h2 { text-wrap: balance; word-break: auto-phrase; }
   .nw { white-space: nowrap; }
   .letter-new { text-align:center; margin-top:14px; }
@@ -276,7 +281,8 @@
   </header>
 
   <div class="hero">
-    <button type="button" class="kou" id="kou-line" aria-label="月のカレンダーを見る"></button>
+    <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
+    <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img planet" src="planet-mii.jpg" alt=""><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
     <p class="yesterday" id="yesterday-line"></p>
@@ -1290,14 +1296,14 @@
   function isTenshaDay(y, m, d){ var lon = luckySunLon(y, m, d); var target = (lon >= 315 || lon < 45) ? 14 : (lon < 135 ? 30 : (lon < 225 ? 44 : 0)); return luckyEto(y, m, d) === target; }
   // 惑星の逆行（JST・複数ソース照合済みデータ）
   var PLANETS = [
-    { name: '水星', ranges: [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']], msg: '言葉や連絡は、確認をていねいに。伝える前に、ひと呼吸。' },
-    { name: '金星', ranges: [['2026-10-03','2026-11-14']], msg: '好きなものや、大事な人との関係を、見直す時期です。' },
-    { name: '火星', ranges: [['2027-01-10','2027-04-01']], msg: 'がんばり方を、見直す時期です。無理はしないでくださいね。' },
-    { name: '木星', ranges: [['2025-11-12','2026-03-11'],['2026-12-13','2027-04-13']], msg: '広げてきたことを、整える時期です。' },
-    { name: '土星', ranges: [['2026-07-27','2026-12-11'],['2027-08-10','2027-12-24']], msg: '積み重ねてきたことを、見直す時期です。' },
-    { name: '天王星', ranges: [['2025-09-06','2026-02-04'],['2026-09-11','2027-02-08'],['2027-09-15','2028-02-13']], msg: '変化と、ゆっくり向き合う時期です。' },
-    { name: '海王星', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。' },
-    { name: '冥王星', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。' }
+    { name: '水星', img: 'planet-mercury.jpg', ranges: [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']], msg: '言葉や連絡は、確認をていねいに。伝える前に、ひと呼吸。' },
+    { name: '金星', img: 'planet-venus.jpg', ranges: [['2026-10-03','2026-11-14']], msg: '好きなものや、大事な人との関係を、見直す時期です。' },
+    { name: '火星', img: 'planet-mars.jpg', ranges: [['2027-01-10','2027-04-01']], msg: 'がんばり方を、見直す時期です。無理はしないでくださいね。' },
+    { name: '木星', img: 'planet-jupiter.jpg', ranges: [['2025-11-12','2026-03-11'],['2026-12-13','2027-04-13']], msg: '広げてきたことを、整える時期です。' },
+    { name: '土星', img: 'planet-saturn.jpg', ranges: [['2026-07-27','2026-12-11'],['2027-08-10','2027-12-24']], msg: '積み重ねてきたことを、見直す時期です。' },
+    { name: '天王星', img: 'planet-uranus.jpg', ranges: [['2025-09-06','2026-02-04'],['2026-09-11','2027-02-08'],['2027-09-15','2028-02-13']], msg: '変化と、ゆっくり向き合う時期です。' },
+    { name: '海王星', img: 'planet-neptune.jpg', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。' },
+    { name: '冥王星', img: 'planet-pluto.jpg', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。' }
   ];
   function openPlanets(){
     var modal = document.getElementById('planet-modal');
@@ -1311,7 +1317,7 @@
       PLANETS.forEach(function(p){
         var retroEnd = null;
         p.ranges.forEach(function(r){ if (today >= r[0] && today <= r[1]) retroEnd = r[1]; });
-        html += '<div class="planet-row"><div class="planet-name">' + p.name + '</div><div class="planet-body">';
+        html += '<div class="planet-row"><img class="planet-thumb" src="' + p.img + '" alt=""><div class="planet-name">' + p.name + '</div><div class="planet-body">';
         if (retroEnd) {
           var ep = retroEnd.split('-');
           html += '<span class="planet-chip retro">逆行中</span><div class="planet-msg">' + (+ep[1]) + '月' + (+ep[2]) + '日まで。' + p.msg + '</div>';
@@ -1341,9 +1347,11 @@
   var kel = document.getElementById('kou-line');
   if (kel) {
     var nf = nextFull ? jstParts(nextFull) : null;
-    kel.innerHTML = '<span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。' +
+    kel.innerHTML = '<img class="kou-img" src="moon-mii.jpg" alt=""><span class="kou-text"><span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。' +
       (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・<span class="nw">' + MOON_NAMES[nf.m] + '</span>）です。' : '') +
-      ' <span class="kou-more">月のカレンダー</span>';
+      ' <span class="kou-more">月のカレンダー</span></span>';
+    var pob = document.getElementById('planet-open-hero');
+    if (pob) pob.addEventListener('click', openPlanets);
     kel.addEventListener('click', function(){
       var modal = document.getElementById('moon-modal');
       if (!modal) return;
@@ -1394,7 +1402,6 @@
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
         document.getElementById('moon-close-b').addEventListener('click', hideMoon);
-        document.getElementById('planet-open').addEventListener('click', function(){ hideMoon(); openPlanets(); });
         modal.addEventListener('click', function(e){ if (e.target === modal) hideMoon(); });
       }
       modal.style.display = 'flex';
@@ -1510,7 +1517,6 @@
       <p class="moon-event" id="moon-events"></p>
       <p class="moon-next" id="moon-next"></p>
       <p class="moon-lucky" id="moon-lucky"></p>
-      <button type="button" class="planet-link-btn" id="planet-open">惑星のようすを見る</button>
       <button type="button" class="modal-close-bottom" id="moon-close-b">閉じる</button>
     </div>
   </div>
