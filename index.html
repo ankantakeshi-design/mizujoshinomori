@@ -103,6 +103,8 @@
     padding:24px 22px;
   }
   .letter .l-title { font-size:13px; font-weight:900; letter-spacing:.1em; color:#4a7a52; }
+  .intro-card .l-title { font-size:13px; font-weight:900; letter-spacing:.1em; color:#4a7a52; }
+  .intro-card .modal-letter-p { margin-top:10px; font-size:15px; font-weight:500; color:#3d362d; line-height:2.1; }
   .letter p { margin-top:10px; font-size:15px; font-weight:500; color:#3d362d; line-height:2.1; }
   .leaves { margin-top:18px; display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
   .leaf-btn {
@@ -310,13 +312,7 @@
       <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
       <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てくださいね。</p>
     </div>
-    <div class="letter">
-      <div class="l-title">森の番人から</div>
-      <p>感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
-      だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>
-      無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>
-      また来てくださいね。</p>
-    </div>
+    <button type="button" class="aruaru-btn" id="letter-open">森の番人からの手紙を読む</button>
   </section>
 
   <section id="nikki">
@@ -1297,6 +1293,30 @@
   modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
   var ib = document.getElementById('intro-close-b');
   if (ib) ib.addEventListener('click', function(){ document.getElementById('intro-close').click(); });
+})();
+</script>
+  <div class="intro-overlay" id="letter-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="letter-close" aria-label="とじる">×</button>
+      <div class="l-title">森の番人から</div>
+      <p class="modal-letter-p">感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
+      だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>
+      無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>
+      また来てくださいね。</p>
+      <button type="button" class="modal-close-bottom" id="letter-close-b">閉じる</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var open = document.getElementById('letter-open');
+  var modal = document.getElementById('letter-modal');
+  if (!open || !modal) return;
+  function hide(){ modal.style.display = 'none'; }
+  open.addEventListener('click', function(){ modal.style.display = 'flex'; });
+  document.getElementById('letter-close').addEventListener('click', hide);
+  document.getElementById('letter-close-b').addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
 })();
 </script>
 </body>
