@@ -251,6 +251,7 @@
   .greeting { margin-top:8px; font-size:14px; font-weight:700; color:#33513c; }
   .special { margin-top:10px; display:inline-block; background:#FDF6EC; border:1.5px solid #E8C87E; color:#8a6d1f; border-radius:999px; padding:6px 16px; font-size:13px; font-weight:900; }
   .special:empty { display:none; }
+  .onepoint { margin:10px auto 0; max-width:440px; background:#FFFDF5; border:1.5px dashed #E3D9B8; color:#8C7A4D; border-radius:14px; padding:7px 14px; font-size:12.5px; font-weight:700; line-height:1.7; }
   .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:24px 22px; text-align:center; }
   .home-note .hn-title { font-size:15px; font-weight:900; color:#33513c; }
   .home-note p { margin-top:10px; font-size:13px; font-weight:500; color:#6b7d6b; line-height:2.0; }
@@ -292,6 +293,7 @@
     <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
+    <p class="onepoint" id="onepoint"></p>
     <p class="yesterday" id="yesterday-line"></p>
     <a id="today-diary" class="today-diary" href="#nikki" style="display:none">
       <img id="today-diary-img" alt="今日のみーちゃん">
@@ -1092,6 +1094,9 @@
     }
     if (sText) { sEl.textContent = sText; sEl.style.display = 'inline-block'; }
     else sEl.style.display = 'none';
+    var FACTS = ['月は、毎年4cmほど地球から遠ざかっています。','満月の明るさは、半月のころの約10倍もあります。','潮の満ち引きは、月の引力が起こしています。','金星は、ほかの惑星と逆向きに自転しています。','木星の1日は、約10時間しかありません。','土星は、水に浮くほど軽い惑星です。','水星の1年は、88日です。','桜が咲く合図は、暖かさの積み重ねです。','紅葉は、葉の緑が抜けて、隠れていた色が見えてくる現象です。','「旬」は、もともと10日間という意味の言葉です。','大人の体の水分は、約60%と言われています。','夕焼けが赤いのは、青い光が空で散ってしまうからです。','虹は、太陽と反対側の空に出ます。','月はいつも、同じ面を地球に向けています。','遠くの星の光は、何年も旅して届いています。','かぼちゃは夏の野菜。冬至に食べるのは、保存がきくからです。','ミツバチは、ダンスで花の場所を仲間に伝えます。','渡り鳥は、星空を目印に飛ぶと言われています。','雨の日の土の匂いには、名前がついています。','雪の結晶は、ひとつひとつ形が違います。','ホタルが光るのは、求愛のサインです。','竹は、1日に1m近く伸びることがあります。','蓮の葉が水をはじくのは、表面の小さなでこぼこのおかげです。','涙がしょっぱいのは、体の水分に塩が溶けているからです。','大潮と小潮は、月と太陽の引力の重なりで決まります。','冬至のころは、1年でいちばん影が長くなります。','うるう年があるのは、1年が365日ちょうどではないからです。','流れ星の正体は、宇宙の小さな砂粒が燃える光です。','金木犀は、姿を見る前に、香りで咲いたとわかります。','朝顔は、夜の長さをはかって、咲く日を決めています。','あじさいの色は、土の性質で変わります。','松ぼっくりは、雨の日は閉じて、晴れの日は開きます。','月の光で虹ができることもあります。月虹といいます。','氷が水に浮くのは、水の不思議な性質です。','露は、晴れて風のない朝に、できやすいです。','秋の虫の声は、日本人には「声」のように聞こえると言われています。'];
+    var dayNo = Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000);
+    document.getElementById('onepoint').textContent = '今日のワンポイント：' + FACTS[dayNo % FACTS.length];
   }
 
   var btn = document.getElementById('uranai-btn');
