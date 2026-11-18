@@ -160,9 +160,10 @@
   footer .bgm-credit { display:block; margin-top:6px; font-size:11px; color:#a89a8a; }
   .bgm-btn {
     position:fixed; right:16px; bottom:16px; z-index:50;
+    width:48px; height:48px; padding:0;
     border:2px solid #9CC49F; background:rgba(255,255,255,.92); color:#33513c;
-    font-size:13px; font-weight:900; font-family:inherit;
-    border-radius:999px; padding:9px 18px; cursor:pointer;
+    font-size:19px; font-weight:900; font-family:inherit;
+    border-radius:50%; cursor:pointer;
     box-shadow:0 2px 10px rgba(51,81,60,.14);
   }
   .bgm-btn:active { transform:scale(.97); }
@@ -215,6 +216,9 @@
   .sub-btn { display:inline-block; background:rgba(255,255,255,.9); border:2px solid #9CC49F; color:#33513c; font-size:13px; font-weight:900; border-radius:999px; padding:8px 18px; text-decoration:none; }
   .hero .komorebi { margin-top:20px; }
   .intro-btn { display:inline-block; background:rgba(255,255,255,.9); border:2px solid #9CC49F; color:#33513c; font-size:13px; font-weight:900; border-radius:999px; padding:8px 18px; cursor:pointer; font-family:inherit; }
+  .intro-btn-head { margin-left:auto; flex:none; background:rgba(255,255,255,.9); border:2px solid #9CC49F; color:#33513c; font-size:11px; font-weight:900; border-radius:999px; padding:6px 10px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .annai-link { text-align:center; margin-top:26px; }
+  .annai-link a { color:#5E9C63; font-size:13.5px; font-weight:900; text-decoration:none; border-bottom:1.5px solid #CBE3CC; padding-bottom:2px; }
   .intro-overlay { position:fixed; inset:0; background:rgba(46,64,50,.45); z-index:60; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; animation:intro-fade .5s ease; }
   @keyframes intro-fade { from { opacity:0; } to { opacity:1; } }
   .intro-card { position:relative; background:#FDFEFB; border-radius:22px; padding:22px 20px 24px; max-width:520px; width:100%; max-height:86vh; overflow-y:auto; box-sizing:border-box; }
@@ -238,10 +242,10 @@
   <header class="top">
     <img src="icon-192.png" alt="水女子の森のアイコン">
     <div class="name">集まれ<span class="water">水女子</span>の森<small>水女子の共感・憩いの場</small></div>
+    <button type="button" class="intro-btn-head" id="intro-open">はじめましての方へ</button>
   </header>
 
   <div class="hero">
-    <button type="button" class="intro-btn" id="intro-open">はじめましての方へ</button>
     <p class="season" id="season-line"></p>
     <button type="button" class="kou" id="kou-line" aria-label="月のカレンダーを見る"></button>
     <p class="greeting" id="greeting-line"></p>
@@ -267,13 +271,6 @@
       <a class="sub-btn" href="#nikki">みーちゃんの日記</a>
       <a class="sub-btn" href="#uranai">水女子うらない</a>
     </div>
-    <a id="osusume" class="today-diary" href="" style="display:none">
-      <img id="osusume-img" alt="">
-      <span class="td-body">
-        <span class="td-label">今日のおすすめ</span>
-        <span class="td-text" id="osusume-text"></span>
-      </span>
-    </a>
   </div>
 
   <div class="intro-overlay" id="intro-modal" style="display:none">
@@ -321,6 +318,8 @@
     <button type="button" class="aruaru-btn" id="letter-open">森の番人からの手紙を読む</button>
   </section>
 
+  <p class="annai-link"><a href="#annai">森の奥のご案内へ ↓</a></p>
+
   <section id="nikki">
     <h2>みーちゃんの水女子日記</h2>
     <p class="sec-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
@@ -350,7 +349,7 @@
   </section>
 
 
-  <section>
+  <section id="annai">
     <h2>森の奥のご案内</h2>
     <p class="sec-lead">もう少し進んでみたい方へ。</p>
     <div class="links">
@@ -633,7 +632,7 @@
 })();
 </script>
 
-<button type="button" class="bgm-btn" id="bgm-btn" aria-pressed="false">♪ もりの音</button>
+<button type="button" class="bgm-btn" id="bgm-btn" aria-pressed="false" aria-label="音楽をながす・とめる">♪</button>
 <audio id="bgm-player" loop preload="none" style="display:none"></audio>
 <script>
 (function(){
@@ -656,7 +655,7 @@
 
   function updateBtn(){
     var on = wanted && started;
-    btn.textContent = on ? '♪ とめる' : '♪ もりの音';
+    btn.setAttribute('aria-label', on ? '音楽をとめる' : '音楽をながす');
     btn.classList.toggle('on', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   }
@@ -1274,20 +1273,6 @@
     });
   }
   // today's recommendation shelf (rotates daily)
-  var REC = [
-    { href:'https://kasuiehon.pages.dev/?s=mori', img:'guide-ehon.jpg', t:'火水の絵本『ひーくんと みーちゃん』' },
-    { href:'https://note.com/takekasui/m/mca7ae9c34dd7', img:'guide-aruaru.jpg', t:'水女子あるある相談（note）' },
-    { href:'https://hisodate.pages.dev/', img:'guide-hisodate.jpg', t:'水女子のための火育て塾🔥' }
-  ];
-  var doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
-  var rec = REC[doy % REC.length];
-  var oc = document.getElementById('osusume');
-  if (oc) {
-    oc.href = rec.href; oc.target = '_blank'; oc.rel = 'noopener';
-    document.getElementById('osusume-img').src = rec.img;
-    document.getElementById('osusume-text').textContent = rec.t;
-    oc.style.display = '';
-  }
 })();
 </script>
   <div class="intro-overlay" id="aruaru-modal" style="display:none">
