@@ -78,6 +78,11 @@
   .kou { margin-top:6px; font-size:12.5px; font-weight:700; color:#7d8b74; }
   .kou .moon { display:inline-block; width:13px; height:13px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid #D8C98F; }
   .yesterday { margin-top:8px; font-size:13px; font-weight:700; color:#5E7A63; }
+  .aruaru-btn { display:block; width:100%; margin-top:14px; background:#fff; color:#33513c; border:2px solid #5E9C63; border-radius:999px; padding:12px 18px; font-size:15px; font-weight:900; font-family:inherit; cursor:pointer; box-shadow:0 2px 8px rgba(60,90,60,.10); }
+  .a-kicker { text-align:center; font-size:12px; font-weight:900; color:#2B6CB0; letter-spacing:.12em; margin-bottom:10px; }
+  .a-no { display:inline-block; background:#EAF3EC; color:#33513c; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:900; margin:12px 0 6px; }
+  .a-modal-wm { text-align:center; margin-top:14px; }
+  .a-modal-wm .wm-msg { text-align:left; }
   body[data-band="morning"] { background:#FFFDF2; }
   body[data-band="night"] { background:#EBF0E7; }
   .komorebi {
@@ -236,6 +241,7 @@
       <p id="komorebi-line"></p>
       <div class="k-note">毎日、少しずつ変わります</div>
     </div>
+    <button type="button" class="aruaru-btn" id="aruaru-open">今日の水女子あるあるを見る</button>
     <div class="hero-subs">
       <a class="sub-btn" href="#nikki">みーちゃんの日記</a>
       <a class="sub-btn" href="#uranai">水女子うらない</a>
@@ -1226,6 +1232,63 @@
     document.getElementById('osusume-text').textContent = rec.t;
     oc.style.display = '';
   }
+})();
+</script>
+  <div class="intro-overlay" id="aruaru-modal" style="display:none">
+    <div class="intro-card">
+      <p class="a-kicker">今日の水女子あるある</p>
+      <img class="intro-img" id="a-modal-img" alt="">
+      <div><span class="a-no" id="a-modal-no"></span></div>
+      <p id="a-modal-text"></p>
+      <div class="a-modal-wm">
+        <button type="button" class="wm-btn" id="a-modal-wm">わたしも</button>
+        <span class="wm-msg" id="a-modal-msg"></span>
+      </div>
+      <button type="button" class="intro-close" id="a-modal-close">閉じる</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#aruaru .card'));
+  var openBtn = document.getElementById('aruaru-open');
+  var modal = document.getElementById('aruaru-modal');
+  if (!cards.length || !openBtn || !modal) return;
+  var days = Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000);
+  var card = cards[days % cards.length];
+  var img = card.querySelector('img');
+  var no = card.querySelector('.no');
+  var text = card.querySelector('p');
+  var origBtn = card.querySelector('.wm-btn');
+  var origMsg = card.querySelector('.wm-msg');
+  var mImg = document.getElementById('a-modal-img');
+  var mNo = document.getElementById('a-modal-no');
+  var mText = document.getElementById('a-modal-text');
+  var mBtn = document.getElementById('a-modal-wm');
+  var mMsg = document.getElementById('a-modal-msg');
+  mImg.src = img.getAttribute('src');
+  mImg.alt = img.getAttribute('alt') || '';
+  mNo.textContent = no ? no.textContent : '';
+  mText.textContent = text ? text.textContent : '';
+  mMsg.textContent = origMsg ? origMsg.textContent : '';
+  function sync(){
+    if (origBtn.classList.contains('done')) {
+      mBtn.classList.add('done');
+      mBtn.textContent = 'わたしも、と言いました';
+      mBtn.disabled = true;
+      mMsg.classList.add('show');
+    }
+  }
+  sync();
+  mBtn.addEventListener('click', function(){
+    if (mBtn.disabled) return;
+    origBtn.click();
+    setTimeout(sync, 900);
+    setTimeout(sync, 2500);
+  });
+  openBtn.addEventListener('click', function(){ sync(); modal.style.display = 'flex'; });
+  document.getElementById('a-modal-close').addEventListener('click', function(){ modal.style.display = 'none'; });
+  modal.addEventListener('click', function(e){ if (e.target === modal) modal.style.display = 'none'; });
 })();
 </script>
 </body>
