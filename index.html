@@ -24,7 +24,18 @@
     font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
     background:#FDFEFB; color:#2B2B2B; line-height:1.9;
   }
-  .wrap { max-width:680px; margin:0 auto; padding:0 18px 56px; }
+  .wrap { max-width:680px; margin:0 auto; padding:0 18px 56px; position:relative; z-index:1; }
+  #season-bg { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  body[data-season="spring"] #season-bg { background:linear-gradient(180deg, rgba(255,183,197,.14), rgba(255,183,197,0) 45%); }
+  body[data-season="summer"] #season-bg { background:linear-gradient(180deg, rgba(110,195,155,.13), rgba(110,195,155,0) 45%); }
+  body[data-season="autumn"] #season-bg { background:linear-gradient(180deg, rgba(240,170,80,.14), rgba(240,170,80,0) 45%); }
+  body[data-season="winter"] #season-bg { background:linear-gradient(180deg, rgba(140,180,230,.13), rgba(140,180,230,0) 45%); }
+  #season-fx { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .fx-p { position:absolute; top:-48px; opacity:0; animation:fx-fall linear infinite; }
+  .fx-i { display:block; opacity:.55; animation:fx-sway ease-in-out infinite alternate; }
+  @keyframes fx-fall { 0% { transform:translateY(0); opacity:0; } 6% { opacity:1; } 92% { opacity:1; } 100% { transform:translateY(108vh); opacity:0; } }
+  @keyframes fx-sway { from { transform:translateX(-9px) rotate(-10deg); } to { transform:translateX(9px) rotate(10deg); } }
+  @media (prefers-reduced-motion: reduce) { #season-fx { display:none; } }
   header.top { display:flex; align-items:center; gap:10px; padding:16px 2px 6px; }
   header.top img { width:42px; height:42px; border-radius:50%; }
   header.top .name { font-weight:900; font-size:16px; }
@@ -238,6 +249,8 @@
 </style>
 </head>
 <body>
+<div id="season-bg"></div>
+<div id="season-fx"></div>
 <div class="wrap">
 
   <header class="top">
@@ -247,7 +260,6 @@
   </header>
 
   <div class="hero">
-    <p class="season" id="season-line"></p>
     <button type="button" class="kou" id="kou-line" aria-label="月のカレンダーを見る"></button>
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
@@ -462,22 +474,34 @@
   var todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
 
   // --- seasonal forest line (monthly) ---
-  var seasons = [
-    '冬の森。静かに、春を待っています。',
-    'まだ寒い森。小さな芽が、土の中で目覚めています。',
-    '春の森。やわらかな芽が、出てきました。',
-    '新緑の森。若葉のにおいがします。',
-    '初夏の森。木漏れ日が、きらきらしています。',
-    '梅雨の森。雨の音が、森を潤しています。',
-    '夏の森。木陰で、一休みしていってください。',
-    '盛夏の森。セミの声と、深い緑です。',
-    '秋のはじまりの森。風が、少し涼しくなりました。',
-    '秋の森。葉が、色づきはじめています。',
-    '晩秋の森。落ち葉が、ふかふかです。',
-    '冬のはじまりの森。静けさが、戻ってきました。'
-  ];
-  var seasonEl = document.getElementById('season-line');
-  if (seasonEl) seasonEl.textContent = 'いまの森：' + seasons[nowJst.getMonth()];
+  var seasonKeys = ['winter','winter','spring','spring','spring','summer','summer','summer','autumn','autumn','autumn','winter'];
+  var seasonKey = seasonKeys[nowJst.getMonth()];
+  document.body.setAttribute('data-season', seasonKey);
+  (function(){
+    var fx = document.getElementById('season-fx');
+    if (!fx) return;
+    var conf = {
+      spring: { e: ['🌸','🌸','🌿'], size: 17 },
+      summer: { e: ['✨','✨','🍃'], size: 14 },
+      autumn: { e: ['🍂','🍁','🍂'], size: 17 },
+      winter: { e: ['❄️','❄️','✨'], size: 15 }
+    }[seasonKey];
+    if (!conf) return;
+    for (var i = 0; i < 12; i++) {
+      var o = document.createElement('span');
+      o.className = 'fx-p';
+      o.style.left = (Math.random() * 96) + 'vw';
+      o.style.animationDuration = (11 + Math.random() * 9) + 's';
+      o.style.animationDelay = (-Math.random() * 18) + 's';
+      var inner = document.createElement('span');
+      inner.className = 'fx-i';
+      inner.textContent = conf.e[i % conf.e.length];
+      inner.style.fontSize = (conf.size + Math.random() * 6 - 3) + 'px';
+      inner.style.animationDuration = (2.6 + Math.random() * 2) + 's';
+      o.appendChild(inner);
+      fx.appendChild(o);
+    }
+  })();
 
   // --- today's komorebi (daily rotation) ---
   var lines = [
