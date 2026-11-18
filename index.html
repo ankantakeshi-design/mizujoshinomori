@@ -63,6 +63,12 @@
   }
   .wm-btn:active { transform:scale(.97); }
   .wm-btn.done { background:#2B6CB0; color:#fff; cursor:default; }
+
+  .wm-msg {
+    display:none; flex-basis:100%; margin-top:4px;
+    font-size:14px; font-weight:500; color:#2B4C7E; line-height:1.9;
+  }
+  .wm-msg.show { display:block; }
   .wm-count { font-size:13px; font-weight:700; color:#2B6CB0; }
 
   .season { margin-top:14px; font-size:13px; font-weight:700; color:#4a7a52; }
@@ -147,49 +153,49 @@
         <img src="scene-1.jpg" alt="会議で仕事を引き受ける場面">
         <span class="no">あるある 1</span>
         <p>会議で、同僚から「これ、やっておいてくれる？」と仕事を振られると、その場では「あ、大丈夫です」と笑顔で引き受けてしまう。本当は、自分もいっぱいいっぱいなのに。</p>
-        <div class="wm" data-scene="1"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="1"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">本当は、いっぱいいっぱいだったんですよね。ここでは、無理しなくて大丈夫です。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-2.jpg" alt="家に帰ってモヤモヤする場面">
         <span class="no">あるある 2</span>
         <p>家に帰ってから、モヤモヤがどんどん膨らんで、「なんで言えなかったんだろう」と自分を責めてしまう。体も重くて、しんどくなる。</p>
-        <div class="wm" data-scene="2"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="2"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">家に帰ってから出てくる疲れも、ちゃんと置いていってください。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-3.jpg" alt="なんでもないと言ってしまう場面">
         <span class="no">あるある 3</span>
         <p>本当はしんどいのに、「大丈夫？」と聞かれると、「なんでもない」と言ってしまう。心配をかけたくないし、重いと思われたくないから。</p>
-        <div class="wm" data-scene="3"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="3"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">言えなかった気持ちも、ちゃんとあります。消えたわけじゃありません。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-4.jpg" alt="笑って話を合わせる場面">
         <span class="no">あるある 4</span>
         <p>疲れて帰りたいのに、誘われると断れずに「いいですよ！」。その場では笑って話を合わせているのに、家に帰ると、ぐったり。</p>
-        <div class="wm" data-scene="4"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="4"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">笑って合わせた分だけ、心は疲れます。ここでは、素のままで大丈夫です。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-5.jpg" alt="相手の機嫌にそわそわする場面">
         <span class="no">あるある 5</span>
         <p>相手の機嫌が少し変わっただけで、すぐ気づいてしまう。「私、何かしたかな」と、そわそわが止まらない。</p>
-        <div class="wm" data-scene="5"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="5"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">人の気持ちにすぐ気づけるのは、あなたの優しさです。少し休んでいってください。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-6.jpg" alt="言葉が出てこない場面">
         <span class="no">あるある 6</span>
         <p>自分の気持ちを聞かれても、その場では言葉が出てこない。言葉になるのは、いつも後になってから。</p>
-        <div class="wm" data-scene="6"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="6"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">急がなくて大丈夫。言葉は、後からついてきます。</span></div>
       </div>
 
       <div class="card">
         <img src="scene-7.jpg" alt="自分はいつも後回しの場面">
         <span class="no">あるある 7</span>
         <p>他人ばかりを大事にしてしまって、自分のことは、いつも後回し。</p>
-        <div class="wm" data-scene="7"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
+        <div class="wm" data-scene="7"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">いつも後回しの自分を、今日は少しだけ、先に置いてあげてください。</span></div>
       </div>
     </div>
 
@@ -282,6 +288,8 @@
       btn.classList.add('done');
       btn.textContent = 'わたしも、と言いました';
       btn.disabled = true;
+      var m = w.querySelector('.wm-msg');
+      if (m) m.classList.add('show');
     }
     try { if (localStorage.getItem(storeKey)) markDone(); } catch(e) {}
     btn.addEventListener('click', function(){
