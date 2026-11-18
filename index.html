@@ -1053,7 +1053,24 @@
       var gy = nd.getFullYear(), gm = nd.getMonth(), gd = nd.getDate();
       var glon = gSunLon(gy, gm, gd);
       var gTarget = (glon >= 315 || glon < 45) ? 14 : (glon < 135 ? 30 : (glon < 225 ? 44 : 0));
+      var gToday = gy + '-' + ('0' + (gm + 1)).slice(-2) + '-' + ('0' + gd).slice(-2);
+      var MERC = [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']];
+      var mercMsg = '';
+      MERC.forEach(function(r){
+        if (gToday === r[0]) { var ep = r[1].split('-'); mercMsg = '今日から水星逆行です（' + (+ep[1]) + '月' + (+ep[2]) + '日まで）。言葉や連絡は、確認をていねいに。'; }
+        if (gToday === r[1]) mercMsg = '水星は、今日から順行に戻ります。止まっていたことが、動き出す頃です。';
+      });
+      var SEKKI = {0:'春分|昼と夜が同じ長さの日です。バランスを整える日に。',15:'清明|草木が清らかに芽吹く頃です。深呼吸が気持ちいい季節です。',30:'穀雨|雨が穀物を育てる頃です。しっとりした空気を楽しんで。',45:'立夏|暦の上では夏の始まりです。日差しに気をつけてくださいね。',60:'小満|草木が茂ってくる頃です。緑が濃くなる季節です。',75:'芒種|田植えの頃です。梅雨の気配に、体調を整えて。',90:'夏至|一年でいちばん昼が長い日です。夕方の明るさを楽しんで。',105:'小暑|暑さが本格化する頃です。水分を、こまめにどうぞ。',120:'大暑|一年でいちばん暑い頃です。無理をしないでくださいね。',135:'立秋|暦の上では秋の始まりです。夕方の風に、秋の気配です。',150:'処暑|暑さが和らいでくる頃です。夏の疲れを、癒してくださいね。',165:'白露|朝露が光る頃です。朝晩は冷えるので、一枚羽織って。',180:'秋分|昼と夜が同じ長さの日です。実りの季節が深まります。',195:'寒露|露が冷たくなる頃です。あたたかい飲みものが嬉しい季節です。',210:'霜降|霜が降り始める頃です。首元をあたためてくださいね。',225:'立冬|暦の上では冬の始まりです。あたたかくして過ごしてくださいね。',240:'小雪|雪がちらつき始める頃です。冬支度を、少しずつ。',255:'大雪|雪が本格的になる頃です。足元と体調に気をつけて。',270:'冬至|一年でいちばん夜が長い日です。あたたかいお風呂で、ゆっくりと。',285:'小寒|寒さが厳しくなる頃です。体を冷やさないでくださいね。',300:'大寒|一年でいちばん寒い頃です。春は、もうすぐそこです。',315:'立春|暦の上では春の始まりです。まだ寒いので、あたたかくしてくださいね。',330:'雨水|雪が雨に変わる頃です。足元に気をつけてくださいね。',345:'啓蟄|土の中の虫が目覚める頃です。少しずつ、動き出す季節です。'};
+      var yDate = new Date(gy, gm, gd - 1);
+      var glonY = gSunLon(yDate.getFullYear(), yDate.getMonth(), yDate.getDate());
+      var sekkiMsg = '';
+      if (Math.floor(glon / 15) !== Math.floor(glonY / 15)) {
+        var sk = SEKKI[(Math.floor(glon / 15) * 15) % 360];
+        if (sk) { var skp = sk.split('|'); sekkiMsg = '今日は' + skp[0] + 'です。' + skp[1]; }
+      }
       if (gEto(gy, gm, gd) === gTarget) sText = '今日は天赦日です。何かを始めるのに、とてもよい日です。';
+      else if (mercMsg) sText = mercMsg;
+      else if (sekkiMsg) sText = sekkiMsg;
       else if (G_SETS[gSeg(glon)].indexOf(gEto(gy, gm, gd) % 12) >= 0) sText = '今日は一粒万倍日です。小さな一歩が、大きく実る日です。';
     }
     if (sText) { sEl.textContent = sText; sEl.style.display = 'inline-block'; }
@@ -1219,6 +1236,7 @@
     ? 'linear-gradient(90deg, #D9CEA3 ' + (100 - pct) + '%, #FFDE59 ' + (100 - pct) + '%)'
     : 'linear-gradient(90deg, #FFDE59 ' + pct + '%, #D9CEA3 ' + pct + '%)';
   var phase = age < 1.5 ? '新月' : age < 5 ? '三日月' : age < 9 ? '上弦の月' : age < 13 ? '満ちていく月' : age < 16.5 ? '満月' : age < 20.5 ? '欠けていく月' : age < 24.5 ? '下弦の月' : age < 28 ? '有明の月' : '新月';
+  var tide = (age < 2.2 || age >= 27.3 || (age >= 13.4 && age < 16.9)) ? '大潮' : ((age >= 5.9 && age < 9.4) || (age >= 20.9 && age < 24.4)) ? '小潮' : '';
   var SIGNS = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座','天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
   var MOON_NAMES = ['ウルフムーン','スノームーン','ワームムーン','ピンクムーン','フラワームーン','ストロベリームーン','バックムーン','スタージョンムーン','コーンムーン','ハンターズムーン','ビーバームーン','コールドムーン'];
   var NEW_MSG = { '牡羊座':'新しい一歩を、踏み出す日です。', '牡牛座':'好きなものを、大事にしはじめる日です。', '双子座':'感じたことを、言葉にしてみる日です。', '蟹座':'大切な人を、思い浮かべる日です。', '獅子座':'自分を表現してみる日です。', '乙女座':'暮らしを、少し整える日です。', '天秤座':'バランスを取り戻す日です。', '蠍座':'本当の気持ちと、向き合う日です。', '射手座':'小さな冒険を、はじめる日です。', '山羊座':'目標を、そっと立てる日です。', '水瓶座':'自分らしいやり方を、試す日です。', '魚座':'感じるままに、願う日です。' };
@@ -1360,7 +1378,7 @@
   var kel = document.getElementById('kou-line');
   if (kel) {
     var nf = nextFull ? jstParts(nextFull) : null;
-    kel.innerHTML = '<img class="kou-img" src="moon-mii.jpg" alt=""><span class="kou-text"><span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。' +
+    kel.innerHTML = '<img class="kou-img" src="moon-mii.jpg" alt=""><span class="kou-text"><span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + (tide ? '・' + tide : '') + 'です。' +
       (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・<span class="nw">' + MOON_NAMES[nf.m] + '</span>）です。' : '') +
       ' <span class="kou-more">月のカレンダー</span></span>';
     var pob = document.getElementById('planet-open-hero');
@@ -1380,13 +1398,16 @@
         var lead = first.getUTCDay();
         var daysIn = new Date(Date.UTC(jp.y, jp.m + 1, 0)).getUTCDate();
         for (var i = 0; i < lead; i++) html += '<div class="koyomi-cell empty"></div>';
-        var ichiryuDays = [], tenshaDays = [];
+        var ichiryuDays = [], tenshaDays = [], toraDays = [], miDays = [];
         for (var d = 1; d <= daysIn; d++) {
           var noon = Date.UTC(jp.y, jp.m, d, 3, 0);
           var tag = '', tagCls = '';
           if (ev.newT && jstParts(ev.newT).d === d) tag = '新月';
           if (ev.fullT && jstParts(ev.fullT).d === d) tag = '満月';
           var isI = isIchiryuDay(jp.y, jp.m, d), isT = isTenshaDay(jp.y, jp.m, d);
+          var brd = luckyEto(jp.y, jp.m, d) % 12;
+          if (brd === 2) toraDays.push(d);
+          if (brd === 5) miDays.push(d);
           if (isI) ichiryuDays.push(d);
           if (isT) { tenshaDays.push(d); if (!tag) { tag = '天赦日'; tagCls = ' tensha-tag'; } }
           html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + (isT ? ' tensha' : '') + '">' +
@@ -1411,6 +1432,7 @@
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
+        llines.push('寅の日は、' + toraDays.join('日・') + '日。巳の日は、' + miDays.join('日・') + '日です。');
         document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
