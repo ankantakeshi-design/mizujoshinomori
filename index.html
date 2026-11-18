@@ -54,6 +54,16 @@
     font-size:12px; font-weight:900; letter-spacing:.06em;
   }
   .card p { margin-top:8px; font-size:15px; font-weight:500; color:#3d362d; line-height:2.0; }
+
+  .wm { margin-top:12px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .wm-btn {
+    border:2px solid #2B6CB0; background:#fff; color:#2B6CB0;
+    font-size:14px; font-weight:900; border-radius:999px; padding:7px 20px;
+    cursor:pointer; font-family:inherit;
+  }
+  .wm-btn:active { transform:scale(.97); }
+  .wm-btn.done { background:#2B6CB0; color:#fff; cursor:default; }
+  .wm-count { font-size:13px; font-weight:700; color:#2B6CB0; }
   .after {
     margin-top:26px; background:#EEF4FB; border-radius:20px; padding:24px 22px;
     font-size:15px; font-weight:500; color:#2B4C7E; line-height:2.1;
@@ -100,42 +110,49 @@
         <img src="scene-1.jpg" alt="会議で仕事を引き受ける場面">
         <span class="no">あるある 1</span>
         <p>会議で、同僚から「これ、やっておいてくれる？」と仕事を振られると、その場では「あ、大丈夫です」と笑顔で引き受けてしまう。本当は、自分もいっぱいいっぱいなのに。</p>
+        <div class="wm" data-scene="1"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-2.jpg" alt="家に帰ってモヤモヤする場面">
         <span class="no">あるある 2</span>
         <p>家に帰ってから、モヤモヤがどんどん膨らんで、「なんで言えなかったんだろう」と自分を責めてしまう。体も重くて、しんどくなる。</p>
+        <div class="wm" data-scene="2"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-3.jpg" alt="なんでもないと言ってしまう場面">
         <span class="no">あるある 3</span>
         <p>本当はしんどいのに、「大丈夫？」と聞かれると、「なんでもない」と言ってしまう。心配をかけたくないし、重いと思われたくないから。</p>
+        <div class="wm" data-scene="3"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-4.jpg" alt="笑って話を合わせる場面">
         <span class="no">あるある 4</span>
         <p>疲れて帰りたいのに、誘われると断れずに「いいですよ！」。その場では笑って話を合わせているのに、家に帰ると、ぐったり。</p>
+        <div class="wm" data-scene="4"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-5.jpg" alt="相手の機嫌にそわそわする場面">
         <span class="no">あるある 5</span>
         <p>相手の機嫌が少し変わっただけで、すぐ気づいてしまう。「私、何かしたかな」と、そわそわが止まらない。</p>
+        <div class="wm" data-scene="5"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-6.jpg" alt="言葉が出てこない場面">
         <span class="no">あるある 6</span>
         <p>自分の気持ちを聞かれても、その場では言葉が出てこない。言葉になるのは、いつも後になってから。</p>
+        <div class="wm" data-scene="6"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
 
       <div class="card">
         <img src="scene-7.jpg" alt="自分はいつも後回しの場面">
         <span class="no">あるある 7</span>
         <p>他人ばかりを大事にしてしまって、自分のことは、いつも後回し。</p>
+        <div class="wm" data-scene="7"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span></div>
       </div>
     </div>
 
@@ -181,5 +198,49 @@
   <footer>心体調整塾 たけちゃん</footer>
 
 </div>
+
+<script>
+(function(){
+  var SB = 'https://twxxcjjffznjaeyconoc.supabase.co/rest/v1';
+  var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3eHhjampmZnpuamFleWNvbm9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMTc1NTcsImV4cCI6MjExMDU5MzU1N30.MIVvDvZx03ai7mshyP3FR8JP0xe9Yu-7BgUjtIvvpew';
+  var H = { apikey: KEY, Authorization: 'Bearer ' + KEY };
+  function render(scene, cnt){
+    document.querySelectorAll('.wm[data-scene="' + scene + '"] .wm-count').forEach(function(el){
+      el.textContent = cnt > 0 ? Number(cnt).toLocaleString('ja-JP') + ' 人が「わたしも」と言っています' : '';
+    });
+  }
+  fetch(SB + '/mori_watashimo?select=scene,cnt', { headers: H })
+    .then(function(r){ return r.json(); })
+    .then(function(rows){ if (Array.isArray(rows)) rows.forEach(function(x){ render(x.scene, x.cnt); }); })
+    .catch(function(){});
+  document.querySelectorAll('.wm').forEach(function(w){
+    var scene = w.getAttribute('data-scene');
+    var btn = w.querySelector('.wm-btn');
+    var storeKey = 'mori_wm_' + scene;
+    function markDone(){
+      btn.classList.add('done');
+      btn.textContent = 'わたしも、と言いました';
+      btn.disabled = true;
+    }
+    try { if (localStorage.getItem(storeKey)) markDone(); } catch(e) {}
+    btn.addEventListener('click', function(){
+      if (btn.disabled) return;
+      btn.disabled = true;
+      fetch(SB + '/rpc/increment_watashimo', {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_scene: Number(scene) })
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(cnt){
+        try { localStorage.setItem(storeKey, '1'); } catch(e) {}
+        markDone();
+        if (typeof cnt === 'number') render(scene, cnt);
+      })
+      .catch(function(){ btn.disabled = false; });
+    });
+  });
+})();
+</script>
 </body>
 </html>
