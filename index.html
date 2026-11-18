@@ -150,6 +150,33 @@
   .uranai img.thinking { animation:mii-sway 1.6s ease-in-out; }
   .uranai-btn { margin-top:10px; border:2px solid #E8C87E; background:#fff; color:#8a6d1f; font-size:15px; font-weight:900; font-family:inherit; border-radius:999px; padding:10px 26px; cursor:pointer; }
   .uranai-btn:active { transform:scale(.97); }
+  .uranai-btn:disabled { opacity:.55; cursor:default; }
+  .uranai-note { margin-top:10px; font-size:12px; font-weight:700; color:#a4936b; min-height:16px; }
+  .uranai-card-btn { margin-top:6px; border:2px solid #9CC49F; background:#fff; color:#33513c; font-size:13px; font-weight:900; font-family:inherit; border-radius:999px; padding:8px 20px; cursor:pointer; }
+  .koyomi-box { background:#fff; border:2px solid #E4EFE6; border-radius:20px; padding:20px 16px; margin-top:6px; }
+  .koyomi-title { text-align:center; font-size:15px; font-weight:900; color:#33513c; }
+  .koyomi-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; margin-top:14px; }
+  .koyomi-wd { text-align:center; font-size:11px; font-weight:900; color:#7d8b74; padding:2px 0; }
+  .koyomi-cell { position:relative; aspect-ratio:1; border-radius:10px; background:#F7FAF5; border:1px solid #EDF3EA; display:flex; align-items:flex-start; justify-content:flex-start; padding:3px 5px; box-sizing:border-box; font-family:inherit; }
+  .koyomi-cell.empty { background:transparent; border-color:transparent; }
+  .koyomi-cell .koyomi-day { font-size:11px; font-weight:700; color:#7d8b74; }
+  .koyomi-cell.today { border:2px solid #9CC49F; }
+  .koyomi-cell.has { cursor:pointer; background:#FFF9EC; border-color:#F3E9C8; }
+  .koyomi-cell.has img { position:absolute; right:2px; bottom:2px; width:58%; height:auto; }
+  .koyomi-detail { margin-top:14px; display:flex; gap:12px; align-items:center; background:#FDF6EC; border-radius:16px; padding:14px 16px; }
+  .koyomi-detail img { width:64px; height:auto; flex:none; }
+  .koyomi-detail .koyomi-date { font-size:12px; font-weight:900; color:#A9832F; }
+  .koyomi-detail p { margin-top:4px; font-size:14px; font-weight:700; line-height:1.9; color:#4d442e; }
+  .kokyu-box { background:#F2F8FB; border:2px solid #DCEBF3; border-radius:20px; padding:28px 20px; text-align:center; margin-top:6px; }
+  .kokyu-circle { width:130px; height:130px; margin:6px auto 0; border-radius:50%; background:radial-gradient(circle at 35% 35%, #DFF2FB, #A9D3EA); }
+  .kokyu-cue { margin-top:20px; font-size:16px; font-weight:900; color:#33513c; min-height:24px; }
+  .kokyu-leaves { margin-top:12px; display:flex; gap:8px; justify-content:center; }
+  .kokyu-leaves span { width:14px; height:14px; border-radius:50% 50% 50% 4px; background:#DCE8DC; transform:rotate(45deg); }
+  .kokyu-leaves span.on { background:#5E9C63; }
+  .kokyu-btn { margin-top:16px; border:2px solid #A9D3EA; background:#fff; color:#2B6CB0; font-size:15px; font-weight:900; font-family:inherit; border-radius:999px; padding:10px 28px; cursor:pointer; }
+  .yakusoku-box { background:#fff; border:2px solid #E4EFE6; border-radius:20px; padding:22px; margin-top:6px; }
+  .yakusoku-box p { font-size:14px; font-weight:700; line-height:2.2; color:#33513c; text-align:center; }
+  .closing { margin-top:36px; text-align:center; font-size:14px; font-weight:700; line-height:2.1; color:#7d8b74; }
   .greeting { margin-top:8px; font-size:14px; font-weight:700; color:#33513c; }
   .special { margin-top:10px; display:inline-block; background:#FDF6EC; border:1.5px solid #E8C87E; color:#8a6d1f; border-radius:999px; padding:6px 16px; font-size:13px; font-weight:900; }
   .special:empty { display:none; }
@@ -325,6 +352,29 @@
       <img id="uranai-img" src="uranai-mii.png" alt="うらないをする みーちゃん">
       <p class="uranai-msg" id="uranai-msg">ボタンを押すと、今日のうらないが出ますよ。</p>
       <button type="button" class="uranai-btn" id="uranai-btn">うらないをひく</button>
+      <p class="uranai-note" id="uranai-note"></p>
+      <button type="button" class="uranai-card-btn" id="uranai-card-btn" style="display:none">この言葉を、カードにする</button>
+    </div>
+  </section>
+
+  <section id="koyomi">
+    <h2>わたしの暦</h2>
+    <p class="sec-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
+    <div class="koyomi-box">
+      <div class="koyomi-title" id="koyomi-title"></div>
+      <div class="koyomi-grid" id="koyomi-grid"></div>
+      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
+    </div>
+  </section>
+
+  <section id="kokyu">
+    <h2>こきゅうの泉</h2>
+    <p class="sec-lead">丸の動きに合わせて、ゆっくり深呼吸。ざわざわする日に、どうぞ。</p>
+    <div class="kokyu-box">
+      <div class="kokyu-circle" id="kokyu-circle"></div>
+      <p class="kokyu-cue" id="kokyu-cue">ボタンを押すと、始まります。</p>
+      <div class="kokyu-leaves" id="kokyu-leaves"><span></span><span></span><span></span></div>
+      <button type="button" class="kokyu-btn" id="kokyu-btn">はじめる</button>
     </div>
   </section>
 
@@ -360,6 +410,19 @@
       <a href="https://takechanlink.pages.dev/">たけちゃんリンク</a>
     </div>
   </section>
+
+  <section id="yakusoku">
+    <h2>森の約束</h2>
+    <div class="yakusoku-box">
+      <p>毎日、来なくて大丈夫です。来たいときに、どうぞ。</p>
+      <p>読むだけでも、立派な参加です。</p>
+      <p>ここでは、数字で比べません。</p>
+      <p>気持ちは、置いていくだけで大丈夫です。返事は、急ぎません。</p>
+      <p>静かな森でいることを、いちばん大事にします。</p>
+    </div>
+  </section>
+
+  <p class="closing">今日の森は、ここまで。<br>また、会いましょうね。</p>
 
   <div class="home-note">
     <div class="hn-title">森を、ホーム画面に置けます</div>
@@ -871,6 +934,20 @@
     gEl.textContent = g;
   }
 
+  // おかえり: 2日以上あけて戻ってきたら、その日の最初のあいさつを「おかえり」にします
+  try {
+    var tstr0 = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
+    var lastVisit = localStorage.getItem('mori-last-visit');
+    if (gEl && lastVisit && lastVisit !== tstr0 && localStorage.getItem('mori-welcomed') !== tstr0) {
+      var diffDays = Math.round((new Date(tstr0) - new Date(lastVisit)) / 86400000);
+      if (diffDays >= 2) {
+        gEl.textContent = 'おかえりなさい。森は、待っていましたよ。';
+        localStorage.setItem('mori-welcomed', tstr0);
+      }
+    }
+    localStorage.setItem('mori-last-visit', tstr0);
+  } catch(e){}
+
   // 特別な日の小さな仕掛け
   var SPECIALS = {
     '1-1': 'あけましておめでとうございます。今年も、森で待っていますね。',
@@ -891,22 +968,169 @@
   var btn = document.getElementById('uranai-btn');
   var msg = document.getElementById('uranai-msg');
   var uimg = document.getElementById('uranai-img');
-  var last = -1;
-  if (btn && msg) {
+  var cardBtn = document.getElementById('uranai-card-btn');
+  var uNote = document.getElementById('uranai-note');
+  var todayStr2 = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
+  function loadKoyomi(){ try { return JSON.parse(localStorage.getItem('mori-koyomi') || '{}'); } catch(e){ return {}; } }
+  function saveKoyomi(k){ try { localStorage.setItem('mori-koyomi', JSON.stringify(k)); } catch(e){} }
+  function showDrawn(i){
+    if (uimg) uimg.src = MSGS[i].img;
+    if (msg) msg.textContent = MSGS[i].t;
+    if (btn) { btn.disabled = true; btn.textContent = '今日は、もう引いてあります'; }
+    if (uNote) uNote.textContent = '今日のうらないは、下の「わたしの暦」に残してありますよ。';
+    if (cardBtn) cardBtn.style.display = '';
+  }
+  var drawnIdx = -1;
+  try {
+    var sv = JSON.parse(localStorage.getItem('mori-uranai') || 'null');
+    if (sv && sv.date === todayStr2 && MSGS[sv.i]) { drawnIdx = sv.i; showDrawn(sv.i); }
+  } catch(e){}
+  if (btn && msg && drawnIdx < 0) {
     btn.addEventListener('click', function(){
-      var i;
-      do { i = Math.floor(Math.random() * MSGS.length); } while (MSGS.length > 1 && i === last);
-      last = i;
+      var i = Math.floor(Math.random() * MSGS.length);
       if (uimg) { uimg.classList.remove('thinking'); void uimg.offsetWidth; uimg.classList.add('thinking'); uimg.style.opacity = '0.25'; }
       msg.classList.remove('pop');
       btn.disabled = true;
       setTimeout(function(){
-        if (uimg) { uimg.src = MSGS[i].img; uimg.style.opacity = '1'; }
-        msg.textContent = MSGS[i].t;
-        void msg.offsetWidth;
-        msg.classList.add('pop');
-        btn.disabled = false;
+        if (uimg) uimg.style.opacity = '1';
+        try { localStorage.setItem('mori-uranai', JSON.stringify({ date: todayStr2, i: i })); } catch(e){}
+        var k = loadKoyomi(); k[todayStr2] = i; saveKoyomi(k);
+        drawnIdx = i;
+        showDrawn(i);
+        if (msg) { void msg.offsetWidth; msg.classList.add('pop'); }
+        renderKoyomi();
       }, 1300);
+    });
+  }
+
+  // うらないの言葉を、保存できる1枚のカードにします
+  function wrapText(ctx, text, x, cy, maxW, lh){
+    var chars = text.split(''); var line = ''; var lines = [];
+    for (var n = 0; n < chars.length; n++) {
+      var test = line + chars[n];
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = chars[n]; } else { line = test; }
+    }
+    if (line) lines.push(line);
+    var startY = cy - ((lines.length - 1) * lh) / 2;
+    lines.forEach(function(l, idx){ ctx.fillText(l, x, startY + idx * lh); });
+  }
+  function makeCard(m){
+    var cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1080;
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = '#FDF6EC'; ctx.fillRect(0, 0, 1080, 1080);
+    ctx.strokeStyle = '#E8C87E'; ctx.lineWidth = 10; ctx.strokeRect(30, 30, 1020, 1020);
+    var img = new Image();
+    img.onload = function(){
+      var w = 380, h = w * img.height / img.width;
+      var top = 110;
+      ctx.drawImage(img, (1080 - w) / 2, top, w, h);
+      ctx.textAlign = 'center';
+      var d = new Date();
+      ctx.fillStyle = '#A9832F'; ctx.font = '900 38px sans-serif';
+      ctx.fillText((d.getMonth() + 1) + '月' + d.getDate() + '日の うらない', 540, top + h + 72);
+      ctx.fillStyle = '#4d442e'; ctx.font = '700 44px sans-serif';
+      wrapText(ctx, m.t, 540, top + h + 168, 880, 68);
+      ctx.fillStyle = '#4a7a52'; ctx.font = '900 34px sans-serif';
+      ctx.fillText('集まれ水女子の森', 540, 990);
+      var a = document.createElement('a');
+      a.download = 'mori-uranai-card.png';
+      a.href = cv.toDataURL('image/png');
+      a.click();
+    };
+    img.src = m.img;
+  }
+  if (cardBtn) {
+    cardBtn.addEventListener('click', function(){
+      var i = drawnIdx;
+      try { var sv2 = JSON.parse(localStorage.getItem('mori-uranai') || 'null'); if (sv2 && MSGS[sv2.i]) i = sv2.i; } catch(e){}
+      if (i >= 0 && MSGS[i]) makeCard(MSGS[i]);
+    });
+  }
+
+  // わたしの暦: 引いた日だけが残る、罰なしのコレクションです
+  function renderKoyomi(){
+    var grid = document.getElementById('koyomi-grid');
+    var title = document.getElementById('koyomi-title');
+    if (!grid) return;
+    var k = loadKoyomi();
+    var now = new Date();
+    var y = now.getFullYear(), mo = now.getMonth();
+    if (title) title.textContent = y + '年' + (mo + 1) + '月の暦';
+    var first = new Date(y, mo, 1).getDay();
+    var days = new Date(y, mo + 1, 0).getDate();
+    var html = '';
+    ['日','月','火','水','木','金','土'].forEach(function(w){ html += '<div class="koyomi-wd">' + w + '</div>'; });
+    for (var b = 0; b < first; b++) html += '<div class="koyomi-cell empty"></div>';
+    for (var d = 1; d <= days; d++) {
+      var ds = y + '-' + String(mo + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      var idx = k[ds];
+      var isToday = ds === todayStr2;
+      if (typeof idx === 'number' && MSGS[idx]) {
+        html += '<button type="button" class="koyomi-cell has' + (isToday ? ' today' : '') + '" data-date="' + ds + '"><span class="koyomi-day">' + d + '</span><img src="' + MSGS[idx].img + '" alt=""></button>';
+      } else {
+        html += '<div class="koyomi-cell' + (isToday ? ' today' : '') + '"><span class="koyomi-day">' + d + '</span></div>';
+      }
+    }
+    grid.innerHTML = html;
+    grid.querySelectorAll('.koyomi-cell.has').forEach(function(c){
+      c.addEventListener('click', function(){
+        var ds = c.getAttribute('data-date');
+        var idx = loadKoyomi()[ds];
+        var det = document.getElementById('koyomi-detail');
+        if (det && typeof idx === 'number' && MSGS[idx]) {
+          var p = ds.split('-');
+          det.innerHTML = '<img src="' + MSGS[idx].img + '" alt="みーちゃん"><div><div class="koyomi-date">' + Number(p[1]) + '月' + Number(p[2]) + '日の うらない</div><p>' + MSGS[idx].t + '</p></div>';
+          det.style.display = '';
+        }
+      });
+    });
+  }
+  renderKoyomi();
+
+  // こきゅうの泉: 丸の動きに合わせた、ゆっくり深呼吸
+  var kBtn = document.getElementById('kokyu-btn');
+  var kCircle = document.getElementById('kokyu-circle');
+  var kCue = document.getElementById('kokyu-cue');
+  var kLeaves = document.getElementById('kokyu-leaves');
+  if (kBtn && kCircle && kCue) {
+    var kRunning = false, kTimers = [];
+    function kLater(fn, ms){ kTimers.push(setTimeout(fn, ms)); }
+    function kStop(endMsg){
+      kTimers.forEach(clearTimeout); kTimers = [];
+      kRunning = false;
+      kCircle.style.transition = 'transform 1.2s ease';
+      kCircle.style.transform = 'scale(1)';
+      kBtn.textContent = 'はじめる';
+      if (endMsg) kCue.textContent = endMsg;
+    }
+    function kRound(r){
+      if (!kRunning) return;
+      kCue.textContent = 'すって…';
+      kCircle.style.transition = 'transform 4s ease-in-out';
+      kCircle.style.transform = 'scale(1.35)';
+      kLater(function(){
+        if (!kRunning) return;
+        kCue.textContent = 'とめて…';
+        kLater(function(){
+          if (!kRunning) return;
+          kCue.textContent = 'はいて…';
+          kCircle.style.transition = 'transform 6s ease-in-out';
+          kCircle.style.transform = 'scale(1)';
+          kLater(function(){
+            if (!kRunning) return;
+            if (kLeaves) { var sp = kLeaves.children[r]; if (sp) sp.classList.add('on'); }
+            if (r < 2) { kRound(r + 1); }
+            else { kStop('おつかれさまでした。肩の力が、少し抜けましたか。'); }
+          }, 6200);
+        }, 4000);
+      }, 4200);
+    }
+    kBtn.addEventListener('click', function(){
+      if (kRunning) { kStop('とちゅうで、やめても大丈夫ですよ。'); return; }
+      kRunning = true;
+      kBtn.textContent = 'やめる';
+      if (kLeaves) { for (var j = 0; j < kLeaves.children.length; j++) kLeaves.children[j].classList.remove('on'); }
+      kRound(0);
     });
   }
 
