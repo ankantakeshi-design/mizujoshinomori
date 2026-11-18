@@ -147,6 +147,8 @@
   .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:24px 22px; text-align:center; }
   .home-note .hn-title { font-size:15px; font-weight:900; color:#33513c; }
   .home-note p { margin-top:10px; font-size:13px; font-weight:500; color:#6b7d6b; line-height:2.0; }
+  .hero-subs { margin-top:14px; display:flex; gap:10px; justify-content:center; }
+  .sub-btn { display:inline-block; background:rgba(255,255,255,.9); border:2px solid #9CC49F; color:#33513c; font-size:13px; font-weight:900; border-radius:999px; padding:8px 18px; text-decoration:none; }
 </style>
 </head>
 <body>
@@ -165,6 +167,10 @@
     <p class="greeting" id="greeting-line"></p>
     <p><span class="special" id="special-line"></span></p>
     <a class="btn" href="#aruaru">森をあるく</a>
+    <div class="hero-subs">
+      <a class="sub-btn" href="#nikki">みーちゃんの日記</a>
+      <a class="sub-btn" href="#uranai">水女子うらない</a>
+    </div>
   </div>
 
   <section>
@@ -269,13 +275,13 @@
     </div>
   </section>
 
-  <section>
+  <section id="nikki">
     <h2>みーちゃんの水女子日記</h2>
     <p class="sec-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
     <div id="diary-list"></div>
   </section>
 
-  <section>
+  <section id="uranai">
     <h2>水女子うらない</h2>
     <p class="sec-lead">今日の気持ちを、そっと占います。</p>
     <div class="uranai">
