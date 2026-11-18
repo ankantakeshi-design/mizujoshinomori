@@ -13,6 +13,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5E9C63">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
@@ -139,6 +141,12 @@
   .uranai-msg { margin-top:14px; font-size:15px; font-weight:700; line-height:2.0; color:#6b5f4f; min-height:60px; }
   .uranai-btn { margin-top:10px; border:2px solid #E8C87E; background:#fff; color:#8a6d1f; font-size:15px; font-weight:900; font-family:inherit; border-radius:999px; padding:10px 26px; cursor:pointer; }
   .uranai-btn:active { transform:scale(.97); }
+  .greeting { margin-top:8px; font-size:14px; font-weight:700; color:#33513c; }
+  .special { margin-top:10px; display:inline-block; background:#FDF6EC; border:1.5px solid #E8C87E; color:#8a6d1f; border-radius:999px; padding:6px 16px; font-size:13px; font-weight:900; }
+  .special:empty { display:none; }
+  .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:24px 22px; text-align:center; }
+  .home-note .hn-title { font-size:15px; font-weight:900; color:#33513c; }
+  .home-note p { margin-top:10px; font-size:13px; font-weight:500; color:#6b7d6b; line-height:2.0; }
 </style>
 </head>
 <body>
@@ -154,6 +162,8 @@
     <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
     <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
     <p class="season" id="season-line"></p>
+    <p class="greeting" id="greeting-line"></p>
+    <p><span class="special" id="special-line"></span></p>
     <a class="btn" href="#aruaru">森をあるく</a>
   </div>
 
@@ -307,6 +317,13 @@
       <a href="https://takechanlink.pages.dev/">たけちゃんリンク</a>
     </div>
   </section>
+
+  <div class="home-note">
+    <div class="hn-title">森を、ホーム画面に置けます</div>
+    <p>iPhoneの方：Safariで開いて、共有のボタンから「ホーム画面に追加」。<br>
+    Androidの方：Chromeで開いて、右上のメニューから「ホーム画面に追加」。<br>
+    アイコンから、いつでも森に来られますよ。</p>
+  </div>
 
   <footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
@@ -577,6 +594,33 @@
     '今日は、部屋を少し整えると、気持ちも整う日。1か所だけで、十分ですよ。',
     '今日は、早く寝るのが吉の日。お布団が、いちばんの味方ですよ。'
   ];
+  // 時間帯で変わる あいさつ（BGMと同じ時間帯です）
+  var gEl = document.getElementById('greeting-line');
+  if (gEl) {
+    var hour = new Date().getHours();
+    var g = (hour >= 5 && hour < 12) ? 'おはようございます。今日の森も、静かに開いていますよ。'
+      : (hour >= 12 && hour < 21) ? 'こんにちは。よかったら、少し休んでいってくださいね。'
+      : 'こんばんは。今日も一日、おつかれさまでした。';
+    gEl.textContent = g;
+  }
+
+  // 特別な日の小さな仕掛け
+  var SPECIALS = {
+    '1-1': 'あけましておめでとうございます。今年も、森で待っていますね。',
+    '2-14': '今日はバレンタイン。自分にも、あまいものをどうぞ。',
+    '3-3': '今日はひなまつり。自分にも、やさしくしてあげてくださいね。',
+    '7-7': '今日は七夕。願いごとは、葉っぱにそっと置いていけますよ。',
+    '12-24': 'クリスマスイブ。静かな夜も、森は開いていますよ。',
+    '12-25': 'メリークリスマス。今日は、自分にも小さな贈りものをどうぞ。',
+    '12-31': '大晦日。今年も、よくがんばりましたね。森で、ほっと一息どうぞ。'
+  };
+  var sEl = document.getElementById('special-line');
+  if (sEl) {
+    var nd = new Date();
+    var key = (nd.getMonth() + 1) + '-' + nd.getDate();
+    if (SPECIALS[key]) sEl.textContent = SPECIALS[key];
+  }
+
   var btn = document.getElementById('uranai-btn');
   var msg = document.getElementById('uranai-msg');
   var last = -1;
