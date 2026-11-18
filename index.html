@@ -83,6 +83,8 @@
   .a-no { display:inline-block; background:#EAF3EC; color:#33513c; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:900; margin:12px 0 6px; }
   .a-modal-wm { text-align:center; margin-top:14px; }
   .a-modal-wm .wm-msg { text-align:left; }
+  .modal-close-bottom { display:block; margin:18px auto 0; background:#EAF3EC; color:#33513c; border:none; border-radius:999px; padding:10px 34px; font-size:14px; font-weight:900; font-family:inherit; cursor:pointer; }
+  .a-after { margin-top:16px; font-size:13px; color:#5E7A63; line-height:1.9; }
   body[data-band="morning"] { background:#FFFDF2; }
   body[data-band="night"] { background:#EBF0E7; }
   .komorebi {
@@ -262,71 +264,9 @@
       <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
       <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
       <button type="button" class="btn" id="intro-ok">森へ入る</button>
+      <button type="button" class="modal-close-bottom" id="intro-close-b">閉じる</button>
     </div>
   </div>
-
-  <section id="aruaru">
-    <h2><span class="water">水女子</span>あるある</h2>
-    <p class="sec-lead">こんな場面、ありませんか。当てはまるものを、数えてみてください。</p>
-
-    <div class="aruaru">
-      <div class="card">
-        <img src="scene-1.jpg" alt="会議で仕事を引き受ける場面">
-        <span class="no">あるある 1</span>
-        <p>会議で、同僚から「これ、やっておいてくれる？」と仕事を振られると、その場では「あ、大丈夫です」と笑顔で引き受けてしまう。本当は、自分もいっぱいいっぱいなのに。</p>
-        <div class="wm" data-scene="1"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">本当は、いっぱいいっぱいだったんですよね。ここでは、無理しなくて大丈夫ですよ。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-2.jpg" alt="家に帰ってモヤモヤする場面">
-        <span class="no">あるある 2</span>
-        <p>家に帰ってから、モヤモヤがどんどん膨らんで、「なんで言えなかったんだろう」と自分を責めてしまう。体も重くて、しんどくなる。</p>
-        <div class="wm" data-scene="2"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">家に帰ってから出てくる疲れも、安心して置いていってくださいね。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-3.jpg" alt="なんでもないと言ってしまう場面">
-        <span class="no">あるある 3</span>
-        <p>本当はしんどいのに、「大丈夫？」と聞かれると、「なんでもない」と言ってしまう。心配をかけたくないし、重いと思われたくないから。</p>
-        <div class="wm" data-scene="3"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">たいへんでしたね。本当は、大丈夫じゃないって言いたいですよね。ここでは、楽でいてくださいね。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-4.jpg" alt="笑って話を合わせる場面">
-        <span class="no">あるある 4</span>
-        <p>疲れて帰りたいのに、誘われると断れずに「いいですよ！」。その場では笑って話を合わせているのに、家に帰ると、ぐったり。</p>
-        <div class="wm" data-scene="4"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">笑って合わせた分だけ、心は疲れてしまいますね。ここでは、素のままでいてくださいね。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-5.jpg" alt="相手の機嫌にそわそわする場面">
-        <span class="no">あるある 5</span>
-        <p>相手の機嫌が少し変わっただけで、すぐ気づいてしまう。「私、何かしたかな」と、そわそわが止まらない。</p>
-        <div class="wm" data-scene="5"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">人の気持ちにすぐ気づけるのは、あなたの優しさです。少し、休んでいってくださいね。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-6.jpg" alt="言葉が出てこない場面">
-        <span class="no">あるある 6</span>
-        <p>自分の気持ちを聞かれても、その場では言葉が出てこない。言葉になるのは、いつも後になってから。</p>
-        <div class="wm" data-scene="6"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">急がなくて大丈夫ですよ。言葉は、後からついてきます。</span></div>
-      </div>
-
-      <div class="card">
-        <img src="scene-7.jpg" alt="自分はいつも後回しの場面">
-        <span class="no">あるある 7</span>
-        <p>他人ばかりを大事にしてしまって、自分のことは、いつも後回し。</p>
-        <div class="wm" data-scene="7"><button type="button" class="wm-btn">わたしも</button><span class="wm-count"></span><span class="wm-msg">いつも後回しの自分を、今日は少しだけ、先に置いてあげてくださいね。</span></div>
-      </div>
-    </div>
-
-    <div class="after">
-      いくつ、当てはまりましたか。<br>
-      もし「これ、私だ」と思うものがあったら、それは性格が弱いからではありません。感じすぎるほど感じて、言葉が遅れてくる。それは、水の強さのサインかもしれません。<br>
-      「私、水女子だったんだ」と気づくこと。それが、第一歩です。
-    </div>
-    <p class="wm-total" id="wm-total"></p>
-  </section>
 
   <section>
     <h2>気持ちの葉っぱ</h2>
@@ -1244,51 +1184,62 @@
         <button type="button" class="wm-btn" id="a-modal-wm">わたしも</button>
         <span class="wm-msg" id="a-modal-msg"></span>
       </div>
+      <p class="a-after">「これ、私だ」と思ったら、それは性格が弱いからではありません。感じすぎるほど感じる、水の強さのサインかもしれません。</p>
+      <button type="button" class="modal-close-bottom" id="a-modal-close-b">閉じる</button>
       <button type="button" class="intro-close" id="a-modal-close" aria-label="とじる">×</button>
     </div>
   </div>
 
 <script>
 (function(){
-  var cards = Array.prototype.slice.call(document.querySelectorAll('#aruaru .card'));
+  var SCENES = [
+    { n:1, img:'scene-1.jpg', alt:'会議で仕事を引き受ける場面', text:'会議で、同僚から「これ、やっておいてくれる？」と仕事を振られると、その場では「あ、大丈夫です」と笑顔で引き受けてしまう。本当は、自分もいっぱいいっぱいなのに。', msg:'本当は、いっぱいいっぱいだったんですよね。ここでは、無理しなくて大丈夫ですよ。' },
+    { n:2, img:'scene-2.jpg', alt:'家に帰ってモヤモヤする場面', text:'家に帰ってから、モヤモヤがどんどん膨らんで、「なんで言えなかったんだろう」と自分を責めてしまう。体も重くて、しんどくなる。', msg:'家に帰ってから出てくる疲れも、安心して置いていってくださいね。' },
+    { n:3, img:'scene-3.jpg', alt:'なんでもないと言ってしまう場面', text:'本当はしんどいのに、「大丈夫？」と聞かれると、「なんでもない」と言ってしまう。心配をかけたくないし、重いと思われたくないから。', msg:'たいへんでしたね。本当は、大丈夫じゃないって言いたいですよね。ここでは、楽でいてくださいね。' },
+    { n:4, img:'scene-4.jpg', alt:'笑って話を合わせる場面', text:'疲れて帰りたいのに、誘われると断れずに「いいですよ！」。その場では笑って話を合わせているのに、家に帰ると、ぐったり。', msg:'笑って合わせた分だけ、心は疲れてしまいますね。ここでは、素のままでいてくださいね。' },
+    { n:5, img:'scene-5.jpg', alt:'相手の機嫌にそわそわする場面', text:'相手の機嫌が少し変わっただけで、すぐ気づいてしまう。「私、何かしたかな」と、そわそわが止まらない。', msg:'人の気持ちにすぐ気づけるのは、あなたの優しさです。少し、休んでいってくださいね。' },
+    { n:6, img:'scene-6.jpg', alt:'言葉が出てこない場面', text:'自分の気持ちを聞かれても、その場では言葉が出てこない。言葉になるのは、いつも後になってから。', msg:'急がなくて大丈夫ですよ。言葉は、後からついてきます。' },
+    { n:7, img:'scene-7.jpg', alt:'自分はいつも後回しの場面', text:'他人ばかりを大事にしてしまって、自分のことは、いつも後回し。', msg:'いつも後回しの自分を、今日は少しだけ、先に置いてあげてくださいね。' }
+  ];
   var openBtn = document.getElementById('aruaru-open');
   var modal = document.getElementById('aruaru-modal');
-  if (!cards.length || !openBtn || !modal) return;
+  if (!openBtn || !modal) return;
   var days = Math.floor((Date.now() + 9 * 3600 * 1000) / 86400000);
-  var card = cards[days % cards.length];
-  var img = card.querySelector('img');
-  var no = card.querySelector('.no');
-  var text = card.querySelector('p');
-  var origBtn = card.querySelector('.wm-btn');
-  var origMsg = card.querySelector('.wm-msg');
+  var sc = SCENES[days % SCENES.length];
   var mImg = document.getElementById('a-modal-img');
-  var mNo = document.getElementById('a-modal-no');
-  var mText = document.getElementById('a-modal-text');
+  mImg.src = sc.img; mImg.alt = sc.alt;
+  document.getElementById('a-modal-no').textContent = 'あるある ' + sc.n;
+  document.getElementById('a-modal-text').textContent = sc.text;
   var mBtn = document.getElementById('a-modal-wm');
   var mMsg = document.getElementById('a-modal-msg');
-  mImg.src = img.getAttribute('src');
-  mImg.alt = img.getAttribute('alt') || '';
-  mNo.textContent = no ? no.textContent : '';
-  mText.textContent = text ? text.textContent : '';
-  mMsg.textContent = origMsg ? origMsg.textContent : '';
-  function sync(){
-    if (origBtn.classList.contains('done')) {
-      mBtn.classList.add('done');
-      mBtn.textContent = 'わたしも、と言いました';
-      mBtn.disabled = true;
-      mMsg.classList.add('show');
-    }
+  mMsg.textContent = sc.msg;
+  var storeKey = 'mori_wm_' + sc.n;
+  function markDone(){
+    mBtn.classList.add('done');
+    mBtn.textContent = 'わたしも、と言いました';
+    mBtn.disabled = true;
+    mMsg.classList.add('show');
   }
-  sync();
+  try { if (localStorage.getItem(storeKey)) markDone(); } catch(e) {}
   mBtn.addEventListener('click', function(){
     if (mBtn.disabled) return;
-    origBtn.click();
-    setTimeout(sync, 900);
-    setTimeout(sync, 2500);
+    mBtn.disabled = true;
+    fetch('https://twxxcjjffznjaeyconoc.supabase.co/rest/v1/rpc/increment_watashimo', {
+      method: 'POST',
+      headers: { apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3eHhjampmZnpuamFleWNvbm9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMTc1NTcsImV4cCI6MjExMDU5MzU1N30.MIVvDvZx03ai7mshyP3FR8JP0xe9Yu-7BgUjtIvvpew', Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3eHhjampmZnpuamFleWNvbm9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMTc1NTcsImV4cCI6MjExMDU5MzU1N30.MIVvDvZx03ai7mshyP3FR8JP0xe9Yu-7BgUjtIvvpew', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_scene: sc.n })
+    }).then(function(){
+      try { localStorage.setItem(storeKey, '1'); } catch(e) {}
+      markDone();
+    }).catch(function(){ mBtn.disabled = false; });
   });
-  openBtn.addEventListener('click', function(){ sync(); modal.style.display = 'flex'; });
-  document.getElementById('a-modal-close').addEventListener('click', function(){ modal.style.display = 'none'; });
-  modal.addEventListener('click', function(e){ if (e.target === modal) modal.style.display = 'none'; });
+  function hide(){ modal.style.display = 'none'; }
+  openBtn.addEventListener('click', function(){ modal.style.display = 'flex'; });
+  document.getElementById('a-modal-close').addEventListener('click', hide);
+  document.getElementById('a-modal-close-b').addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
+  var ib = document.getElementById('intro-close-b');
+  if (ib) ib.addEventListener('click', function(){ document.getElementById('intro-close').click(); });
 })();
 </script>
 </body>
