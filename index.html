@@ -89,10 +89,12 @@
   body[data-band="night"] { background:#EBF0E7; }
   .komorebi {
     background:#FFF9EC; border:2px solid #F3E9C8; border-radius:20px;
-    padding:26px 22px; text-align:center;
+    padding:20px; text-align:left; display:flex; gap:14px; align-items:center;
   }
+  .komorebi img { width:84px; height:auto; flex:none; }
+  .komorebi .k-body { flex:1; }
   .komorebi .k-title { font-size:13px; font-weight:900; letter-spacing:.14em; color:#A9832F; }
-  .komorebi p { margin-top:12px; font-size:17px; font-weight:700; line-height:2.0; color:#4d442e; }
+  .komorebi p { margin-top:6px; font-size:17px; font-weight:700; line-height:2.0; color:#4d442e; }
   .komorebi .k-note { margin-top:10px; font-size:12px; font-weight:500; color:#a4936b; }
   .wm-total { margin-top:18px; text-align:center; font-size:14px; font-weight:900; color:#2B6CB0; }
 
@@ -246,9 +248,12 @@
       </span>
     </a>
     <div class="komorebi">
-      <div class="k-title">今日の木漏れ日</div>
-      <p id="komorebi-line"></p>
-      <div class="k-note">毎日、少しずつ変わります</div>
+      <img id="komorebi-img" alt="">
+      <div class="k-body">
+        <div class="k-title">今日の木漏れ日</div>
+        <p id="komorebi-line"></p>
+        <div class="k-note">毎日、少しずつ変わります</div>
+      </div>
     </div>
     <button type="button" class="aruaru-btn" id="aruaru-open">今日の水女子あるあるを見る</button>
     <div class="hero-subs">
@@ -486,25 +491,28 @@
 
   // --- today's komorebi (daily rotation) ---
   var lines = [
-    'うまく言えなくても、大丈夫。気持ちは、言葉より先にあります。',
-    '今日は、休む日でもいいんです。',
-    '感じすぎるのは、弱さじゃありません。',
-    '言葉になるまで、時間がかかってもいいんです。',
-    '自分を後回しにしてきた人ほど、優しい人です。',
-    'モヤモヤは、心が何かを伝えようとしている合図です。',
-    '泣きたい日は、泣いていい日です。',
-    '誰かの機嫌より、自分の気持ちを先に見てあげてくださいね。',
-    '言えなかった言葉は、消えたわけじゃありません。',
-    'ここでは、何者にもならなくて大丈夫です。',
-    '疲れたら、立ち止まっていいんです。',
-    'あなたの感じ方は、あなたの味方です。',
-    '小さな「いやだ」も、大事な気持ちです。',
-    '今日も、よくがんばりました。'
+    { t:'うまく言えなくても、大丈夫。気持ちは、言葉より先にあります。', img:'nikki-img-12.png' },
+    { t:'今日は、休む日でもいいんです。', img:'nikki-img-29.png' },
+    { t:'感じすぎるのは、弱さじゃありません。', img:'nikki-img-28.png' },
+    { t:'言葉になるまで、時間がかかってもいいんです。', img:'nikki-img-27.png' },
+    { t:'自分を後回しにしてきた人ほど、優しい人です。', img:'nikki-img-04.png' },
+    { t:'モヤモヤは、心が何かを伝えようとしている合図です。', img:'nikki-img-33.png' },
+    { t:'泣きたい日は、泣いていい日です。', img:'nikki-img-30.png' },
+    { t:'誰かの機嫌より、自分の気持ちを先に見てあげてくださいね。', img:'nikki-img-42.png' },
+    { t:'言えなかった言葉は、消えたわけじゃありません。', img:'nikki-img-44.png' },
+    { t:'ここでは、何者にもならなくて大丈夫です。', img:'nikki-img-40.png' },
+    { t:'疲れたら、立ち止まっていいんです。', img:'nikki-img-43.png' },
+    { t:'あなたの感じ方は、あなたの味方です。', img:'nikki-img-36.png' },
+    { t:'小さな「いやだ」も、大事な気持ちです。', img:'nikki-img-32.png' },
+    { t:'今日も、よくがんばりました。', img:'nikki-img-08.png' }
   ];
   var start = new Date(nowJst.getFullYear(), 0, 0);
   var doy = Math.floor((nowJst - start) / 86400000);
+  var pick = lines[doy % lines.length];
   var kEl = document.getElementById('komorebi-line');
-  if (kEl) kEl.textContent = lines[doy % lines.length];
+  if (kEl) kEl.textContent = pick.t;
+  var kImg = document.getElementById('komorebi-img');
+  if (kImg) kImg.src = pick.img;
 
   // --- watashimo total ---
   fetch(SB + '/mori_watashimo?select=cnt', { headers: H })
