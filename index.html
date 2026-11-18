@@ -79,15 +79,16 @@
   button.kou { background:none; border:none; font:inherit; font-size:12.5px; font-weight:700; color:#7d8b74; cursor:pointer; width:100%; text-align:center; padding:0; display:block; }
   .kou .kou-more { color:#2B6CB0; text-decoration:underline; text-underline-offset:3px; }
   .moon-cell { flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:4px 1px; min-height:54px; }
-  .moon-dot { width:19px; height:19px; border-radius:50%; border:1.5px solid #E3B94E; display:block; }
+  .moon-dot { width:19px; height:19px; flex:none; border-radius:50%; border:1.5px solid #E3B94E; display:block; }
   .moon-dot.full { box-shadow:0 0 9px 2px rgba(255, 200, 60, .7); border-color:#E8B93E; }
-  .moon-tag { font-size:9px; font-weight:900; color:#6B5310; line-height:1.1; background:#F6C945; border-radius:999px; padding:1px 6px; }
+  .moon-tag { flex:none; font-size:9px; font-weight:900; color:#6B5310; line-height:1.1; background:#F6C945; border-radius:999px; padding:1px 6px; }
   .moon-cell.event { background:#FFF6D8; }
   .moon-star { color:#E8B93E; }
   #moon-title::before, #moon-title::after { content:'✦'; color:#E8B93E; margin:0 8px; font-size:13px; }
   .moon-event { margin-top:14px; font-size:13.5px; font-weight:700; color:#33513c; line-height:2.0; text-align:left; }
   .moon-next { margin-top:12px; padding-top:10px; border-top:1px dashed #DCE8DC; font-size:12px; font-weight:700; color:#7d8b74; line-height:1.9; text-align:left; }
-  .komorebi p, .today-diary .td-text, .sec-lead, .greeting, .kou, .uranai-msg, .diary-entry p, .moon-event, h2 { text-wrap: balance; }
+  .komorebi p, .today-diary .td-text, .sec-lead, .greeting, .kou, .uranai-msg, .diary-entry p, .moon-event, .moon-next, h2 { text-wrap: balance; word-break: auto-phrase; }
+  .nw { white-space: nowrap; }
   .letter-new { text-align:center; margin-top:14px; }
   .letter-new span { display:inline-block; background:#FDF6EC; border:1.5px solid #E8C87E; color:#8a6d1f; border-radius:999px; padding:5px 14px; font-size:12.5px; font-weight:900; }
   .kou .moon { display:inline-block; width:13px; height:13px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid #E3B94E; }
@@ -1231,7 +1232,7 @@
   if (kel) {
     var nf = nextFull ? jstParts(nextFull) : null;
     kel.innerHTML = '<span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + 'です。' +
-      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・' + MOON_NAMES[nf.m] + '）です。' : '') +
+      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・<span class="nw">' + MOON_NAMES[nf.m] + '</span>）です。' : '') +
       ' <span class="kou-more">月のカレンダー</span>';
     kel.addEventListener('click', function(){
       var modal = document.getElementById('moon-modal');
@@ -1261,16 +1262,16 @@
         grid.innerHTML = html;
         var lines = [];
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日は、' + ns + 'の新月です。' + NEW_MSG[ns]); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『' + MOON_NAMES[jp.m] + '』です。' + FULL_MSG[fs]); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。' + FULL_MSG[fs]); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>');
         var nm = jp.m + 1, ny = jp.y;
         if (nm > 11) { nm = 0; ny++; }
         var nev = findEvents(ny, nm);
         var nitems = [];
         if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日（' + moonSign(nev.newT) + '）' }); }
-        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日（' + moonSign(nev.fullT) + '・' + MOON_NAMES[nm] + '）' }); }
+        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
         nitems.sort(function(a, b){ return a.d - b.d; });
-        document.getElementById('moon-next').textContent = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
+        document.getElementById('moon-next').innerHTML = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
         document.getElementById('moon-close-b').addEventListener('click', hideMoon);
