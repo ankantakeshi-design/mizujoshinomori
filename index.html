@@ -1296,14 +1296,14 @@
   function isTenshaDay(y, m, d){ var lon = luckySunLon(y, m, d); var target = (lon >= 315 || lon < 45) ? 14 : (lon < 135 ? 30 : (lon < 225 ? 44 : 0)); return luckyEto(y, m, d) === target; }
   // 惑星の逆行（JST・複数ソース照合済みデータ）
   var PLANETS = [
-    { name: '水星', img: 'planet-mercury.jpg', ranges: [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']], msg: '言葉や連絡は、確認をていねいに。伝える前に、ひと呼吸。' },
-    { name: '金星', img: 'planet-venus.jpg', ranges: [['2026-10-03','2026-11-14']], msg: '好きなものや、大事な人との関係を、見直す時期です。' },
-    { name: '火星', img: 'planet-mars.jpg', ranges: [['2027-01-10','2027-04-01']], msg: 'がんばり方を、見直す時期です。無理はしないでくださいね。' },
-    { name: '木星', img: 'planet-jupiter.jpg', ranges: [['2025-11-12','2026-03-11'],['2026-12-13','2027-04-13']], msg: '広げてきたことを、整える時期です。' },
-    { name: '土星', img: 'planet-saturn.jpg', ranges: [['2026-07-27','2026-12-11'],['2027-08-10','2027-12-24']], msg: '積み重ねてきたことを、見直す時期です。' },
-    { name: '天王星', img: 'planet-uranus.jpg', ranges: [['2025-09-06','2026-02-04'],['2026-09-11','2027-02-08'],['2027-09-15','2028-02-13']], msg: '変化と、ゆっくり向き合う時期です。' },
-    { name: '海王星', img: 'planet-neptune.jpg', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。' },
-    { name: '冥王星', img: 'planet-pluto.jpg', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。' }
+    { name: '水星', img: 'planet-mercury.jpg', ranges: [['2026-02-26','2026-03-21'],['2026-06-30','2026-07-24'],['2026-10-24','2026-11-14'],['2027-02-10','2027-03-03'],['2027-06-11','2027-07-05'],['2027-10-07','2027-10-28']], msg: '言葉や連絡は、確認をていねいに。伝える前に、ひと呼吸。', dmsg: '言葉も連絡も、すいすい進む時期です。' },
+    { name: '金星', img: 'planet-venus.jpg', ranges: [['2026-10-03','2026-11-14']], msg: '好きなものや、大事な人との関係を、見直す時期です。', dmsg: '好きを楽しむのに、よい時期です。' },
+    { name: '火星', img: 'planet-mars.jpg', ranges: [['2027-01-10','2027-04-01']], msg: 'がんばり方を、見直す時期です。無理はしないでくださいね。', dmsg: 'やってみたいことに、力を注げる時期です。' },
+    { name: '木星', img: 'planet-jupiter.jpg', ranges: [['2025-11-12','2026-03-11'],['2026-12-13','2027-04-13']], msg: '広げてきたことを、整える時期です。', dmsg: '新しいことを広げるのに、よい時期です。' },
+    { name: '土星', img: 'planet-saturn.jpg', ranges: [['2026-07-27','2026-12-11'],['2027-08-10','2027-12-24']], msg: '積み重ねてきたことを、見直す時期です。', dmsg: '積み重ねが、実を結びやすい時期です。' },
+    { name: '天王星', img: 'planet-uranus.jpg', ranges: [['2025-09-06','2026-02-04'],['2026-09-11','2027-02-08'],['2027-09-15','2028-02-13']], msg: '変化と、ゆっくり向き合う時期です。', dmsg: '新しい風を、取り入れやすい時期です。' },
+    { name: '海王星', img: 'planet-neptune.jpg', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。', dmsg: 'ひらめきを、大事にできる時期です。' },
+    { name: '冥王星', img: 'planet-pluto.jpg', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。', dmsg: '深いところから、前に進める時期です。' }
   ];
   function openPlanets(){
     var modal = document.getElementById('planet-modal');
@@ -1322,7 +1322,17 @@
           var ep = retroEnd.split('-');
           html += '<span class="planet-chip retro">逆行中</span><div class="planet-msg">' + (+ep[1]) + '月' + (+ep[2]) + '日まで。' + p.msg + '</div>';
         } else {
-          html += '<span class="planet-chip direct">順行中</span>';
+          var nextStart = null;
+          p.ranges.forEach(function(r){ if (r[0] > today && (!nextStart || r[0] < nextStart)) nextStart = r[0]; });
+          var dmsgLine;
+          if (nextStart) {
+            var np = nextStart.split('-');
+            var prevDay = new Date(Date.UTC(+np[0], +np[1] - 1, +np[2]) - 86400000);
+            dmsgLine = (prevDay.getUTCMonth() + 1) + '月' + prevDay.getUTCDate() + '日まで順行です。' + p.dmsg;
+          } else {
+            dmsgLine = 'しばらくの間、順行です。' + p.dmsg;
+          }
+          html += '<span class="planet-chip direct">順行中</span><div class="planet-msg">' + dmsgLine + '</div>';
         }
         html += '</div></div>';
       });
