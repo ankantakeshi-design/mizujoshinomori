@@ -74,6 +74,13 @@
   .komorebi p { margin-top:12px; font-size:17px; font-weight:700; line-height:2.0; color:#4d442e; }
   .komorebi .k-note { margin-top:10px; font-size:12px; font-weight:500; color:#a4936b; }
   .wm-total { margin-top:18px; text-align:center; font-size:14px; font-weight:900; color:#2B6CB0; }
+
+  .letter {
+    margin-top:22px; background:#fff; border:2px solid #E4EFE6; border-radius:20px;
+    padding:24px 22px;
+  }
+  .letter .l-title { font-size:13px; font-weight:900; letter-spacing:.1em; color:#4a7a52; }
+  .letter p { margin-top:10px; font-size:15px; font-weight:500; color:#3d362d; line-height:2.1; }
   .leaves { margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .leaf-btn {
     border:2px solid #9CC49F; background:#fff; color:#33513c;
@@ -216,6 +223,14 @@
       <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
       <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てください。</p>
     </div>
+    <div class="letter">
+      <div class="l-title">森の番人 たけちゃんから</div>
+      <p>この森を作った、たけちゃんです。<br>
+      感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
+      だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>
+      無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>
+      また来てくださいね。</p>
+    </div>
   </section>
 
   <section>
@@ -351,9 +366,9 @@
     })
     .catch(function(){});
 
-  // --- feeling leaves ---
+  // --- feeling leaves (counts shown as all-time totals) ---
   var counts = {};
-  var totalToday = 0;
+  var totalAll = 0;
   var msg = document.getElementById('leaf-msg');
   var storeKey = 'mori_leaf_' + todayStr;
   var chosen = null;
@@ -368,12 +383,11 @@
     if (chosen) {
       var c = counts[chosen] || 0;
       msg.innerHTML = '「' + leafName(chosen) + '」を、森に置きました。<br>' +
-        '今日、同じ気持ちの人が ' + c.toLocaleString('ja-JP') + ' 人います。' +
-        (totalToday > 0 ? '<br>今日は ' + totalToday.toLocaleString('ja-JP') + ' 人が、森に気持ちを置いていきました。' : '');
-    } else if (totalToday > 0) {
-      msg.textContent = '今日は ' + totalToday.toLocaleString('ja-JP') + ' 人が、森に気持ちを置いていきました。';
+        'これまで ' + c.toLocaleString('ja-JP') + ' 人が、同じ気持ちを置いていきました。';
+    } else if (totalAll > 0) {
+      msg.textContent = '森には、これまで ' + totalAll.toLocaleString('ja-JP') + ' 枚の葉っぱが置かれています。';
     } else {
-      msg.textContent = '今日は、まだ誰も来ていません。最初の葉っぱを、どうぞ。';
+      msg.textContent = 'この森は、生まれたばかり。最初の葉っぱを、どうぞ。';
     }
   }
   function applyChosen(){
@@ -382,12 +396,12 @@
       if (chosen) b.disabled = true;
     });
   }
-  fetch(SB + '/mori_leaves?select=leaf,cnt&day=eq.' + todayStr, { headers: H })
+  fetch(SB + '/mori_leaves?select=leaf,cnt', { headers: H })
     .then(function(r){ return r.json(); })
     .then(function(rows){
       if (Array.isArray(rows)) rows.forEach(function(x){
-        counts[x.leaf] = Number(x.cnt || 0);
-        totalToday += Number(x.cnt || 0);
+        counts[x.leaf] = (counts[x.leaf] || 0) + Number(x.cnt || 0);
+        totalAll += Number(x.cnt || 0);
       });
       applyChosen(); showMsg();
     })
@@ -404,9 +418,10 @@
         body: JSON.stringify({ p_leaf: Number(id) })
       })
       .then(function(r){ return r.json(); })
-      .then(function(cnt){
+      .then(function(){
         chosen = id;
-        if (typeof cnt === 'number') { totalToday += (cnt - (counts[id] || 0)); counts[id] = cnt; }
+        counts[id] = (counts[id] || 0) + 1;
+        totalAll += 1;
         try { localStorage.setItem(storeKey, id); } catch(e) {}
         applyChosen(); showMsg();
       })
