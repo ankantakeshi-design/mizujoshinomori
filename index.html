@@ -1292,6 +1292,10 @@
     var j = new Date(t + 9 * 3600 * 1000);
     return { y: j.getUTCFullYear(), m: j.getUTCMonth(), d: j.getUTCDate() };
   }
+  function jstHM(t){
+    var j = new Date(t + 9 * 3600 * 1000);
+    return j.getUTCHours() + '時' + j.getUTCMinutes() + '分';
+  }
   function refineCross(prevT, prevA, t, a, target){
     var span = (a >= prevA) ? (a - prevA) : (a + 29.530588853 - prevA);
     var need = (target >= prevA) ? (target - prevA) : (target + 29.530588853 - prevA);
@@ -1393,7 +1397,7 @@
   if (kel) {
     var nf = nextFull ? jstParts(nextFull) : null;
     kel.innerHTML = '<img class="kou-img" src="moon-mii.jpg" alt=""><span class="kou-text"><span class="moon" style="background:' + grad + '"></span>今夜は、' + phase + (tide ? '・' + tide : '') + 'です。' +
-      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日（' + moonSign(nextFull) + '・<span class="nw">' + MOON_NAMES[nf.m] + '</span>）です。' : '') +
+      (nf ? '次の満月は、' + (nf.m + 1) + '月' + nf.d + '日' + jstHM(nextFull) + '（' + moonSign(nextFull) + '・<span class="nw">' + MOON_NAMES[nf.m] + '</span>）です。' : '') +
       ' <span class="kou-more">月のカレンダー</span></span>';
     var pob = document.getElementById('planet-open-hero');
     if (pob) pob.addEventListener('click', openPlanets);
@@ -1432,15 +1436,15 @@
         }
         grid.innerHTML = html;
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日は、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日は、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>');
         var nm = jp.m + 1, ny = jp.y;
         if (nm > 11) { nm = 0; ny++; }
         var nev = findEvents(ny, nm);
         var nitems = [];
-        if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日（' + moonSign(nev.newT) + '）' }); }
-        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
+        if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日' + jstHM(nev.newT) + '（' + moonSign(nev.newT) + '）' }); }
+        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日' + jstHM(nev.fullT) + '（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
         nitems.sort(function(a, b){ return a.d - b.d; });
         document.getElementById('moon-next').innerHTML = nitems.length ? '来月の' + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
         var llines = [];
@@ -1450,7 +1454,8 @@
         var SHUN = {0:'たけのこ・あさり・さわら・よもぎ',15:'新じゃが・そら豆・かつお・たけのこ',30:'そら豆・新茶・かつお・グリーンピース',45:'新茶・そら豆・えんどう・びわ',60:'びわ・さくらんぼ・そら豆・あゆ',75:'梅・あゆ・トマト・きゅうり',90:'トマト・なす・とうもろこし・あゆ',105:'とうもろこし・枝豆・うなぎ・桃',120:'うなぎ・桃・すいか・ゴーヤ',135:'桃・ぶどう・なす・梨',150:'梨・ぶどう・さんま・栗',165:'栗・さんま・さつまいも・梨',180:'さつまいも・きのこ・さんま・新米',195:'新米・栗・さば・柿',210:'柿・りんご・さば・里芋',225:'りんご・白菜・大根・牡蠣',240:'牡蠣・白菜・みかん・ほうれん草',255:'みかん・ぶり・大根・小松菜',270:'かぼちゃ・ゆず・ぶり・れんこん',285:'せり・春菊・たら・みかん',300:'金柑・ねぎ・たら・いちご',315:'菜の花・ふきのとう・いちご・はまぐり',330:'菜の花・春キャベツ・わかめ・しらす',345:'たけのこ・新玉ねぎ・さわら・いちご'};
         var nowJ = jstParts(Date.now());
         var shunSeg = (Math.floor(luckySunLon(nowJ.y, nowJ.m, nowJ.d) / 15) * 15) % 360;
-        document.getElementById('moon-shun').textContent = 'いまの旬：' + SHUN[shunSeg] + 'です。';
+        var HANA = {0:'桜・チューリップ・れんげ',15:'桜・チューリップ・藤',30:'藤・牡丹・つつじ',45:'牡丹・あやめ・バラ',60:'バラ・あじさい・花菖蒲',75:'あじさい・花菖蒲・くちなし',90:'ゆり・あじさい・桔梗',105:'桔梗・朝顔・ひまわり',120:'ひまわり・朝顔・百日紅',135:'百日紅・すすき・桔梗',150:'すすき・秋桜・萩',165:'萩・秋桜・彼岸花',180:'彼岸花・金木犀・秋桜',195:'金木犀・秋バラ・秋桜',210:'菊・秋バラ・山茶花',225:'山茶花・菊・寒椿',240:'山茶花・水仙・寒椿',255:'水仙・シクラメン・ポインセチア',270:'水仙・蝋梅・シクラメン',285:'蝋梅・水仙・寒牡丹',300:'蝋梅・梅・福寿草',315:'梅・水仙・福寿草',330:'梅・沈丁花・菜の花',345:'沈丁花・木蓮・菜の花'};
+        document.getElementById('moon-shun').textContent = 'いまの旬：' + SHUN[shunSeg] + '。花は、' + HANA[shunSeg] + 'です。';
         document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
         function hideMoon(){ modal.style.display = 'none'; }
         document.getElementById('moon-close').addEventListener('click', hideMoon);
