@@ -109,9 +109,10 @@
   .rest p.small { margin-top:12px; font-size:13px; font-weight:500; color:#6b7d6b; }
   .links { margin-top:24px; display:flex; flex-direction:column; gap:14px; }
   .link-card {
-    display:block; background:#fff; border:2px solid #F3E9DE; border-radius:18px;
+    display:flex; align-items:center; gap:14px; background:#fff; border:2px solid #F3E9DE; border-radius:18px;
     padding:18px; text-decoration:none; color:#2B2B2B;
   }
+  .link-card img { width:64px; height:64px; border-radius:14px; flex:none; }
   .link-card .t { font-size:16px; font-weight:900; }
   .link-card .t .f { color:#F0502E; }
   .link-card .d { margin-top:4px; font-size:13px; font-weight:500; color:#6b5f4f; line-height:1.8; }
@@ -243,16 +244,25 @@
     <p class="sec-lead">もう少し進んでみたい方へ。</p>
     <div class="links">
       <a class="link-card" href="https://kasuiehon.pages.dev/">
-        <div class="t">火水の絵本『ひーくんと みーちゃん』</div>
-        <div class="d">物語で読みたい方へ。言葉がとくいな子と、感じすぎる子の物語です（無料）。</div>
+        <img src="guide-ehon.jpg" alt="">
+        <div>
+          <div class="t">火水の絵本『ひーくんと みーちゃん』</div>
+          <div class="d">物語で読みたい方へ。言葉がとくいな子と、感じすぎる子の物語です（無料）。</div>
+        </div>
       </a>
       <a class="link-card" href="https://note.com/takekasui/m/mca7ae9c34dd7">
-        <div class="t">水女子あるある相談（note）</div>
-        <div class="d">「じゃあ、どうしたらいいの？」への答えを、1つずつ書いています。</div>
+        <img src="guide-aruaru.jpg" alt="">
+        <div>
+          <div class="t">水女子あるある相談（note）</div>
+          <div class="d">「じゃあ、どうしたらいいの？」への答えを、1つずつ書いています。</div>
+        </div>
       </a>
       <a class="link-card" href="https://hisodate.pages.dev/">
-        <div class="t">水女子のための<span class="f">火育て塾</span>🔥</div>
-        <div class="d">感じたことを、言葉にする力を育てる塾です。無料相談・質問も受け付けています。</div>
+        <img src="guide-hisodate.jpg" alt="">
+        <div>
+          <div class="t">水女子のための<span class="f">火育て塾</span>🔥</div>
+          <div class="d">感じたことを、言葉にする力を育てる塾です。無料相談・質問も受け付けています。</div>
+        </div>
       </a>
     </div>
     <div class="small-links">
