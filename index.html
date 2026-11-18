@@ -530,7 +530,8 @@
 (function(){
   var player = document.getElementById('bgm-player');
   var btn = document.getElementById('bgm-btn');
-  var playing = false; // 初期はOFF（自動再生はしません）
+  var wanted = true;   // 既定はON（たけちゃん指示 2026-11-19）
+  var started = false; // 実際に鳴り始めたか
 
   function getBgmSrc(){
     var now = new Date();
@@ -545,27 +546,47 @@
   }
 
   function updateBtn(){
-    btn.textContent = playing ? '♪ とめる' : '♪ もりの音';
-    btn.classList.toggle('on', playing);
-    btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    var on = wanted && started;
+    btn.textContent = on ? '♪ とめる' : '♪ もりの音';
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   }
 
+  function tryPlay(){
+    if (!wanted) return;
+    var src = getBgmSrc();
+    if (!player.src.endsWith(src)) player.src = src;
+    player.volume = 0.4;
+    player.play().catch(function(){ /* ブラウザに止められたら、最初のタップで再試行します */ });
+  }
+
+  player.addEventListener('playing', function(){
+    started = true;
+    updateBtn();
+    document.removeEventListener('pointerdown', onFirstTouch);
+    document.removeEventListener('touchstart', onFirstTouch);
+  });
+
+  // スマホ等では開いただけでは鳴らせないため、最初のタップで再生を始めます
+  function onFirstTouch(){ tryPlay(); }
+  document.addEventListener('pointerdown', onFirstTouch);
+  document.addEventListener('touchstart', onFirstTouch);
+
   btn.addEventListener('click', function(){
-    playing = !playing;
-    if (playing) {
-      var src = getBgmSrc();
-      if (!player.src.endsWith(src)) player.src = src;
-      player.volume = 0.4;
-      player.play().catch(function(){ playing = false; updateBtn(); });
-    } else {
-      player.pause();
+    if (wanted && !started) {
+      // 最初の操作がこのボタンだった場合は、止めずに再生開始として扱います
+      tryPlay();
+      updateBtn();
+      return;
     }
+    wanted = !wanted;
+    if (wanted) { tryPlay(); } else { player.pause(); }
     updateBtn();
   });
 
   // 1分ごとに時間帯を確かめて、帯が変わっていたら曲を切り替えます
   setInterval(function(){
-    if (!playing) return;
+    if (!wanted || player.paused) return;
     var src = getBgmSrc();
     if (!player.src.endsWith(src)) {
       player.src = src;
@@ -573,6 +594,9 @@
       player.play().catch(function(){});
     }
   }, 60000);
+
+  updateBtn();
+  tryPlay(); // 自動再生できる環境では、そのまま鳴らします
 })();
 </script>
 <script>
