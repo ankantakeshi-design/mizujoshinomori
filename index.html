@@ -113,6 +113,13 @@
   .leaf-btn:disabled { opacity:.55; cursor:default; }
   .leaf-btn.chosen:disabled { opacity:1; }
   .leaf-msg { margin-top:18px; text-align:center; font-size:14px; font-weight:700; color:#33513c; line-height:2.0; min-height:28px; }
+  .leaf-pile-wrap { margin-top:20px; }
+  .leaf-pile-label { text-align:center; font-size:12px; font-weight:900; color:#7d8b74; letter-spacing:.12em; margin-bottom:8px; }
+  .leaf-pile { position:relative; min-height:58px; background:linear-gradient(180deg, rgba(234,243,236,0), #EAF3EC); border-radius:16px; padding:10px 12px; display:flex; flex-wrap:wrap; gap:5px; justify-content:center; align-content:flex-end; overflow:hidden; }
+  .pile-leaf { width:16px; height:11px; border-radius:0 60% 0 60%; display:inline-block; flex:none; }
+  .pile-empty { font-size:12.5px; color:#9db09f; font-weight:700; }
+  .pile-leaf.drop-in { animation:leafDrop 1.8s ease-out; }
+  @keyframes leafDrop { 0% { transform:translateY(-34px) rotate(-16deg); opacity:0; } 25% { opacity:1; } 55% { transform:translateY(3px) rotate(10deg); } 78% { transform:translateY(-2px) rotate(-5deg); } 100% { transform:translateY(0) rotate(0deg); opacity:1; } }
   .after {
     margin-top:26px; background:#EEF4FB; border-radius:20px; padding:24px 22px;
     font-size:15px; font-weight:500; color:#2B4C7E; line-height:2.1;
@@ -286,6 +293,10 @@
       <button type="button" class="leaf-btn" data-leaf="7">なんとなく不安</button>
     </div>
     <p class="leaf-msg" id="leaf-msg"></p>
+    <div class="leaf-pile-wrap">
+      <div class="leaf-pile-label">今日の葉っぱ</div>
+      <div class="leaf-pile" id="leaf-pile"></div>
+    </div>
   </section>
 
   <section>
@@ -506,10 +517,26 @@
     })
     .catch(function(){});
 
-  // --- feeling leaves (counts shown as all-time totals) ---
-  var counts = {};
-  var totalAll = 0;
+  // --- feeling leaves: place one, receive a reply, watch today's pile grow ---
+  var REPLIES = {
+    1: '今日も、おつかれさまでした。その疲れは、ここに置いて帰ってくださいね。',
+    2: 'モヤモヤは、心が何かを伝えようとしている合図です。置いていってくださいね。',
+    3: 'ほっとしたい気持ち、よく分かります。ここでは、ゆるんでいてくださいね。',
+    4: 'さみしい日もありますね。ここに置いてくれたら、森がそばにいます。',
+    5: 'イライラする日もあります。気持ちは、置いていっていいんです。',
+    6: 'かなしい日は、無理に元気にならなくて大丈夫です。気持ちは、ここに置けます。',
+    7: '理由のない不安も、ありますよね。置いていくと、少し軽くなります。',
+    8: '今日も、よくがんばりましたね。そのがんばり、森が見ています。',
+    9: 'よかったですね。そのうれしさ、森にも分けてくれて、ありがとう。',
+    10: 'たのしい日は、宝物ですね。その気持ち、森で大事に預かります。',
+    11: 'ほっとできて、よかったです。そのゆるみが、力になります。',
+    12: 'すっきりした気持ち、気持ちいいですね。その風通しのよさ、大事にしてくださいね。'
+  };
+  var PALETTE = ['#7FB069', '#5E9C63', '#A7C796', '#8FBC7A', '#6AA84F', '#95C08A'];
+  var todayCounts = {};
+  var todayTotal = 0;
   var msg = document.getElementById('leaf-msg');
+  var pile = document.getElementById('leaf-pile');
   var storeKey = 'mori_leaf_' + todayStr;
   var chosen = null;
   try { chosen = localStorage.getItem(storeKey); } catch(e) {}
@@ -518,16 +545,30 @@
     var b = document.querySelector('.leaf-btn[data-leaf="' + id + '"]');
     return b ? b.textContent : '';
   }
+  function renderPile(animateLast){
+    if (!pile) return;
+    pile.innerHTML = '';
+    if (!todayTotal) {
+      pile.innerHTML = '<span class="pile-empty">まだ、葉っぱはありません</span>';
+      return;
+    }
+    var n = Math.min(todayTotal, 80);
+    for (var i = 0; i < n; i++) {
+      var sp = document.createElement('span');
+      sp.className = 'pile-leaf' + (animateLast && i === n - 1 ? ' drop-in' : '');
+      sp.style.background = PALETTE[i % PALETTE.length];
+      sp.style.transform = 'rotate(' + ((i * 47) % 50 - 25) + 'deg)';
+      pile.appendChild(sp);
+    }
+  }
   function showMsg(){
     if (!msg) return;
     if (chosen) {
-      var c = counts[chosen] || 0;
-      msg.innerHTML = '「' + leafName(chosen) + '」を、森に置きました。<br>' +
-        'これまで ' + c.toLocaleString('ja-JP') + ' 人が、同じ気持ちを置いていきました。';
-    } else if (totalAll > 0) {
-      msg.textContent = '森には、これまで ' + totalAll.toLocaleString('ja-JP') + ' 枚の葉っぱが置かれています。';
+      msg.innerHTML = '「' + leafName(chosen) + '」を、森に置きました。<br>' + (REPLIES[chosen] || '');
+    } else if (todayTotal > 0) {
+      msg.textContent = '今日の森には、葉っぱが置かれています。あなたの気持ちも、どうぞ。';
     } else {
-      msg.textContent = 'この森は、生まれたばかり。最初の葉っぱを、どうぞ。';
+      msg.textContent = '今日の森は、まだ静かです。最初の葉っぱを、どうぞ。';
     }
   }
   function applyChosen(){
@@ -536,16 +577,16 @@
       if (chosen) b.disabled = true;
     });
   }
-  fetch(SB + '/mori_leaves?select=leaf,cnt', { headers: H })
+  fetch(SB + '/mori_leaves?select=leaf,cnt&day=eq.' + todayStr, { headers: H })
     .then(function(r){ return r.json(); })
     .then(function(rows){
       if (Array.isArray(rows)) rows.forEach(function(x){
-        counts[x.leaf] = (counts[x.leaf] || 0) + Number(x.cnt || 0);
-        totalAll += Number(x.cnt || 0);
+        todayCounts[x.leaf] = (todayCounts[x.leaf] || 0) + Number(x.cnt || 0);
+        todayTotal += Number(x.cnt || 0);
       });
-      applyChosen(); showMsg();
+      applyChosen(); renderPile(false); showMsg();
     })
-    .catch(function(){ applyChosen(); showMsg(); });
+    .catch(function(){ applyChosen(); renderPile(false); showMsg(); });
 
   // yesterday's forest: the most-placed leaf yesterday, told as scenery
   (function(){
@@ -577,10 +618,10 @@
       .then(function(r){ return r.json(); })
       .then(function(){
         chosen = id;
-        counts[id] = (counts[id] || 0) + 1;
-        totalAll += 1;
+        todayCounts[id] = (todayCounts[id] || 0) + 1;
+        todayTotal += 1;
         try { localStorage.setItem(storeKey, id); } catch(e) {}
-        applyChosen(); showMsg();
+        applyChosen(); renderPile(true); showMsg();
       })
       .catch(function(){ b.disabled = false; });
     });
