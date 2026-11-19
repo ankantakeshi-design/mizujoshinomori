@@ -2619,7 +2619,10 @@
       var n = Math.min(counts[i], 10), petals = '';
       for (var k = 0; k < 5; k++){
         var bg = '#EDF1E6';
-        if (n >= 2 * k + 2) bg = e.hex; else if (n === 2 * k + 1) bg = paleHex(e.hex);
+        if (e.color === '白') {
+          if (n >= 2 * k + 2) bg = '#EFE3C8'; else if (n === 2 * k + 1) bg = '#F6EFDD';
+        }
+        else if (n >= 2 * k + 2) bg = e.hex; else if (n === 2 * k + 1) bg = paleHex(e.hex);
         var ol = (e.color === '白') ? ';box-shadow:inset 0 0 0 1.5px #C9BFA3' : '';
         petals += '<span class="petal" style="transform:rotate(' + (k * 72) + 'deg);background:' + bg + ol + '"></span>';
       }
