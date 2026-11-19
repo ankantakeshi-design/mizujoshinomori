@@ -208,7 +208,7 @@
   footer { margin-top:56px; text-align:center; font-size:12px; color:#796f62; font-weight:500; }
   footer .bgm-credit { display:block; margin-top:6px; font-size:11px; color:#7c7165; }
   .bgm-btn {
-    position:fixed; right:16px; bottom:16px; z-index:50;
+    position:fixed; left:16px; bottom:16px; z-index:50;
     width:48px; height:48px; padding:0;
     border:2px solid #9CC49F; background:rgba(255,255,255,.92); color:#33513c;
     font-size:19px; font-weight:900; font-family:inherit;
@@ -217,7 +217,7 @@
   }
   .bgm-btn:active { transform:scale(.97); }
   .top-btn {
-    position:fixed; left:16px; bottom:16px; z-index:50;
+    position:fixed; right:16px; bottom:16px; z-index:50;
     width:48px; height:48px; padding:0;
     border:2px solid #9CC49F; background:rgba(255,255,255,.92); color:#33513c;
     font-family:inherit; border-radius:50%; cursor:pointer;
@@ -316,7 +316,6 @@
   .goshiki-btn { font-family:inherit; font-size:13.5px; font-weight:700; color:#4a4238; background:#fff; border:1.5px solid #DCE8D8; border-radius:999px; padding:8px 13px; cursor:pointer; display:flex; align-items:center; gap:6px; }
   .goshiki-btn .gb-dot { width:14px; height:14px; border-radius:50%; display:inline-block; }
   .goshiki-btn.on { background:#F2F7EE; border-color:#7FB069; }
-  .mini-link { background:none; border:none; font-family:inherit; font-size:12px; font-weight:700; color:#7a7264; text-decoration:underline dotted; cursor:pointer; padding:4px 8px; }
   .gs-msg { margin-top:12px; text-align:center; font-size:14.5px; font-weight:700; color:#4a7a52; line-height:1.9; min-height:1.9em; }
   .today-color { display:flex; align-items:center; gap:14px; background:#F7FAF3; border-radius:16px; padding:14px; margin-top:12px; }
   .today-color .tc-swatch { flex:0 0 auto; width:54px; height:54px; border-radius:50%; }
@@ -2243,12 +2242,11 @@
       <div class="c-title">食事コーナー</div>
       <p class="c-lead">食は、色です。<br>東洋の考え方（五行）では、食べ物にも、色と味があると考えます。</p>
       <div class="c-h">1週間で、五色をそろえる</div>
-      <p class="c-p">今日食べた色を、押してみてくださいね。何回か食べたら、そのたびに押して大丈夫です。お皿には、この1週間に集まった色が出ます。わからない時は、その食べ物の見た目の色で、シンプルに決めて大丈夫です。</p>
+      <p class="c-p">今日食べた色を、押してみてくださいね。お皿には、この1週間に集まった色が出ます。わからない時は、その食べ物の見た目の色で、シンプルに決めて大丈夫です。</p>
       <div class="plate" id="gs-plate"></div>
       <div class="goshiki-btns" id="gs-btns"></div>
       <p class="gs-msg" id="gs-msg"></p>
       <p class="gs-msg" id="gs-total" style="color:#7a7264"></p>
-      <p class="gs-msg" id="gs-reset-wrap" style="display:none"><button type="button" id="gs-reset" class="mini-link">押し間違えたら、今日の分を消す</button></p>
       <div class="counter-box" data-counter="eat"></div>
       <p class="c-p">1日で全部そろえなくて、大丈夫です。偏りに気づいたら、今週のどこかで、足りない色を1つ足してみてくださいね。</p>
       <p class="gs-msg" id="food-minna"></p>
@@ -2385,21 +2383,28 @@
   var week = {};
   try { var wsv = JSON.parse(localStorage.getItem('mori_goshiki_week') || 'null'); if (wsv) week = wsv; } catch(e) {}
   if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
+  function refreshDay(){
+    var now = jstStr(new Date());
+    if (now === todayStr2) return;
+    todayStr2 = now;
+    if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
+    saveWeek();
+    try { var ws3 = JSON.parse(localStorage.getItem('mori_wear') || 'null'); wearSel = (ws3 && ws3.date === todayStr2) ? ws3.color : -1; } catch(e) { wearSel = -1; }
+    renderGs(); renderWear(); renderWearTotal(); renderExBtns();
+    if (typeof renderGazeBtns === 'function') renderGazeBtns();
+    renderCounters(); renderCardCounters();
+  }
+  document.addEventListener('pointerdown', refreshDay, true);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) refreshDay(); });
   var gsTotal = 0;
   try { gsTotal = parseInt(localStorage.getItem('mori_goshiki_total') || '0', 10) || 0; } catch(e) {}
   function weekUnion(){ var u = [false, false, false, false, false]; last7().forEach(function(ds){ var a = week[ds]; if (a) a.forEach(function(v, i){ if (v) u[i] = true; }); }); return u; }
   function saveWeek(){ try { var keep = {}; last7().forEach(function(ds){ if (week[ds]) keep[ds] = week[ds]; }); if (!keep[todayStr2]) keep[todayStr2] = week[todayStr2]; week = keep; localStorage.setItem('mori_goshiki_week', JSON.stringify(week)); } catch(e) {} }
   var plate = document.getElementById('gs-plate'), btns = document.getElementById('gs-btns'), msg = document.getElementById('gs-msg');
-  function todayEatCounts(){
-    var counts = [0, 0, 0, 0, 0];
-    try { JSON.parse(localStorage.getItem('mori_color_log') || '[]').forEach(function(ev){ if (ev.c === 'eat' && ev.d === todayStr2 && typeof ev.i === 'number' && ev.i >= 0 && ev.i < 5) counts[ev.i]++; }); } catch(e) {}
-    return counts;
-  }
   function renderGs(){
     var u = weekUnion(), t = week[todayStr2];
     if (plate) plate.innerHTML = EL.map(function(e, i){ return '<span class="plate-dot" style="' + (u[i] ? chipStyle(e) : '') + '"></span>'; }).join('');
-    var tc = todayEatCounts();
-    if (btns) btns.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (tc[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + (tc[i] > 1 ? ' ×' + tc[i] : '') + '</button>'; }).join('');
+    if (btns) btns.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (t[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
     if (msg) {
       var picked = EL.filter(function(e, i){ return u[i]; }).map(function(e){ return e.color; });
       var missing = EL.filter(function(e, i){ return !u[i]; }).map(function(e){ return e.color; });
@@ -2409,32 +2414,16 @@
     }
     var gsTotEl = document.getElementById('gs-total');
     if (gsTotEl) gsTotEl.textContent = gsTotal > 0 ? 'あなたの記録：いままでに、' + gsTotal + '回、色を集めました。' : '';
-    var gsRw = document.getElementById('gs-reset-wrap');
-    if (gsRw) gsRw.style.display = tc.some(function(v){ return v > 0; }) ? '' : 'none';
     if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var i = +b.getAttribute('data-i');
-        week[todayStr2][i] = true;
-        rpcColor('eat', i); logColor('eat', i); gsTotal++;
-        try { localStorage.setItem('mori_goshiki_total', String(gsTotal)); } catch(e) {}
+        week[todayStr2][i] = !week[todayStr2][i];
+        if (week[todayStr2][i]) { rpcColor('eat', i); logColor('eat', i); gsTotal++; try { localStorage.setItem('mori_goshiki_total', String(gsTotal)); } catch(e) {} }
         saveWeek(); renderGs();
       });
     });
   }
   renderGs();
-  var gsReset = document.getElementById('gs-reset');
-  if (gsReset) gsReset.addEventListener('click', function(){
-    try {
-      var log = JSON.parse(localStorage.getItem('mori_color_log') || '[]');
-      var removed = 0;
-      log = log.filter(function(ev){ if (ev.c === 'eat' && ev.d === todayStr2) { removed++; return false; } return true; });
-      localStorage.setItem('mori_color_log', JSON.stringify(log));
-      gsTotal = Math.max(0, gsTotal - removed);
-      localStorage.setItem('mori_goshiki_total', String(gsTotal));
-    } catch(e) {}
-    week[todayStr2] = [false, false, false, false, false];
-    saveWeek(); renderGs(); renderCounters(); renderCardCounters();
-  });
   /* みんなの色（食事・今週） */
   var fm = document.getElementById('food-minna');
   if (fm) {
@@ -2772,6 +2761,10 @@
   try { var sv = JSON.parse(localStorage.getItem('mori_clean_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
   if (!hist[today]) hist[today] = [false, false, false, false, false];
   var done = hist[today];
+  document.addEventListener('pointerdown', function(){
+    var now = jstStr(new Date());
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false]; done = hist[today]; render(); }
+  }, true);
   var btns = document.getElementById('clean-btns'), msg = document.getElementById('clean-msg'), totalEl = document.getElementById('clean-total');
   function render(){
     if (btns) btns.innerHTML = ROOMS.map(function(r, i){
@@ -2826,6 +2819,10 @@
   try { var sv = JSON.parse(localStorage.getItem('mori_body_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
   if (!hist[today]) hist[today] = [false, false, false, false, false, false];
   var done = hist[today];
+  document.addEventListener('pointerdown', function(){
+    var now = jstStr(new Date());
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false, false]; done = hist[today]; render(); }
+  }, true);
   var zones = document.getElementById('area-zones'), btns = document.getElementById('area-btns'), msg = document.getElementById('area-msg'), totalEl = document.getElementById('area-total');
   function render(){
     if (zones) zones.innerHTML = AREAS.map(function(a, i){
