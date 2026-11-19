@@ -2405,10 +2405,10 @@
       <p class="c-p">1か所、一拭きでも大丈夫です。箒ひとはき、コロコロ1回でも、それで十分ですよ。</p>
       <div class="goshiki-list">
         <div class="goshiki-row"><span class="gs-chip" style="background:#6FA287"></span><span class="gs-el">木</span><span class="gs-food">玄関（緑）…外とつながる入口</span></div>
-        <div class="goshiki-row"><span class="gs-chip" style="background:#D97757"></span><span class="gs-el">火</span><span class="gs-food">キッチン（赤）…火を使う場所</span></div>
-        <div class="goshiki-row"><span class="gs-chip" style="background:#E0B84F"></span><span class="gs-el">土</span><span class="gs-food">リビング（黄）…集まる場所</span></div>
-        <div class="goshiki-row"><span class="gs-chip" style="background:#F2EFE6;border:1.5px solid #CFC8B4"></span><span class="gs-el">金</span><span class="gs-food">廊下（白）…通り道</span></div>
-        <div class="goshiki-row"><span class="gs-chip" style="background:#44546A"></span><span class="gs-el">水</span><span class="gs-food">寝室（黒）…静かに休む場所</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#D97757"></span><span class="gs-el">火</span><span class="gs-food">キッチン（赤）…コンロ・換気扇</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#E0B84F"></span><span class="gs-el">土</span><span class="gs-food">床（黄）</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#F2EFE6;border:1.5px solid #CFC8B4"></span><span class="gs-el">金</span><span class="gs-food">壁・窓（白）</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#44546A"></span><span class="gs-el">水</span><span class="gs-food">ベッド・布団（黒）…トイレ・シンクも、水の場所</span></div>
       </div>
       <p class="c-p" style="margin-top:14px">できたら、その場所のボタンを押してくださいね。</p>
       <div class="goshiki-btns" id="clean-btns"></div>
@@ -2422,9 +2422,9 @@
   var ROOMS = [
     { place:'玄関', color:'緑', hex:'#6FA287' },
     { place:'キッチン', color:'赤', hex:'#D97757' },
-    { place:'リビング', color:'黄', hex:'#E0B84F' },
-    { place:'廊下', color:'白', hex:'#F2EFE6' },
-    { place:'寝室', color:'黒', hex:'#44546A' }
+    { place:'床', color:'黄', hex:'#E0B84F' },
+    { place:'壁・窓', color:'白', hex:'#F2EFE6' },
+    { place:'ベッド・布団', color:'黒', hex:'#44546A' }
   ];
   var open = document.getElementById('corner-clean'), modal = document.getElementById('clean-modal');
   if (!open || !modal) return;
