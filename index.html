@@ -2185,7 +2185,7 @@
       <button type="button" class="intro-close" id="letter-close" aria-label="とじる">×</button>
       <img src="keeper.webp" alt="森の番人" style="display:block; width:170px; max-width:60%; margin:2px auto 10px;" loading="lazy" width="640" height="640">
       <div class="l-title">森の番人から</div>
-      <p class="modal-letter-p">感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
+      <p class="modal-letter-p" id="letter-body">感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
       だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>
       無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>
       また来てくださいね。</p>
@@ -2198,7 +2198,23 @@
   var open = document.getElementById('letter-open');
   var modal = document.getElementById('letter-modal');
   if (!open || !modal) return;
-  var LETTER_VER = '2026-11-19';
+  var LETTERS = [
+    '感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>また来てくださいね。',
+    '疲れた日は、何もしなくて大丈夫です。<br>森は、休むための場所でもあります。<br>ベンチに座って、ぼんやり空を見る。そんな時間も、大切な時間です。<br>無理のない日を、過ごしてくださいね。',
+    '季節は、少しずつ移っていきます。<br>気持ちも、同じです。<br>昨日と今日で、少し違っていい。変わらないように見える日も、根っこでは育っています。<br>焦らなくて、大丈夫です。',
+    '色は、気持ちに寄り添ってくれます。<br>元気のない日は、優しい色を眺めるだけでも。<br>森の彩り生活で、今日の色を1つ、選んでみてくださいね。<br>感じるままに、どうぞ。',
+    '雨の日は、森も静かです。<br>雨は、木を育てます。<br>泣きたい日があっても、大丈夫。涙も、水の流れのひとつです。<br>雨のあとは、空が澄みます。',
+    '大きなことは、しなくて大丈夫です。<br>葉っぱ1枚、色1つ、深呼吸1回。<br>それで十分な日も、あります。<br>小さな一歩も、前に進んでいることには、変わりありません。',
+    '夜は、考えることが増える時間です。<br>答えの出ないことは、夜の森に預けてください。<br>朝になると、少し軽くなっていることが、あります。<br>今日も一日、おつかれさまでした。',
+    '人のペースと、比べなくて大丈夫です。<br>木は、それぞれの速さで育ちます。<br>あなたのペースが、あなたには一番合っています。<br>ゆっくりで、大丈夫です。'
+  ];
+  function letterMonday(){ var n = new Date(); var dow = (n.getDay() + 6) % 7; return new Date(n.getFullYear(), n.getMonth(), n.getDate() - dow); }
+  var monW = letterMonday();
+  var LETTER_VER = 'letter-' + monW.getFullYear() + '-' + (monW.getMonth() + 1) + '-' + monW.getDate();
+  var weekIdx = Math.floor((monW - new Date(2026, 10, 16)) / 604800000);
+  var letterIdx = ((weekIdx % LETTERS.length) + LETTERS.length) % LETTERS.length;
+  var bodyEl = document.getElementById('letter-body');
+  if (bodyEl) bodyEl.innerHTML = LETTERS[letterIdx];
   var notice = document.getElementById('letter-new');
   try { if (localStorage.getItem('mori_letter_seen') !== LETTER_VER && notice) notice.style.display = ''; } catch(e) { if (notice) notice.style.display = ''; }
   function hide(){ modal.style.display = 'none'; }
@@ -3005,7 +3021,7 @@
 </script>
 <script>
 (function(){
-  var LETTER_VER = '2026-11-19';
+  var LETTER_VER = (function(){ var n = new Date(); var dow = (n.getDay() + 6) % 7; var m = new Date(n.getFullYear(), n.getMonth(), n.getDate() - dow); return 'letter-' + m.getFullYear() + '-' + (m.getMonth() + 1) + '-' + m.getDate(); })();
   var ANNAI_VER = '2026-11-19';
   function $(id){ return document.getElementById(id); }
   function show(id, on){ var el = $(id); if (el) el.style.display = on ? '' : 'none'; }
