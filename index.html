@@ -322,6 +322,10 @@
   .corner-wide { grid-column: span 2; }
   .body-fig { display:block; margin:6px auto 0; max-width:230px; width:100%; height:auto; }
   .area-btns { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
+  .gaze-stage { text-align:center; margin-top:16px; }
+  .gaze-circle { width:150px; height:150px; border-radius:50%; border:none; cursor:pointer; display:block; margin:0 auto; padding:0; }
+  .gaze-bar-track { width:150px; height:5px; border-radius:3px; background:#E7EEE1; margin:14px auto 0; overflow:hidden; }
+  .gaze-bar { height:100%; width:0; border-radius:3px; }
 </style>
 </head>
 <body>
@@ -2031,7 +2035,7 @@
       <div class="c-h">五色・五味・気持ち</div>
       <div id="goshiki-list"></div>
       <div class="c-h">1週間で、五色をそろえる</div>
-      <p class="c-p">今日食べた色を、押してみてくださいね。お皿には、この1週間に集まった色が出ます。</p>
+      <p class="c-p">今日食べた色を、押してみてくださいね。お皿には、この1週間に集まった色が出ます。わからない時は、その食べ物の見た目の色で、シンプルに決めて大丈夫です。</p>
       <div class="plate" id="gs-plate"></div>
       <div class="goshiki-btns" id="gs-btns"></div>
       <p class="gs-msg" id="gs-msg"></p>
@@ -2048,6 +2052,15 @@
       <button type="button" class="intro-close" id="color-close" aria-label="とじる">×</button>
       <div class="c-title">色コーナー</div>
       <p class="c-lead">色は、気持ちに寄り添ってくれます。<br>五行の5つの色から、今日の色と、気分に合う色をどうぞ。</p>
+      <div class="c-h">今日ほしいエネルギーの色</div>
+      <p class="c-p">ほしいエネルギーの色を、1つ選んでくださいね。</p>
+      <div class="goshiki-btns" id="gaze-btns"></div>
+      <div class="gaze-stage" id="gaze-stage" style="display:none">
+        <button type="button" class="gaze-circle" id="gaze-circle" aria-label="選んだ色"></button>
+        <div class="gaze-bar-track"><div class="gaze-bar" id="gaze-bar"></div></div>
+        <p class="gs-msg" id="gaze-msg"></p>
+      </div>
+      <p class="gs-msg" id="gaze-total" style="color:#7a7264"></p>
       <div class="c-h">今日の色</div>
       <div class="today-color" id="color-today"></div>
       <div class="c-h">気分から、色を選ぶ</div>
@@ -2239,6 +2252,58 @@
     return '<div class="pair-row"><span class="pair-chip" style="' + chipStyle(p.base) + '"></span><span><b>' + p.base.color + '</b>には</span><span class="pair-arrow">→</span>' +
       p.with.map(function(w){ return '<span class="pair-chip" style="' + chipStyle(w) + '"></span><span>' + w.color + '</span>'; }).join('') + '</div>';
   }).join('');
+  /* 色：ほしいエネルギーの色を眺める */
+  var gb = document.getElementById('gaze-btns'), gst = document.getElementById('gaze-stage'),
+      gc = document.getElementById('gaze-circle'), gbar = document.getElementById('gaze-bar'),
+      gm = document.getElementById('gaze-msg'), gt = document.getElementById('gaze-total');
+  var gazeDays = [];
+  try { gazeDays = JSON.parse(localStorage.getItem('mori_gaze_days') || '[]'); } catch(e) {}
+  var gazeToday = null;
+  try { var gz = JSON.parse(localStorage.getItem('mori_gaze') || 'null'); if (gz && gz.date === todayStr2) gazeToday = gz.color; } catch(e) {}
+  var gazeSel = -1, gazePhase = 'select', gazeTimer = null;
+  function gazeTotalRender(){ if (gt) gt.textContent = gazeDays.length ? 'あなたの記録：いままでに、' + gazeDays.length + '回、色を眺めて深呼吸しました。' : ''; }
+  function renderGazeBtns(){
+    if (gb) gb.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (gazeSel === i || gazeToday === i ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
+    if (gb) Array.prototype.forEach.call(gb.querySelectorAll('.goshiki-btn'), function(b){
+      b.addEventListener('click', function(){ startGaze(+b.getAttribute('data-i')); });
+    });
+  }
+  function startGaze(i){
+    if (gazeTimer) { clearTimeout(gazeTimer); gazeTimer = null; }
+    gazeSel = i; gazePhase = 'gazing';
+    renderGazeBtns();
+    if (gst) gst.style.display = 'block';
+    if (gc) gc.style.background = EL[i].hex;
+    if (gm) gm.textContent = 'この色を、10秒眺めてみてくださいね。';
+    if (gbar) { gbar.style.transition = 'none'; gbar.style.width = '0'; gbar.style.background = EL[i].hex; void gbar.offsetWidth; gbar.style.transition = 'width 10s linear'; gbar.style.width = '100%'; }
+    gazeTimer = setTimeout(function(){
+      gazePhase = 'breath';
+      if (gm) gm.textContent = '大きく、深呼吸を1回どうぞ。できたら、この色を押してくださいね。';
+    }, 10000);
+  }
+  function finishGaze(){
+    gazePhase = 'done';
+    if (gm) gm.textContent = EL[gazeSel].color + 'のエネルギーを、受け取りましたね。';
+    try {
+      localStorage.setItem('mori_gaze', JSON.stringify({ date: todayStr2, color: gazeSel }));
+      if (gazeDays.indexOf(todayStr2) < 0) { gazeDays.push(todayStr2); localStorage.setItem('mori_gaze_days', JSON.stringify(gazeDays)); }
+    } catch(e) {}
+    gazeToday = gazeSel;
+    gazeTotalRender();
+  }
+  if (gc) gc.addEventListener('click', function(){
+    if (gazePhase === 'breath') finishGaze();
+    else if (gazePhase === 'gazing' && gm) gm.textContent = 'ゆっくり、眺めてくださいね。';
+  });
+  renderGazeBtns(); gazeTotalRender();
+  if (gazeToday !== null && gazeToday >= 0) {
+    gazeSel = gazeToday; gazePhase = 'done';
+    renderGazeBtns();
+    if (gst) gst.style.display = 'block';
+    if (gc) gc.style.background = EL[gazeToday].hex;
+    if (gbar) { gbar.style.background = EL[gazeToday].hex; gbar.style.width = '100%'; }
+    if (gm) gm.textContent = '今日は、' + EL[gazeToday].color + 'のエネルギーを受け取りましたね。';
+  }
   /* 運動 */
   var EX = [
     { day:'日', name:'体をゆらゆら', how:'立って、体を左右に小さく揺らします。波に揺られる気分で、ゆっくりと。' },
