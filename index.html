@@ -365,6 +365,8 @@
   .mnav-btn { display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px 8px; background:#FDFEFB; border:1.5px solid #DCE8D8; border-radius:14px; font-family:inherit; font-size:12.5px; font-weight:700; color:#3d4a3a; cursor:pointer; }
   .mnav-btn:active { background:#F2F7EE; }
   .mnav-emoji { font-size:19px; line-height:1; }
+  .mnav-annai { text-align:center; margin-top:10px; font-size:12px; }
+  .mnav-annai a { color:#9a927f; text-decoration:none; border-bottom:1px dotted #c9c2ae; }
 </style>
 </head>
 <body>
@@ -390,6 +392,7 @@
       <button type="button" class="mnav-btn" data-click="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button>
       <button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙</button>
     </div>
+    <p class="mnav-annai"><a href="#annai">森の奥のご案内はこちら</a></p>
   </nav>
 
   <div class="hero">
@@ -557,6 +560,45 @@
   <footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
 </div>
+
+  <div class="intro-overlay" id="nikki-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="nikki-close" aria-label="とじる">×</button>
+      <div class="c-title">みーちゃんの水女子日記</div>
+      <p class="c-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
+      <div id="diary-list"></div>
+      <button type="button" class="modal-close-bottom" id="nikki-close-b">閉じる</button>
+    </div>
+  </div>
+
+  <div class="intro-overlay" id="koyomi-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="koyomi-close" aria-label="とじる">×</button>
+<div class="c-title">わたしの暦</div>
+    <p class="c-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
+    <div class="koyomi-box">
+      <div class="koyomi-title" id="koyomi-title"></div>
+      <div class="koyomi-grid" id="koyomi-grid"></div>
+      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
+    </div>
+    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
+      <div class="koyomi-title">あなたの色の記録</div>
+      <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
+      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
+    </div>
+    <div class="koyomi-box" style="margin-top:14px">
+      <div class="koyomi-title">記録のバックアップ</div>
+      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
+      <div class="bk-btns">
+        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
+        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
+      </div>
+      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
+      <p class="gs-msg" id="bk-msg"></p>
+    </div>
+      <button type="button" class="modal-close-bottom" id="koyomi-close-b">閉じる</button>
+    </div>
+  </div>
 
 <script>
 (function(){
@@ -2064,45 +2106,6 @@
       <button type="button" class="modal-close-bottom" id="planet-close-b">閉じる</button>
     </div>
   </div>
-  <div class="intro-overlay" id="nikki-modal" style="display:none">
-    <div class="intro-card">
-      <button type="button" class="intro-close" id="nikki-close" aria-label="とじる">×</button>
-      <div class="c-title">みーちゃんの水女子日記</div>
-      <p class="c-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
-      <div id="diary-list"></div>
-      <button type="button" class="modal-close-bottom" id="nikki-close-b">閉じる</button>
-    </div>
-  </div>
-
-  <div class="intro-overlay" id="koyomi-modal" style="display:none">
-    <div class="intro-card">
-      <button type="button" class="intro-close" id="koyomi-close" aria-label="とじる">×</button>
-<div class="c-title">わたしの暦</div>
-    <p class="c-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
-    <div class="koyomi-box">
-      <div class="koyomi-title" id="koyomi-title"></div>
-      <div class="koyomi-grid" id="koyomi-grid"></div>
-      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
-    </div>
-    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
-      <div class="koyomi-title">あなたの色の記録</div>
-      <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
-      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
-    </div>
-    <div class="koyomi-box" style="margin-top:14px">
-      <div class="koyomi-title">記録のバックアップ</div>
-      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
-      <div class="bk-btns">
-        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
-        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
-      </div>
-      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
-      <p class="gs-msg" id="bk-msg"></p>
-    </div>
-      <button type="button" class="modal-close-bottom" id="koyomi-close-b">閉じる</button>
-    </div>
-  </div>
-
   <div class="intro-overlay" id="sky-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="sky-close" aria-label="とじる">×</button>
