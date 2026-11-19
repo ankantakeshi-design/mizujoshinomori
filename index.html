@@ -3085,7 +3085,7 @@
 </script>
 <style>
 .push-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 4px}
-.push-chip{border:1.5px solid #B9CDB2;background:#fff;color:#5b6b57;border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:44px}
+.push-chip{border:1.5px solid #C4D4BA;background:#EFF3EA;color:#75846F;border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:44px}
 .push-chip[aria-pressed="true"]{background:#7FB069;border-color:#7FB069;color:#fff}
 .push-stop{background:none;border:none;color:#8a7f72;font-size:13px;text-decoration:underline;cursor:pointer;margin-top:6px;min-height:44px}
 </style>
@@ -3108,7 +3108,7 @@
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
   var reg = null;
-  function chipsHTML(p){ return '<div class="push-chips"><button type="button" class="push-chip" id="push-chip-moon" aria-pressed="' + (p.moon ? 'true' : 'false') + '">🌙 新月・満月</button><button type="button" class="push-chip" id="push-chip-planet" aria-pressed="' + (p.planet ? 'true' : 'false') + '">🪐 惑星の逆行・順行</button></div>'; }
+  function chipsHTML(p){ function chip(id, on, label){ return '<button type="button" class="push-chip" id="' + id + '" aria-pressed="' + (on ? 'true' : 'false') + '">' + (on ? '✓ ' : '') + label + '</button>'; } return '<div class="push-chips">' + chip('push-chip-moon', p.moon, '🌙 新月・満月') + chip('push-chip-planet', p.planet, '🪐 惑星の逆行・順行') + '</div><p class="c-p" style="margin-top:6px">緑色が、受け取る設定です。</p>'; }
   function bindChips(onChange){
     ['moon', 'planet'].forEach(function (k) {
       var el = document.getElementById('push-chip-' + k);
@@ -3146,9 +3146,12 @@
     if (ep) post('/unsubscribe', { endpoint: ep }).catch(function () {});
     setEndpoint(''); renderOff(); say('お知らせを、やめました。');
   }
+  if (isIOS && !standalone) {
+    ui.innerHTML = '<p class="c-p">iPhoneの方は、ホーム画面に追加すると、通知を受け取れます。</p><p class="c-p" style="text-align:left">1. 共有ボタン（四角に、上矢印のマーク）を押します<br>2. 「ホーム画面に追加」を選びます<br>3. ホーム画面のアイコンから開くと、ここで設定できます</p>';
+    return;
+  }
   if (!supported) {
-    if (isIOS && !standalone) ui.innerHTML = '<p class="c-p">iPhoneの方は、先にこのサイトをホーム画面に追加してから、追加したアイコンから開くと、通知を設定できます。</p>';
-    else ui.innerHTML = '<p class="c-p">この端末・ブラウザでは、通知が使えません。</p>';
+    ui.innerHTML = '<p class="c-p">この端末・ブラウザでは、通知が使えません。</p>';
     return;
   }
   navigator.serviceWorker.register('sw.js').then(function (r) { reg = r; return navigator.serviceWorker.ready; }).then(function () {
