@@ -402,7 +402,7 @@
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
     <div class="mnav-grid">
-      <button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦</button>
+      <button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button>
       <button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button>
       <button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button>
       <button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button>
@@ -1615,19 +1615,74 @@
       return cands[0][1];
     }
     var ty = nd.getFullYear(), tm = nd.getMonth(), td = nd.getDate();
-    for (var off = 1; off <= 3 && !soonText; off++) {
-      var sd = new Date(ty, tm, td + off);
-      var msg = soonFor(sd.getFullYear(), sd.getMonth(), sd.getDate());
-      if (msg) {
-        var prefix = off === 1 ? '明日は、' : off === 2 ? 'あさっては、' : (sd.getMonth() + 1) + '月' + sd.getDate() + '日は、';
-        soonText = prefix + msg;
+    function soonOtherFor(y, m, d){
+      var cands = [];
+      var sk = sekkiOn(y, m, d);
+      if (sk >= 0) cands.push([2, SEKKI_NAMES[sk] + 'です。' + (sk === 270 ? '柚子湯がいい日です' : '季節の変わり目です')]);
+      var ckey = (m + 1) + '-' + d, fkey = y + '-' + pad2(m + 1) + '-' + pad2(d);
+      var cu = SOON_CUSTOMS[ckey] || SOON_CUSTOMS[fkey];
+      if (cu) cands.push([2, cu[0] + 'です。' + cu[1]]);
+      var lon = gSunLon(y, m, d), eto = gEto(y, m, d);
+      if (lon >= 116.5 && lon < 135 && eto % 12 === 1) cands.push([2, '土用の丑の日です。うなぎで力をつける日です']);
+      if (sekkiOn(y, m, d + 3) === 0 || sekkiOn(y, m, d + 3) === 180) cands.push([3, 'お彼岸の入りです。お墓参りの頃です']);
+      if (sekkiOn(y, m, d - 3) === 0 || sekkiOn(y, m, d - 3) === 180) cands.push([3, 'お彼岸の明けです']);
+      var tg = (lon >= 315 || lon < 45) ? 14 : (lon < 135 ? 30 : (lon < 225 ? 44 : 0));
+      if (eto === tg) cands.push([3, '天赦日です。何かを始めるのに、とてもよい日です']);
+      if (SHOWERS[ckey]) cands.push([4, SHOWERS[ckey] + 'の見ごろです']);
+      if (!cands.length) return null;
+      cands.sort(function(a, b){ return a[0] - b[0]; });
+      return cands[0][1];
+    }
+    function moonEventOn(y, m, d){
+      var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
+      var a0 = sAgeAt(t0), a1 = sAgeAt(t0 + 86400000);
+      if (a1 < a0 - 20) return '新月';
+      if (a0 < 14.7653 && a1 >= 14.7653) return '満月';
+      return null;
+    }
+    var fcItems = [];
+    for (var off1 = 1; off1 <= 7; off1++) {
+      var md = new Date(ty, tm, td + off1);
+      var mev = moonEventOn(md.getFullYear(), md.getMonth(), md.getDate());
+      if (mev) {
+        var mdate = (md.getMonth() + 1) + '月' + md.getDate() + '日';
+        var mtxt = off1 === 1 ? '明日は、' + mev + 'です' : 'あと' + off1 + '日で、' + mev + 'です（' + mdate + '）';
+        if (mev === '満月') mtxt += '。お月見の夜です';
+        fcItems.push({ off: off1, prio: 1, text: mtxt, sky: true });
+        break;
       }
     }
+    for (var off2 = 1; off2 <= 7; off2++) {
+      var pd2 = new Date(ty, tm, td + off2);
+      var pkey = pd2.getFullYear() + '-' + pad2(pd2.getMonth() + 1) + '-' + pad2(pd2.getDate());
+      var stHit = null;
+      STATIONS.forEach(function(r){ if (pkey === r[1]) stHit = [r[0], true]; if (pkey === r[2]) stHit = [r[0], false]; });
+      if (stHit) {
+        var pdate = (pd2.getMonth() + 1) + '月' + pd2.getDate() + '日';
+        var ptxt = stHit[1]
+          ? (off2 === 1 ? '明日、' + stHit[0] + 'の逆行が始まります' : stHit[0] + 'の逆行が、まもなく始まります（' + pdate + 'から）')
+          : (off2 === 1 ? '明日、' + stHit[0] + 'が順行に戻ります' : stHit[0] + 'が、まもなく順行に戻ります（' + pdate + '）');
+        fcItems.push({ off: off2, prio: 2, text: ptxt, sky: true });
+        break;
+      }
+    }
+    for (var off3 = 1; off3 <= 3; off3++) {
+      var od = new Date(ty, tm, td + off3);
+      var omsg = soonOtherFor(od.getFullYear(), od.getMonth(), od.getDate());
+      if (omsg) {
+        var oprefix = off3 === 1 ? '明日は、' : off3 === 2 ? 'あさっては、' : (od.getMonth() + 1) + '月' + od.getDate() + '日は、';
+        fcItems.push({ off: off3, prio: 3, text: oprefix + omsg, sky: false });
+        break;
+      }
+    }
+    fcItems.sort(function(a, b){ return (a.off - b.off) || (a.prio - b.prio); });
     var pillLines = [];
     if (sText) pillLines.push(sText);
-    if (soonText) pillLines.push(soonText);
+    fcItems.slice(0, 2).forEach(function(x){ pillLines.push(x.text); });
     if (pillLines.length) { sEl.innerHTML = pillLines.join('<br>'); sEl.style.display = 'inline-block'; }
     else sEl.style.display = 'none';
+    var nbSky = document.getElementById('nb-sky');
+    if (nbSky) nbSky.style.display = fcItems.some(function(x){ return x.sky && x.off <= 3; }) ? '' : 'none';
   }
 
   var btn = document.getElementById('uranai-btn');
