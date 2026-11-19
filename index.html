@@ -340,6 +340,10 @@
   #area-zones { position:absolute; inset:0; }
   .area-zone { position:absolute; transform:translate(-50%,-50%); width:16%; aspect-ratio:1.25; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; opacity:.55; border:2px solid rgba(255,255,255,.95); box-shadow:0 1px 4px rgba(90,83,68,.25); }
   .area-zone.on { opacity:.95; box-shadow:0 0 0 2.5px #7FB069, 0 1px 4px rgba(90,83,68,.25); }
+  .cvisual { display:inline-flex; gap:9px; flex-wrap:wrap; justify-content:center; }
+  .cchip { display:inline-flex; flex-direction:column; align-items:center; gap:2px; }
+  .cchip-circle { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; }
+  .cchip-name { font-size:11px; font-weight:700; }
 </style>
 </head>
 <body>
@@ -394,7 +398,7 @@
     </div>
     <div class="all-counter-wrap" style="display:none; margin-top:18px">
       <p class="gs-msg" style="font-weight:700; color:#7a7264">全部のコーナーを合わせた、あなたの色</p>
-      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:4px; padding-top:0"></div>
+      <div class="counter-box" data-counter="all" data-mode="week" style="border-top:none; margin-top:4px; padding-top:0"></div>
     </div>
   </section>
 
@@ -2395,7 +2399,10 @@
   }
   var TX = ['#4E8266', '#C25E3A', '#A87F24', '#8A8474', '#44546A'];
   function colorRowHTML(counts){
-    return EL.map(function(e, i){ return '<span class="ccount" style="color:' + TX[i] + ';font-weight:700"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + ' ' + counts[i] + '</span>'; }).join('');
+    return '<span class="cvisual">' + EL.map(function(e, i){
+      var tc = (e.color === '黄' || e.color === '白') ? '#5a5344' : '#FFFFFF';
+      return '<span class="cchip"><span class="cchip-circle" style="background:' + e.hex + ';color:' + tc + (e.color === '白' ? ';border:1.5px solid #CFC8B4' : '') + '">' + counts[i] + '</span><span class="cchip-name" style="color:' + TX[i] + '">' + e.color + '</span></span>';
+    }).join('') + '</span>';
   }
   function renderCounters(){
     document.querySelectorAll('[data-counter]').forEach(function(box){
@@ -2409,8 +2416,12 @@
       }
       if (key === 'all') document.querySelectorAll('.all-counter-wrap').forEach(function(p){ p.style.display = ''; });
       var wk = colorCounts(key === 'all' ? null : key, true);
-      box.innerHTML = '<div class="counter-row"><span class="counter-label">今週の色</span>' + colorRowHTML(wk) + '</div>'
-        + '<div class="counter-row"><span class="counter-label">いままでの色</span>' + colorRowHTML(perm) + '</div>';
+      if (box.getAttribute('data-mode') === 'week') {
+        box.innerHTML = '<div class="counter-row">' + colorRowHTML(wk) + '</div>';
+      } else {
+        box.innerHTML = '<div class="counter-row"><span class="counter-label">今週の色</span>' + colorRowHTML(wk) + '</div>'
+          + '<div class="counter-row"><span class="counter-label">いままでの色</span>' + colorRowHTML(perm) + '</div>';
+      }
     });
   }
   document.addEventListener('click', function(){ setTimeout(renderCounters, 60); });
