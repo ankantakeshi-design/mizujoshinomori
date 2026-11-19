@@ -2026,12 +2026,13 @@
       <p class="c-lead">食は、色です。<br>東洋の考え方（五行）では、自然も、食べ物も、気持ちも、5つに分けて考えます。</p>
       <div class="c-h">五色・五味・気持ち</div>
       <div id="goshiki-list"></div>
-      <div class="c-h">今日は、何色食べられたかな</div>
-      <p class="c-p">今日食べた色を、押してみてくださいね。お皿に、色が集まります。</p>
+      <div class="c-h">1週間で、五色をそろえる</div>
+      <p class="c-p">今日食べた色を、押してみてくださいね。お皿には、この1週間に集まった色が出ます。</p>
       <div class="plate" id="gs-plate"></div>
       <div class="goshiki-btns" id="gs-btns"></div>
       <p class="gs-msg" id="gs-msg"></p>
-      <p class="c-p">そろわない日があって、当たり前です。明日、足りない色を1つ足すくらいで、大丈夫ですよ。</p>
+      <p class="c-p">1日で全部そろえなくて、大丈夫です。偏りに気づいたら、今週のどこかで、足りない色を1つ足してみてくださいね。</p>
+      <p class="gs-msg" id="food-minna"></p>
       <div class="c-h">今日のおすすめの色</div>
       <div class="today-color" id="food-today"></div>
       <button type="button" class="modal-close-bottom" id="food-close-b">閉じる</button>
@@ -2053,6 +2054,11 @@
         <button type="button" class="mood-btn" data-mood="3">すっきりしたい</button>
       </div>
       <div class="mood-result" id="mood-result"></div>
+      <div class="c-h">今日身につけている色</div>
+      <p class="c-p">今日の服や小物の色を、1つ選んでみてくださいね。</p>
+      <div class="goshiki-btns" id="wear-btns"></div>
+      <p class="gs-msg" id="wear-msg"></p>
+      <p class="gs-msg" id="wear-minna"></p>
       <div class="c-h">この色には、この色</div>
       <p class="c-p">服の色合わせの、基礎の基礎です。色は3つまでが、すっきり見える目安ですよ。</p>
       <div id="pair-list"></div>
@@ -2112,37 +2118,87 @@
   /* 食事：今日のおすすめの色 */
   var ft = document.getElementById('food-today');
   if (ft) ft.innerHTML = '<span class="tc-swatch" style="' + chipStyle(todayEl) + '"></span><div class="tc-body">今日は、<b>' + todayEl.color + '</b>をひとつ足してみませんか。<br>' + todayEl.food + '。</div>';
-  /* 食事：今日食べた色 */
+  /* 食事：1週間の五色 */
+  var SB2 = 'https://twxxcjjffznjaeyconoc.supabase.co/rest/v1';
+  var KEY2 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3eHhjampmZnpuamFleWNvbm9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMTc1NTcsImV4cCI6MjExMDU5MzU1N30.MIVvDvZx03ai7mshyP3FR8JP0xe9Yu-7BgUjtIvvpew';
+  var H2 = { apikey: KEY2, Authorization: 'Bearer ' + KEY2 };
+  function jstStr(d){ return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(d); }
+  var todayStr2 = jstStr(new Date());
+  function last7(){ var arr = []; for (var k = 6; k >= 0; k--) arr.push(jstStr(new Date(Date.now() - k * 86400000))); return arr; }
+  function rpcColor(kind, color){
+    fetch(SB2 + '/rpc/increment_color', { method: 'POST', headers: { apikey: KEY2, Authorization: 'Bearer ' + KEY2, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_kind: kind, p_color: color }) }).catch(function(){});
+  }
+  var week = {};
+  try { var wsv = JSON.parse(localStorage.getItem('mori_goshiki_week') || 'null'); if (wsv) week = wsv; } catch(e) {}
+  if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
+  function weekUnion(){ var u = [false, false, false, false, false]; last7().forEach(function(ds){ var a = week[ds]; if (a) a.forEach(function(v, i){ if (v) u[i] = true; }); }); return u; }
+  function saveWeek(){ try { var keep = {}; last7().forEach(function(ds){ if (week[ds]) keep[ds] = week[ds]; }); if (!keep[todayStr2]) keep[todayStr2] = week[todayStr2]; week = keep; localStorage.setItem('mori_goshiki_week', JSON.stringify(week)); } catch(e) {} }
   var plate = document.getElementById('gs-plate'), btns = document.getElementById('gs-btns'), msg = document.getElementById('gs-msg');
-  var dayKey = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
-  var state = [false, false, false, false, false];
-  try {
-    var saved = JSON.parse(localStorage.getItem('mori_goshiki') || 'null');
-    if (saved && saved.date === dayKey && saved.on) state = saved.on;
-  } catch(e) {}
   function renderGs(){
-    if (plate) plate.innerHTML = EL.map(function(e, i){
-      return '<span class="plate-dot" style="' + (state[i] ? chipStyle(e) : '') + '"></span>';
-    }).join('');
-    if (btns) btns.innerHTML = EL.map(function(e, i){
-      return '<button type="button" class="goshiki-btn' + (state[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>';
-    }).join('');
+    var u = weekUnion(), t = week[todayStr2];
+    if (plate) plate.innerHTML = EL.map(function(e, i){ return '<span class="plate-dot" style="' + (u[i] ? chipStyle(e) : '') + '"></span>'; }).join('');
+    if (btns) btns.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (t[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
     if (msg) {
-      var picked = EL.filter(function(e, i){ return state[i]; }).map(function(e){ return e.color; });
+      var picked = EL.filter(function(e, i){ return u[i]; }).map(function(e){ return e.color; });
+      var missing = EL.filter(function(e, i){ return !u[i]; }).map(function(e){ return e.color; });
       if (!picked.length) msg.textContent = '食べた色を、押してみてくださいね。';
-      else if (picked.length === 5) msg.textContent = '五色そろいましたね。体が、喜んでいるかもしれません。';
-      else msg.textContent = picked.join('と') + 'が、体に入りましたね。';
+      else if (!missing.length) msg.textContent = 'この1週間で、五色そろいましたね。いろんな色が、体に入りました。';
+      else msg.textContent = 'この1週間で、' + picked.join('と') + 'が集まりました。あとは' + missing.join('と') + '。今週のどこかで、足してみてくださいね。';
     }
     if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var i = +b.getAttribute('data-i');
-        state[i] = !state[i];
-        try { localStorage.setItem('mori_goshiki', JSON.stringify({ date: dayKey, on: state })); } catch(e) {}
-        renderGs();
+        week[todayStr2][i] = !week[todayStr2][i];
+        if (week[todayStr2][i]) rpcColor('eat', i);
+        saveWeek(); renderGs();
       });
     });
   }
   renderGs();
+  /* みんなの色（食事・今週） */
+  var fm = document.getElementById('food-minna');
+  if (fm) {
+    var d7 = last7();
+    fetch(SB2 + '/mori_colors?select=color,cnt&kind=eq.eat&day=gte.' + d7[0] + '&day=lte.' + d7[6], { headers: H2 })
+      .then(function(r){ return r.json(); })
+      .then(function(rows){
+        if (!Array.isArray(rows)) return;
+        var sums = [0, 0, 0, 0, 0], tot = 0;
+        rows.forEach(function(x){ sums[x.color] += x.cnt; tot += x.cnt; });
+        if (tot >= 5) { var mi = sums.indexOf(Math.max.apply(null, sums)); fm.textContent = '今週の森では、' + EL[mi].color + 'がたくさん溜まっています。'; }
+      })
+      .catch(function(){});
+  }
+  /* 色：今日身につけている色 */
+  var wb = document.getElementById('wear-btns'), wm2 = document.getElementById('wear-msg'), wmn = document.getElementById('wear-minna');
+  var wearSel = -1;
+  try { var ws2 = JSON.parse(localStorage.getItem('mori_wear') || 'null'); if (ws2 && ws2.date === todayStr2) wearSel = ws2.color; } catch(e) {}
+  function renderWear(){
+    if (wb) wb.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (wearSel === i ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
+    if (wm2) wm2.textContent = wearSel >= 0 ? EL[wearSel].color + 'を身につけているのですね。' + EL[wearSel].feel + '。' : '';
+    if (wb) Array.prototype.forEach.call(wb.querySelectorAll('.goshiki-btn'), function(b){
+      b.addEventListener('click', function(){
+        var i = +b.getAttribute('data-i');
+        if (wearSel === i) return;
+        wearSel = i;
+        try { localStorage.setItem('mori_wear', JSON.stringify({ date: todayStr2, color: i })); } catch(e) {}
+        rpcColor('wear', i);
+        renderWear();
+      });
+    });
+  }
+  renderWear();
+  if (wmn) {
+    fetch(SB2 + '/mori_colors?select=color,cnt&kind=eq.wear&day=eq.' + todayStr2, { headers: H2 })
+      .then(function(r){ return r.json(); })
+      .then(function(rows){
+        if (!Array.isArray(rows)) return;
+        var sums = [0, 0, 0, 0, 0], tot = 0;
+        rows.forEach(function(x){ sums[x.color] += x.cnt; tot += x.cnt; });
+        if (tot >= 5) { var mi = sums.indexOf(Math.max.apply(null, sums)); wmn.textContent = '今日の森では、' + EL[mi].color + 'を身につけている人が多いみたいです。'; }
+      })
+      .catch(function(){});
+  }
   /* 色：今日の色 */
   var ct = document.getElementById('color-today');
   if (ct) ct.innerHTML = '<span class="tc-swatch" style="' + chipStyle(todayEl) + '"></span><div class="tc-body"><b>' + todayEl.color + '</b>（' + todayEl.name + '）<br>' + todayEl.feel + '。<br>ハンカチや靴下、マグカップなど、小さなものに1つどうぞ。</div>';
