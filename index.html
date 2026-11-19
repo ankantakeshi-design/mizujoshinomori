@@ -2881,7 +2881,22 @@
   var overlays = Array.prototype.slice.call(document.querySelectorAll('.intro-overlay'));
   if (!overlays.length) return;
   function isOpen(o){ return o.style.display !== 'none' && o.style.display !== ''; }
-  function sync(){ document.body.style.overflow = overlays.some(isOpen) ? 'hidden' : ''; }
+  function anyOpen(){ return overlays.some(isOpen); }
+  var pushed = false, ignoring = false;
+  function sync(){
+    var open = anyOpen();
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open && !pushed) { try { history.pushState({ moriModal: 1 }, ''); pushed = true; } catch(e) {} }
+    if (!open && pushed) { pushed = false; ignoring = true; try { history.back(); } catch(e) { ignoring = false; } }
+  }
+  window.addEventListener('popstate', function(){
+    if (ignoring) { ignoring = false; return; }
+    if (pushed) {
+      pushed = false;
+      overlays.forEach(function(o){ if (isOpen(o)) o.style.display = 'none'; });
+      document.body.style.overflow = '';
+    }
+  });
   var mo = new MutationObserver(sync);
   overlays.forEach(function(o){ mo.observe(o, { attributes:true, attributeFilter:['style'] }); });
   document.addEventListener('keydown', function(e){
