@@ -377,6 +377,8 @@
   @keyframes keeperSway { 0%,100% { transform:translateY(0) rotate(-.6deg); } 50% { transform:translateY(-5px) rotate(.6deg); } }
   .keeper-bubble { position:relative; background:#fff; border:1.5px solid #DCE8D2; border-radius:16px; padding:10px 13px; font-size:14.5px; line-height:1.65; color:#4c463c; white-space:pre-line; box-shadow:0 2px 8px rgba(90,110,80,.08); }
   .keeper-bubble::before { content:''; position:absolute; left:-7px; top:50%; margin-top:-6px; width:12px; height:12px; background:#fff; border-left:1.5px solid #DCE8D2; border-bottom:1.5px solid #DCE8D2; transform:rotate(45deg); }
+  .keeper-mini { display:block; width:80px; margin:0 auto 4px; }
+  .keeper-closing { display:block; width:110px; margin:10px auto 2px; }
 </style>
 </head>
 <body>
@@ -460,6 +462,7 @@
       <img class="intro-img" id="intro-img" src="hero.jpg" alt="森の広場に集まる水女子たち">
       <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
       <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
+      <img src="keeper-2.png" alt="森の番人" style="display:block; width:96px; margin:8px auto 2px;">
       <button type="button" class="btn" id="intro-ok">森へ入る</button>
       <button type="button" class="modal-close-bottom" id="intro-close-b">閉じる</button>
     </div>
@@ -467,6 +470,7 @@
 
   <section id="leaves">
     <h2>気持ちの葉っぱ</h2>
+    <img class="keeper-mini" src="keeper-6.png" alt="森の番人">
     <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
     <div class="leaves">
       <button type="button" class="leaf-btn" data-leaf="1">つかれた</button>
@@ -491,6 +495,7 @@
 
   <section id="uranai">
     <h2>水女子うらない</h2>
+    <img class="keeper-mini" src="keeper-5.png" alt="森の番人">
     <p class="sec-lead">今日の気持ちを、そっと占います。</p>
     <div class="uranai">
       <img id="uranai-img" src="uranai-mii.png" alt="うらないをする みーちゃん">
@@ -521,6 +526,7 @@
 
   <section id="annai">
     <h2>森の奥のご案内</h2>
+    <img class="keeper-mini" src="keeper-1.png" alt="森の番人">
     <p class="sec-lead">もう少し進んでみたい方へ。</p>
     <div class="links">
       <a class="link-card" href="https://kasuiehon.pages.dev/">
@@ -563,6 +569,7 @@
     </div>
   </section>
 
+  <img class="keeper-closing" src="keeper-4.png" alt="森の番人">
   <p class="closing">今日の森は、ここまで。<br>また、会いましょうね。</p>
 
   <div class="home-note">
@@ -2028,6 +2035,7 @@
         <span class="wm-msg" id="a-modal-msg"></span>
       </div>
       <p class="a-after">「これ、私だ」と思ったら、それは性格が弱いからではありません。感じすぎるほど感じる、水の強さのサインかもしれません。</p>
+      <img src="keeper-4.png" alt="森の番人" style="display:block; width:84px; margin:10px auto 0;">
       <button type="button" class="modal-close-bottom" id="a-modal-close-b">閉じる</button>
       <button type="button" class="intro-close" id="a-modal-close" aria-label="とじる">×</button>
     </div>
@@ -2142,6 +2150,7 @@
   <div class="intro-overlay" id="sky-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="sky-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-5.png" alt="森の番人">
       <div class="c-title">天体暦</div>
       <p class="c-lead">月と惑星のようすが、見られます。</p>
       <button type="button" class="sky-btn" id="sky-to-moon">月のカレンダー</button>
@@ -2153,6 +2162,7 @@
   <div class="intro-overlay" id="food-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="food-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-3.png" alt="森の番人">
       <div class="c-title">食事コーナー</div>
       <p class="c-lead">食は、色です。<br>東洋の考え方（五行）では、食べ物にも、色と味があると考えます。</p>
       <div class="c-h">1週間で、五色をそろえる</div>
@@ -2175,6 +2185,7 @@
   <div class="intro-overlay" id="color-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="color-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-7.png" alt="森の番人">
       <div class="c-title">色と気持ちコーナー</div>
       <p class="c-lead">色は、気持ちに寄り添ってくれます。<br>五行の5つの色から、今日の色と、気分に合う色をどうぞ。</p>
       <div class="counter-box" data-counter="color" style="border-top:none; margin-top:10px; padding-top:0"></div>
@@ -2216,6 +2227,7 @@
   <div class="intro-overlay" id="ex-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="ex-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-2.png" alt="森の番人">
       <div class="c-title">運動コーナー</div>
       <p class="c-lead">筋トレではなく、軽い運動です。<br>動く気持ちよさを、感じてみてくださいね。</p>
       <p class="ex-note">目安は、3〜5分くらい。100回でも余裕なくらい、小さく軽い動きで大丈夫です。自分のペースで大丈夫ですよ。きつい日は、1回だけでも大丈夫です。</p>
@@ -2592,6 +2604,7 @@
   <div class="intro-overlay" id="body-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="body-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-4.png" alt="森の番人">
       <div class="c-title">からだコーナー</div>
       <p class="c-lead">体のエリアは、五行の色で分かれています。<br>火（赤）は、胸とお腹の、2か所です。</p>
       <div class="body-fig-wrap">
@@ -2613,6 +2626,7 @@
   <div class="intro-overlay" id="clean-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="clean-close" aria-label="とじる">×</button>
+      <img class="keeper-mini" src="keeper-6.png" alt="森の番人">
       <div class="c-title">お掃除コーナー</div>
       <p class="c-lead">色に合わせた場所を、少しだけお掃除。</p>
       <p class="c-p">1か所、一拭きでも大丈夫です。箒ひとはき、コロコロ1回でも、それで十分ですよ。</p>
