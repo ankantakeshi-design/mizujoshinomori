@@ -2683,20 +2683,31 @@
   document.addEventListener('click', function(){ setTimeout(function(){ renderCounters(); renderCardCounters(); }, 60); });
   renderCounters();
   renderCardCounters();
-  /* 運動：できたら色のプレゼント */
+  /* 運動：できたら色のプレゼント（食と同じ：日付でリセット、色ごとに1日1回まで記録、複数OK） */
   var exB = document.getElementById('ex-btns'), exM = document.getElementById('ex-msg'), exT = document.getElementById('ex-total');
   var exHist = {};
   try { exHist = JSON.parse(localStorage.getItem('mori_ex_hist') || '{}'); } catch(e) {}
+  function exTodaySet(){
+    var v = exHist[todayStr2];
+    if (Array.isArray(v)) return v;
+    if (typeof v === 'number') return [v];
+    return [];
+  }
+  function exLoggedToday(i){
+    try { return JSON.parse(localStorage.getItem('mori_color_log') || '[]').some(function(ev){ return ev.c === 'ex' && ev.d === todayStr2 && ev.i === i; }); } catch(e) { return false; }
+  }
   function renderExBtns(){
-    var sel = exHist[todayStr2];
-    if (exB) exB.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (sel === i ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
-    if (exM) exM.textContent = (typeof sel === 'number') ? '今日は、' + EL[sel].color + 'のプレゼントを受け取りましたね。' : '';
-    if (exT) { var n = Object.keys(exHist).length; exT.textContent = n > 0 ? 'あなたの記録：いままでに、' + n + '日、運動できました。' : ''; }
+    var set = exTodaySet();
+    if (exB) exB.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (set.indexOf(i) >= 0 ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
+    if (exM) exM.textContent = set.length ? '今日は、' + set.map(function(i){ return EL[i].color; }).join('と') + 'のプレゼントを受け取りましたね。' : '';
+    if (exT) { var n = Object.keys(exHist).filter(function(k){ var v = exHist[k]; return Array.isArray(v) ? v.length > 0 : typeof v === 'number'; }).length; exT.textContent = n > 0 ? 'あなたの記録：いままでに、' + n + '日、運動できました。' : ''; }
     if (exB) Array.prototype.forEach.call(exB.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var ni = +b.getAttribute('data-i');
-        if (exHist[todayStr2] === undefined) logColor('ex', ni);
-        exHist[todayStr2] = ni;
+        var set2 = exTodaySet(), pos = set2.indexOf(ni);
+        if (pos >= 0) set2.splice(pos, 1);
+        else { set2.push(ni); if (!exLoggedToday(ni)) logColor('ex', ni); }
+        exHist[todayStr2] = set2;
         try { localStorage.setItem('mori_ex_hist', JSON.stringify(exHist)); } catch(e) {}
         renderExBtns();
       });
