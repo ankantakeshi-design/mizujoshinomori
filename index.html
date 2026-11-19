@@ -338,8 +338,8 @@
   .body-side-r { left:6px; }
   .body-side-l { right:6px; }
   #area-zones { position:absolute; inset:0; }
-  .area-zone { position:absolute; transform:translate(-50%,-50%); width:19%; aspect-ratio:1.25; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; opacity:.48; border:1.5px solid rgba(255,255,255,.75); }
-  .area-zone.on { opacity:.92; box-shadow:0 0 0 2.5px #7FB069; }
+  .area-zone { position:absolute; transform:translate(-50%,-50%); width:16%; aspect-ratio:1.25; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; opacity:.55; border:2px solid rgba(255,255,255,.95); box-shadow:0 1px 4px rgba(90,83,68,.25); }
+  .area-zone.on { opacity:.95; box-shadow:0 0 0 2.5px #7FB069, 0 1px 4px rgba(90,83,68,.25); }
 </style>
 </head>
 <body>
@@ -391,6 +391,10 @@
       <button type="button" class="corner-card" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
       <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span></button>
       <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span></button>
+    </div>
+    <div class="all-counter-wrap" style="display:none; margin-top:18px">
+      <p class="gs-msg" style="font-weight:700; color:#7a7264">全部のコーナーを合わせた、あなたの色</p>
+      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:4px; padding-top:0"></div>
     </div>
   </section>
 
@@ -465,7 +469,7 @@
       <div class="koyomi-grid" id="koyomi-grid"></div>
       <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
     </div>
-    <div class="koyomi-box" id="color-record-box" style="margin-top:14px; display:none">
+    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
       <div class="koyomi-title">あなたの色の記録</div>
       <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
       <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
@@ -2400,10 +2404,10 @@
       var tot = perm.reduce(function(a, b){ return a + b; }, 0);
       if (!tot) {
         box.innerHTML = '';
-        if (key === 'all') { var p = document.getElementById('color-record-box'); if (p) p.style.display = 'none'; }
+        if (key === 'all') document.querySelectorAll('.all-counter-wrap').forEach(function(p){ p.style.display = 'none'; });
         return;
       }
-      if (key === 'all') { var p2 = document.getElementById('color-record-box'); if (p2) p2.style.display = ''; }
+      if (key === 'all') document.querySelectorAll('.all-counter-wrap').forEach(function(p){ p.style.display = ''; });
       var wk = colorCounts(key === 'all' ? null : key, true);
       box.innerHTML = '<div class="counter-row"><span class="counter-label">今週の色</span>' + colorRowHTML(wk) + '</div>'
         + '<div class="counter-row"><span class="counter-label">いままでの色</span>' + colorRowHTML(perm) + '</div>';
@@ -2560,12 +2564,12 @@
 <script>
 (function(){
   var AREAS = [
-    { name:'金', label:'金（白）', msg:'金', color:'白', hex:'#F2EFE6', lx:44.5, ty:39 },
-    { name:'火', label:'火（赤）・胸', msg:'胸の火', color:'赤', hex:'#D97757', lx:56.5, ty:39 },
-    { name:'木', label:'木（緑）', msg:'木', color:'緑', hex:'#6FA287', lx:44.5, ty:48.5 },
-    { name:'土', label:'土（黄）', msg:'土', color:'黄', hex:'#E0B84F', lx:56.5, ty:48.5 },
-    { name:'火', label:'火（赤）・お腹', msg:'お腹の火', color:'赤', hex:'#D97757', lx:47, ty:56.5 },
-    { name:'水', label:'水（黒）', msg:'水', color:'黒', hex:'#44546A', lx:55, ty:57 }
+    { name:'金', label:'金（白）', msg:'金', color:'白', hex:'#F2EFE6', lx:43, ty:39 },
+    { name:'火', label:'火（赤）・胸', msg:'胸の火', color:'赤', hex:'#D97757', lx:58, ty:39 },
+    { name:'木', label:'木（緑）', msg:'木', color:'緑', hex:'#6FA287', lx:43, ty:48.5 },
+    { name:'土', label:'土（黄）', msg:'土', color:'黄', hex:'#E0B84F', lx:58, ty:48.5 },
+    { name:'火', label:'火（赤）・お腹', msg:'お腹の火', color:'赤', hex:'#D97757', lx:45.5, ty:56 },
+    { name:'水', label:'水（黒）', msg:'水', color:'黒', hex:'#44546A', lx:57, ty:57.5 }
   ];
   var open = document.getElementById('corner-body'), modal = document.getElementById('body-modal');
   if (!open || !modal) return;
