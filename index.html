@@ -229,6 +229,14 @@
   .top-btn .tb-arrow { font-size:15px; font-weight:900; }
   .top-btn .tb-label { font-size:9.5px; font-weight:900; }
   .top-btn:active { transform:scale(.97); }
+  @keyframes keeperTap {
+    0% { transform:rotate(0deg) translateY(0); }
+    30% { transform:rotate(-2.5deg) translateY(-9px) scale(1.03); }
+    55% { transform:rotate(2deg) translateY(0); }
+    75% { transform:rotate(-1deg) translateY(-4px); }
+    100% { transform:rotate(0deg) translateY(0); }
+  }
+  img.keeper-tap { animation:keeperTap .65s ease !important; }
   .bgm-btn.on { background:#5E9C63; border-color:#5E9C63; color:#fff; }
   .diary-entry { display:flex; gap:14px; align-items:center; background:#fff; border:2px solid #E4EFE6; border-radius:18px; padding:16px 18px; margin-top:14px; }
   .diary-entry img { width:76px; height:auto; flex:none; }
@@ -2321,6 +2329,9 @@
       <p class="gs-msg" id="ex-msg"></p>
       <p class="gs-msg" id="ex-total" style="color:#7a7264"></p>
       <div class="counter-box" data-counter="ex"></div>
+      <div class="c-h">ルーレットで決める</div>
+      <p class="c-p">曜日ではなく、ルーレットで決めたい日は、こちらをどうぞ。1日1回です。</p>
+      <div id="ex-roulette"></div>
       <div class="c-h">1週間の運動</div>
       <div id="ex-list"></div>
       <button type="button" class="modal-close-bottom" id="ex-close-b">閉じる</button>
@@ -2602,6 +2613,46 @@
   if (xl) xl.innerHTML = EX.map(function(x){
     return '<div class="ex-row"><span class="ex-day">' + x.day + '</span><span><b>' + x.name + '</b></span></div>';
   }).join('');
+  /* 運動ルーレット（1日1回） */
+  var roulBox = document.getElementById('ex-roulette');
+  var roulToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
+  var roulSaved = null;
+  try { roulSaved = JSON.parse(localStorage.getItem('mori_ex_roulette') || 'null'); } catch(e) {}
+  function roulCard(x, note){
+    return '<div class="ex-today"><div class="ex-name">' + x.name + '</div><p class="ex-how">' + x.how + '</p>' + (note ? '<p class="ex-how">' + note + '</p>' : '') + '</div>';
+  }
+  function finishRoulette(idx){
+    roulSaved = { date: roulToday, idx: idx };
+    try { localStorage.setItem('mori_ex_roulette', JSON.stringify(roulSaved)); } catch(e) {}
+    if (roulBox) roulBox.innerHTML = roulCard(EX[idx], '今日のルーレットは、これに決まりました。できたら、色のプレゼントも押してくださいね。');
+  }
+  function spinRoulette(){
+    var target = Math.floor(Math.random() * EX.length);
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { finishRoulette(target); return; }
+    var start = Math.floor(Math.random() * EX.length);
+    var steps = 14 + ((target - start + EX.length) % EX.length);
+    var idx = start, shown = 0;
+    function tick(){
+      if (roulBox) roulBox.innerHTML = '<div class="ex-today"><div class="ex-name">' + EX[idx].name + '</div><p class="ex-how">ルーレットが、回っています。</p></div>';
+      shown++;
+      if (shown > steps) { finishRoulette(target); return; }
+      idx = (idx + 1) % EX.length;
+      setTimeout(tick, 60 + shown * shown * 1.35);
+    }
+    tick();
+  }
+  function renderRoulette(){
+    if (!roulBox) return;
+    if (roulSaved && roulSaved.date === roulToday) {
+      roulBox.innerHTML = roulCard(EX[roulSaved.idx], '今日のルーレットは、決まりました。また明日、どうぞ。');
+    } else {
+      roulBox.innerHTML = '<div class="ex-today"><button type="button" class="goshiki-btn" id="ex-roul-btn" style="font-size:15px;padding:10px 22px">ルーレットを回す</button></div>';
+      var rb = document.getElementById('ex-roul-btn');
+      if (rb) rb.addEventListener('click', spinRoulette);
+    }
+  }
+  renderRoulette();
   /* 色カウンター（全コーナー共通の記録） */
   function logColor(corner, i){
     try {
@@ -3012,6 +3063,20 @@
   window.addEventListener('scroll', sync, { passive: true });
   btn.addEventListener('click', function(){ window.scrollTo(0, 0); });
   sync();
+})();
+</script>
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (t && t.tagName === 'IMG' && (t.getAttribute('src') || '').indexOf('keeper') >= 0) {
+      t.classList.remove('keeper-tap');
+      void t.offsetWidth;
+      t.classList.add('keeper-tap');
+      setTimeout(function(){ t.classList.remove('keeper-tap'); }, 700);
+    }
+  });
 })();
 </script>
 </body>
