@@ -2389,8 +2389,9 @@
     });
     return counts;
   }
+  var TX = ['#4E8266', '#C25E3A', '#A87F24', '#8A8474', '#44546A'];
   function colorRowHTML(counts){
-    return EL.map(function(e, i){ return '<span class="ccount"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + ' ' + counts[i] + '</span>'; }).join('');
+    return EL.map(function(e, i){ return '<span class="ccount" style="color:' + TX[i] + ';font-weight:700"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + ' ' + counts[i] + '</span>'; }).join('');
   }
   function renderCounters(){
     document.querySelectorAll('[data-counter]').forEach(function(box){
