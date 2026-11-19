@@ -2278,7 +2278,7 @@
       </div>
       <p class="gs-msg" id="gaze-total" style="color:#7a7264"></p>
       <div class="c-h">今日身につけている色</div>
-      <p class="c-p">今日の服や小物の色を、1つ選んでみてくださいね。</p>
+      <p class="c-p">今日の服や小物の色を、選んでみてくださいね。いくつでも、大丈夫です。</p>
       <div class="goshiki-btns five" id="wear-btns"></div>
       <p class="gs-msg" id="wear-msg"></p>
       <p class="gs-msg" id="wear-minna"></p>
@@ -2393,7 +2393,7 @@
     todayStr2 = now;
     if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
     saveWeek();
-    try { var ws3 = JSON.parse(localStorage.getItem('mori_wear') || 'null'); wearSel = (ws3 && ws3.date === todayStr2) ? ws3.color : -1; } catch(e) { wearSel = -1; }
+    loadWearSet();
     dayChanged = true;
   }
   function renderDayAll(){
@@ -2451,19 +2451,33 @@
   }
   /* 色：今日身につけている色 */
   var wb = document.getElementById('wear-btns'), wm2 = document.getElementById('wear-msg'), wmn = document.getElementById('wear-minna');
-  var wearSel = -1;
-  try { var ws2 = JSON.parse(localStorage.getItem('mori_wear') || 'null'); if (ws2 && ws2.date === todayStr2) wearSel = ws2.color; } catch(e) {}
+  var wearSet = [];
+  function loadWearSet(){
+    wearSet = [];
+    try { var ws2 = JSON.parse(localStorage.getItem('mori_wear') || 'null');
+      if (ws2 && ws2.date === todayStr2) {
+        if (Array.isArray(ws2.colors)) wearSet = ws2.colors.slice();
+        else if (typeof ws2.color === 'number') wearSet = [ws2.color];
+      } } catch(e) {}
+  }
+  loadWearSet();
+  function wearLoggedToday(i){
+    try { return JSON.parse(localStorage.getItem('mori_color_log') || '[]').some(function(ev){ return ev.c === 'wear' && ev.d === todayStr2 && ev.i === i; }); } catch(e) { return false; }
+  }
   function renderWear(){
-    if (wb) wb.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (wearSel === i ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
-    if (wm2) wm2.textContent = wearSel >= 0 ? EL[wearSel].color + 'を身につけているのですね。' + EL[wearSel].feel + '。' : '';
+    if (wb) wb.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (wearSet.indexOf(i) >= 0 ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
+    if (wm2) wm2.textContent = wearSet.length ? wearSet.map(function(i){ return EL[i].color; }).join('と') + 'を身につけているのですね。' + EL[wearSet[wearSet.length - 1]].feel + '。' : '';
     if (wb) Array.prototype.forEach.call(wb.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var i = +b.getAttribute('data-i');
-        if (wearSel === i) return;
-        wearSel = i;
-        try { localStorage.setItem('mori_wear', JSON.stringify({ date: todayStr2, color: i })); } catch(e) {}
-        try { var wd = JSON.parse(localStorage.getItem('mori_wear_days') || '[]'); if (wd.indexOf(todayStr2) < 0) { logColor('wear', i); wd.push(todayStr2); localStorage.setItem('mori_wear_days', JSON.stringify(wd)); } } catch(e) {}
-        rpcColor('wear', i);
+        var pos = wearSet.indexOf(i);
+        if (pos >= 0) { wearSet.splice(pos, 1); }
+        else {
+          wearSet.push(i);
+          if (!wearLoggedToday(i)) { logColor('wear', i); rpcColor('wear', i); }
+          try { var wd = JSON.parse(localStorage.getItem('mori_wear_days') || '[]'); if (wd.indexOf(todayStr2) < 0) { wd.push(todayStr2); localStorage.setItem('mori_wear_days', JSON.stringify(wd)); } } catch(e) {}
+        }
+        try { localStorage.setItem('mori_wear', JSON.stringify({ date: todayStr2, colors: wearSet })); } catch(e) {}
         renderWearTotal();
         renderWear();
       });
