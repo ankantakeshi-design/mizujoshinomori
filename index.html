@@ -319,6 +319,9 @@
   .ex-row:last-child { border-bottom:none; }
   .ex-row .ex-day { flex:0 0 auto; font-weight:900; color:#4a7a52; }
   .sky-btn { display:block; width:100%; margin-top:12px; font-family:inherit; font-size:16px; font-weight:900; color:#3d4a3a; background:#F2F7EE; border:1.5px solid #DCE8D8; border-radius:16px; padding:16px; cursor:pointer; }
+  .corner-wide { grid-column: span 2; }
+  .body-fig { display:block; margin:6px auto 0; max-width:230px; width:100%; height:auto; }
+  .area-btns { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
 </style>
 </head>
 <body>
@@ -368,6 +371,7 @@
       <button type="button" class="corner-card" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span></button>
       <button type="button" class="corner-card" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色</span><span class="cc-sub">色と気持ち、色の組み合わせ</span></button>
       <button type="button" class="corner-card" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span></button>
     </div>
   </section>
 
@@ -2252,6 +2256,79 @@
   if (xl) xl.innerHTML = EX.map(function(x){
     return '<div class="ex-row"><span class="ex-day">' + x.day + '</span><span><b>' + x.name + '</b></span></div>';
   }).join('');
+})();
+</script>
+  <div class="intro-overlay" id="body-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="body-close" aria-label="とじる">×</button>
+      <div class="c-title">からだコーナー</div>
+      <p class="c-lead">体のエリアは、五行の色で分かれています。<br>火（赤）は、胸とお腹の、2か所です。</p>
+      <svg class="body-fig" viewBox="0 0 200 300" aria-label="体のエリアの図">
+        <text x="30" y="16" font-size="11" fill="#7a7264" text-anchor="middle">右半身</text>
+        <text x="170" y="16" font-size="11" fill="#7a7264" text-anchor="middle">左半身</text>
+        <circle cx="100" cy="34" r="17" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <rect x="63" y="54" width="74" height="128" rx="30" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <ellipse cx="50" cy="112" rx="9" ry="42" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <ellipse cx="150" cy="112" rx="9" ry="42" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <rect x="70" y="178" width="23" height="104" rx="11" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <rect x="107" y="178" width="23" height="104" rx="11" fill="#FBFCF8" stroke="#C9D4C0" stroke-width="2"/>
+        <g id="area-zones"></g>
+      </svg>
+      <p class="c-p">それぞれのエリアを、手のひらで30〜100回、やさしくゆっくりさすってみてくださいね。心地よかったら、100回以上やっても大丈夫です。</p>
+      <p class="c-p">さすれたら、その色のボタンを押してくださいね。</p>
+      <div class="area-btns" id="area-btns"></div>
+      <p class="gs-msg" id="area-msg"></p>
+      <button type="button" class="modal-close-bottom" id="body-close-b">閉じる</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var AREAS = [
+    { name:'金', label:'金（白）', msg:'金', color:'白', hex:'#F2EFE6', x:81, y:88 },
+    { name:'火', label:'火（赤）・胸', msg:'胸の火', color:'赤', hex:'#D97757', x:117, y:84 },
+    { name:'木', label:'木（緑）', msg:'木', color:'緑', hex:'#6FA287', x:81, y:128 },
+    { name:'土', label:'土（黄）', msg:'土', color:'黄', hex:'#E0B84F', x:117, y:126 },
+    { name:'火', label:'火（赤）・お腹', msg:'お腹の火', color:'赤', hex:'#D97757', x:93, y:163 },
+    { name:'水', label:'水（黒）', msg:'水', color:'黒', hex:'#44546A', x:115, y:166 }
+  ];
+  var open = document.getElementById('corner-body'), modal = document.getElementById('body-modal');
+  if (!open || !modal) return;
+  function hide(){ modal.style.display = 'none'; }
+  open.addEventListener('click', function(){ modal.style.display = 'flex'; });
+  document.getElementById('body-close').addEventListener('click', hide);
+  document.getElementById('body-close-b').addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
+  function jstStr(d){ return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(d); }
+  var today = jstStr(new Date());
+  var done = [false, false, false, false, false, false];
+  try { var sv = JSON.parse(localStorage.getItem('mori_body') || 'null'); if (sv && sv.date === today && sv.done) done = sv.done; } catch(e) {}
+  var zones = document.getElementById('area-zones'), btns = document.getElementById('area-btns'), msg = document.getElementById('area-msg');
+  function render(){
+    if (zones) zones.innerHTML = AREAS.map(function(a, i){
+      var tc = (a.color === '白' || a.color === '黄') ? '#5a5344' : '#FFFFFF';
+      return '<ellipse cx="' + a.x + '" cy="' + a.y + '" rx="17" ry="13" fill="' + a.hex + '" fill-opacity="' + (done[i] ? '1' : '0.45') + '" stroke="' + (done[i] ? '#7FB069' : '#C9D4C0') + '" stroke-width="' + (done[i] ? '2.5' : '1') + '"/>' +
+        '<text x="' + a.x + '" y="' + (a.y + 4) + '" font-size="12" font-weight="700" fill="' + tc + '" text-anchor="middle">' + a.name + '</text>';
+    }).join('');
+    if (btns) btns.innerHTML = AREAS.map(function(a, i){
+      return '<button type="button" class="goshiki-btn' + (done[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="background:' + a.hex + (a.color === '白' ? ';border:1.5px solid #CFC8B4' : '') + '"></span>' + a.label + '</button>';
+    }).join('');
+    if (msg) {
+      var picked = AREAS.filter(function(a, i){ return done[i]; }).map(function(a){ return a.msg; });
+      if (!picked.length) msg.textContent = 'さすれたら、ボタンを押してくださいね。';
+      else if (picked.length === 6) msg.textContent = '全部のエリアを、さすれましたね。体が、ほっとしています。';
+      else msg.textContent = picked.join('と') + 'を、さすれましたね。';
+    }
+    if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
+      b.addEventListener('click', function(){
+        var i = +b.getAttribute('data-i');
+        done[i] = !done[i];
+        try { localStorage.setItem('mori_body', JSON.stringify({ date: today, done: done })); } catch(e) {}
+        render();
+      });
+    });
+  }
+  render();
 })();
 </script>
 </body>
