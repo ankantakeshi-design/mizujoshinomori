@@ -349,11 +349,11 @@
   .mood-btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .gs-msg:empty { display:none; }
   .counter-box:empty { display:none; }
-  .cc-counter { display:block; margin-top:10px; }
-  .cc-counter .crow { justify-content:flex-start; gap:6px; margin-top:0; }
+  .cc-counter { display:block; margin-top:10px; width:100%; }
+  .cc-counter .cvisual { display:flex; justify-content:space-between; width:100%; }
   .cchip.mini { gap:0; }
-  .cchip.mini .cdot { width:26px; height:26px; font-size:12.5px; }
-  .cchip.mini .cname { display:none; }
+  .cchip.mini .cchip-circle { width:26px; height:26px; font-size:12.5px; }
+  .cchip.mini .cchip-name { display:none; }
 </style>
 </head>
 <body>
@@ -2443,8 +2443,9 @@
       } else {
         wk = colorCounts(key, true);
       }
-      box.innerHTML = '<span class="crow">' + EL.map(function(e, i){
-        return '<span class="cchip mini"><span class="cdot" style="' + chipStyle(e) + '">' + wk[i] + '</span></span>';
+      box.innerHTML = '<span class="cvisual">' + EL.map(function(e, i){
+        var tc = (e.color === '黄' || e.color === '白') ? '#5a5344' : '#FFFFFF';
+        return '<span class="cchip mini"><span class="cchip-circle" style="background:' + e.hex + ';color:' + tc + (e.color === '白' ? ';border:1.5px solid #CFC8B4' : '') + '">' + wk[i] + '</span><span class="cchip-name">' + e.color + '</span></span>';
       }).join('') + '</span>';
     });
   }
