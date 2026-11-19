@@ -349,6 +349,11 @@
   .mood-btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .gs-msg:empty { display:none; }
   .counter-box:empty { display:none; }
+  .cc-counter { display:block; margin-top:10px; }
+  .cc-counter .crow { justify-content:flex-start; gap:6px; margin-top:0; }
+  .cchip.mini { gap:0; }
+  .cchip.mini .cdot { width:26px; height:26px; font-size:12.5px; }
+  .cchip.mini .cname { display:none; }
 </style>
 </head>
 <body>
@@ -398,11 +403,11 @@
       <div class="counter-box" data-counter="all" data-mode="week" style="border-top:none; margin-top:4px; padding-top:0"></div>
     </div>
     <div class="corner-grid">
-      <button type="button" class="corner-card" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span></button>
-      <button type="button" class="corner-card" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色</span><span class="cc-sub">色と気持ち、色の組み合わせ</span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span><span class="cc-counter" data-ccounter="eat"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色</span><span class="cc-sub">色と気持ち、色の組み合わせ</span><span class="cc-counter" data-ccounter="color"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span><span class="cc-counter" data-ccounter="ex"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span><span class="cc-counter" data-ccounter="body"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span><span class="cc-counter" data-ccounter="clean"></span></button>
     </div>
   </section>
 
@@ -2419,12 +2424,6 @@
         perm = colorCounts(key === 'all' ? null : key, false);
         wk = colorCounts(key === 'all' ? null : key, true);
       }
-      var tot = perm.reduce(function(a, b){ return a + b; }, 0);
-      if (!tot) {
-        box.innerHTML = '';
-        if (key === 'all') document.querySelectorAll('.all-counter-wrap').forEach(function(p){ p.style.display = 'none'; });
-        return;
-      }
       if (key === 'all') document.querySelectorAll('.all-counter-wrap').forEach(function(p){ p.style.display = ''; });
       if (box.getAttribute('data-mode') === 'week') {
         box.innerHTML = '<div class="counter-row">' + colorRowHTML(wk) + '</div>';
@@ -2434,8 +2433,24 @@
       }
     });
   }
-  document.addEventListener('click', function(){ setTimeout(renderCounters, 60); });
+  function renderCardCounters(){
+    document.querySelectorAll('[data-ccounter]').forEach(function(box){
+      var key = box.getAttribute('data-ccounter');
+      var wk;
+      if (key === 'color') {
+        var wg = colorCounts('gaze', true), ww = colorCounts('wear', true);
+        wk = wg.map(function(v, i){ return v + ww[i]; });
+      } else {
+        wk = colorCounts(key, true);
+      }
+      box.innerHTML = '<span class="crow">' + EL.map(function(e, i){
+        return '<span class="cchip mini"><span class="cdot" style="' + chipStyle(e) + '">' + wk[i] + '</span></span>';
+      }).join('') + '</span>';
+    });
+  }
+  document.addEventListener('click', function(){ setTimeout(function(){ renderCounters(); renderCardCounters(); }, 60); });
   renderCounters();
+  renderCardCounters();
   /* 運動：できたら色のプレゼント */
   var exB = document.getElementById('ex-btns'), exM = document.getElementById('ex-msg'), exT = document.getElementById('ex-total');
   var exHist = {};
