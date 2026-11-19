@@ -2105,6 +2105,10 @@
       <p class="c-lead">軽くて、余裕でできる運動を、1つだけ。<br>繰り返す気持ちよさを、思い出してみてくださいね。</p>
       <div class="c-h">今日のおすすめ</div>
       <div class="ex-today" id="ex-today"></div>
+      <p class="c-p" style="margin-top:14px">できたら、色のプレゼントをポチッと押してくださいね。</p>
+      <div class="goshiki-btns" id="ex-btns"></div>
+      <p class="gs-msg" id="ex-msg"></p>
+      <p class="gs-msg" id="ex-total" style="color:#7a7264"></p>
       <p class="ex-note">目安は、3〜5分くらい。100回でも余裕なくらい軽く、自分のペースで大丈夫です。きつい日は、1回だけでも大丈夫ですよ。</p>
       <div class="c-h">1週間の運動</div>
       <div id="ex-list"></div>
@@ -2343,6 +2347,25 @@
   if (xl) xl.innerHTML = EX.map(function(x){
     return '<div class="ex-row"><span class="ex-day">' + x.day + '</span><span><b>' + x.name + '</b></span></div>';
   }).join('');
+  /* 運動：できたら色のプレゼント */
+  var exB = document.getElementById('ex-btns'), exM = document.getElementById('ex-msg'), exT = document.getElementById('ex-total');
+  var exHist = {};
+  try { exHist = JSON.parse(localStorage.getItem('mori_ex_hist') || '{}'); } catch(e) {}
+  function renderExBtns(){
+    var sel = exHist[todayStr2];
+    if (exB) exB.innerHTML = EL.map(function(e, i){ return '<button type="button" class="goshiki-btn' + (sel === i ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="' + chipStyle(e) + '"></span>' + e.color + '</button>'; }).join('');
+    if (exM) exM.textContent = (typeof sel === 'number') ? '今日は、' + EL[sel].color + 'のプレゼントを受け取りましたね。' : '';
+    if (exT) { var n = Object.keys(exHist).length; exT.textContent = n > 0 ? 'あなたの記録：いままでに、' + n + '日、運動できました。' : ''; }
+    if (exB) Array.prototype.forEach.call(exB.querySelectorAll('.goshiki-btn'), function(b){
+      b.addEventListener('click', function(){
+        exHist[todayStr2] = +b.getAttribute('data-i');
+        try { localStorage.setItem('mori_ex_hist', JSON.stringify(exHist)); } catch(e) {}
+        renderExBtns();
+      });
+    });
+  }
+  renderExBtns();
+
   /* 記録のバックアップ */
   var bkMsg = document.getElementById('bk-msg');
   var bkExp = document.getElementById('bk-export'), bkImp = document.getElementById('bk-import-btn'), bkFile = document.getElementById('bk-file');
