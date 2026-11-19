@@ -358,6 +358,7 @@
   .cc-counter { order:3; width:auto; margin-top:0; margin-left:auto; }
   .cc-counter .cvisual { display:inline-flex; justify-content:flex-end; gap:6px; width:auto; }
   .cc-sub { order:4; width:100%; }
+  button.sub-btn { font:inherit; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -394,8 +395,9 @@
     </div>
     <button type="button" class="aruaru-btn" id="aruaru-open">今日の水女子あるあるを見る</button>
     <div class="hero-subs">
-      <a class="sub-btn" href="#nikki">みーちゃんの日記</a>
+      <button type="button" class="sub-btn" id="nikki-open">みーちゃんの日記</button>
       <a class="sub-btn" href="#uranai">水女子うらない</a>
+      <button type="button" class="sub-btn" id="koyomi-open">わたしの暦</button>
     </div>
   </div>
 
@@ -450,22 +452,6 @@
     </div>
   </section>
 
-  <section>
-    <h2>森の休憩所</h2>
-    <div class="rest">
-      <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
-      <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てくださいね。</p>
-    </div>
-    <p class="letter-new" id="letter-new" style="display:none"><span>新しい手紙が、届いています</span></p>
-    <button type="button" class="aruaru-btn" id="letter-open">森の番人からの手紙を読む</button>
-  </section>
-
-  <section id="nikki">
-    <h2>みーちゃんの水女子日記</h2>
-    <p class="sec-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
-    <div id="diary-list"></div>
-  </section>
-
   <section id="uranai">
     <h2>水女子うらない</h2>
     <p class="sec-lead">今日の気持ちを、そっと占います。</p>
@@ -478,30 +464,21 @@
     </div>
   </section>
 
-  <section id="koyomi">
-    <h2>わたしの暦</h2>
-    <p class="sec-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
-    <div class="koyomi-box">
-      <div class="koyomi-title" id="koyomi-title"></div>
-      <div class="koyomi-grid" id="koyomi-grid"></div>
-      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
+  <section>
+    <h2>森の休憩所</h2>
+    <div class="rest">
+      <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
+      <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てくださいね。</p>
     </div>
-    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
-      <div class="koyomi-title">あなたの色の記録</div>
-      <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
-      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
-    </div>
-    <div class="koyomi-box" style="margin-top:14px">
-      <div class="koyomi-title">記録のバックアップ</div>
-      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
-      <div class="bk-btns">
-        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
-        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
-      </div>
-      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
-      <p class="gs-msg" id="bk-msg"></p>
-    </div>
+    <p class="letter-new" id="letter-new" style="display:none"><span>新しい手紙が、届いています</span></p>
+    <button type="button" class="aruaru-btn" id="letter-open">森の番人からの手紙を読む</button>
   </section>
+
+
+
+
+
+
 
 
   <section id="annai">
@@ -2067,6 +2044,45 @@
       <button type="button" class="modal-close-bottom" id="planet-close-b">閉じる</button>
     </div>
   </div>
+  <div class="intro-overlay" id="nikki-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="nikki-close" aria-label="とじる">×</button>
+      <div class="c-title">みーちゃんの水女子日記</div>
+      <p class="c-lead">森に住む、みーちゃんの毎日です。1日1つずつ、増えていきます。</p>
+      <div id="diary-list"></div>
+      <button type="button" class="modal-close-bottom" id="nikki-close-b">閉じる</button>
+    </div>
+  </div>
+
+  <div class="intro-overlay" id="koyomi-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="koyomi-close" aria-label="とじる">×</button>
+<div class="c-title">わたしの暦</div>
+    <p class="c-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
+    <div class="koyomi-box">
+      <div class="koyomi-title" id="koyomi-title"></div>
+      <div class="koyomi-grid" id="koyomi-grid"></div>
+      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
+    </div>
+    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
+      <div class="koyomi-title">あなたの色の記録</div>
+      <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
+      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
+    </div>
+    <div class="koyomi-box" style="margin-top:14px">
+      <div class="koyomi-title">記録のバックアップ</div>
+      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
+      <div class="bk-btns">
+        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
+        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
+      </div>
+      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
+      <p class="gs-msg" id="bk-msg"></p>
+    </div>
+      <button type="button" class="modal-close-bottom" id="koyomi-close-b">閉じる</button>
+    </div>
+  </div>
+
   <div class="intro-overlay" id="sky-modal" style="display:none">
     <div class="intro-card">
       <button type="button" class="intro-close" id="sky-close" aria-label="とじる">×</button>
@@ -2656,6 +2672,21 @@
     });
   }
   render();
+})();
+</script>
+<script>
+(function(){
+  function wire(openIds, modalId, closeIds){
+    var m = document.getElementById(modalId);
+    if (!m) return;
+    function open(){ m.style.display = 'flex'; }
+    function close(){ m.style.display = 'none'; }
+    openIds.forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', function(ev){ ev.preventDefault(); open(); }); });
+    closeIds.forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', close); });
+    m.addEventListener('click', function(ev){ if (ev.target === m) close(); });
+  }
+  wire(['nikki-open', 'today-diary'], 'nikki-modal', ['nikki-close', 'nikki-close-b']);
+  wire(['koyomi-open'], 'koyomi-modal', ['koyomi-close', 'koyomi-close-b']);
 })();
 </script>
 </body>
