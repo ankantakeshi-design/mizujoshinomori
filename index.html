@@ -359,6 +359,12 @@
   .cc-counter .cvisual { display:inline-flex; justify-content:flex-end; gap:6px; width:auto; }
   .cc-sub { order:4; width:100%; }
   button.sub-btn { font:inherit; cursor:pointer; }
+  .mori-nav { margin:14px 0 4px; }
+  .mnav-title { text-align:center; font-size:13px; font-weight:700; color:#7a7264; letter-spacing:.15em; margin-bottom:8px; }
+  .mnav-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; }
+  .mnav-btn { display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px 8px; background:#FDFEFB; border:1.5px solid #DCE8D8; border-radius:14px; font-family:inherit; font-size:12.5px; font-weight:700; color:#3d4a3a; cursor:pointer; }
+  .mnav-btn:active { background:#F2F7EE; }
+  .mnav-emoji { font-size:19px; line-height:1; }
 </style>
 </head>
 <body>
@@ -371,6 +377,20 @@
     <div class="name">集まれ<span class="water">水女子</span>の森<small>水女子の共感・憩いの場</small></div>
     <button type="button" class="intro-btn-head" id="intro-open">はじめましての方へ</button>
   </header>
+
+  <nav class="mori-nav" aria-label="森の入口">
+    <div class="mnav-title">森の入口</div>
+    <div class="mnav-grid">
+      <button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>お空</button>
+      <button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button>
+      <button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button>
+      <button type="button" class="mnav-btn" data-click="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button>
+      <button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button>
+      <button type="button" class="mnav-btn" data-click="nikki-open"><span class="mnav-emoji">📖</span>日記</button>
+      <button type="button" class="mnav-btn" data-click="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button>
+      <button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙</button>
+    </div>
+  </nav>
 
   <div class="hero">
     <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
@@ -402,7 +422,7 @@
   </div>
 
   <section id="corners">
-    <h2>森の調べもの</h2>
+    <h2>彩り生活</h2>
     <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>食事、色、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
     <div class="all-counter-wrap" style="display:none; margin-top:14px">
       <p class="gs-msg" style="font-weight:700; color:#7a7264">全部のコーナーを合わせた、あなたの色</p>
@@ -428,7 +448,7 @@
     </div>
   </div>
 
-  <section>
+  <section id="leaves">
     <h2>気持ちの葉っぱ</h2>
     <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
     <div class="leaves">
@@ -2687,6 +2707,20 @@
   }
   wire(['nikki-open', 'today-diary'], 'nikki-modal', ['nikki-close', 'nikki-close-b']);
   wire(['koyomi-open'], 'koyomi-modal', ['koyomi-close', 'koyomi-close-b']);
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('.mnav-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var open = b.getAttribute('data-open');
+      var click = b.getAttribute('data-click');
+      var anchor = b.getAttribute('data-anchor');
+      if (open) { var m = document.getElementById(open); if (m) m.style.display = 'flex'; }
+      else if (click) { var t = document.getElementById(click); if (t) t.click(); }
+      else if (anchor) { var s = document.getElementById(anchor); if (s) s.scrollIntoView({ behavior:'smooth', block:'start' }); }
+    });
+  });
 })();
 </script>
 </body>
