@@ -1449,7 +1449,7 @@
     { t:'今日は、早く寝るのが吉の日。お布団が、いちばんの味方ですよ。', img:'nikki-img-01.png' }
   ];
   MSGS.forEach(function(m){ var im = new Image(); im.src = m.img; });
-  // 森の番人: ファーストビューで迎えます（絵は日替わり7種、言葉は時間帯×日替わり）
+  // 森の番人: ファーストビューで迎えます（絵は時間帯プール×日替わり、言葉は時間帯×日替わり）
   var KEEPER_DAILY = [
     'ゆっくりしていってね。ここは、急がなくていい場所だよ。',
     '疲れたら、休んでいってね。それで、じゅうぶんだよ。',
@@ -1467,7 +1467,11 @@
     var startJ = new Date(nowJ.getFullYear(), 0, 0);
     kDayIdx = Math.floor((nowJ - startJ) / 86400000) % 7;
   } catch(e) {}
-  if (kImg) kImg.src = 'keeper-' + (kDayIdx + 1) + '.png';
+  if (kImg) {
+    var kHour = new Date().getHours();
+    var kPool = (kHour >= 5 && kHour < 12) ? [2, 6, 1] : (kHour >= 12 && kHour < 21) ? [3, 7, 1] : [5, 4, 1];
+    kImg.src = 'keeper-' + kPool[kDayIdx % 3] + '.png';
+  }
   if (kMsg) {
     var hour = new Date().getHours();
     var g = (hour >= 5 && hour < 12) ? 'おはよう。よく来たね。'
