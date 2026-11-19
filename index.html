@@ -2383,6 +2383,7 @@
   var week = {};
   try { var wsv = JSON.parse(localStorage.getItem('mori_goshiki_week') || 'null'); if (wsv) week = wsv; } catch(e) {}
   if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
+  var dayChanged = false;
   function refreshDay(){
     var now = jstStr(new Date());
     if (now === todayStr2) return;
@@ -2390,12 +2391,19 @@
     if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
     saveWeek();
     try { var ws3 = JSON.parse(localStorage.getItem('mori_wear') || 'null'); wearSel = (ws3 && ws3.date === todayStr2) ? ws3.color : -1; } catch(e) { wearSel = -1; }
+    dayChanged = true;
+  }
+  function renderDayAll(){
+    if (!dayChanged) return;
+    dayChanged = false;
     renderGs(); renderWear(); renderWearTotal(); renderExBtns();
     if (typeof renderGazeBtns === 'function') renderGazeBtns();
     renderCounters(); renderCardCounters();
   }
   document.addEventListener('pointerdown', refreshDay, true);
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) refreshDay(); });
+  document.addEventListener('click', renderDayAll);
+  window.addEventListener('pageshow', function(){ refreshDay(); renderDayAll(); });
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) { refreshDay(); renderDayAll(); } });
   var gsTotal = 0;
   try { gsTotal = parseInt(localStorage.getItem('mori_goshiki_total') || '0', 10) || 0; } catch(e) {}
   function weekUnion(){ var u = [false, false, false, false, false]; last7().forEach(function(ds){ var a = week[ds]; if (a) a.forEach(function(v, i){ if (v) u[i] = true; }); }); return u; }
@@ -2761,10 +2769,16 @@
   try { var sv = JSON.parse(localStorage.getItem('mori_clean_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
   if (!hist[today]) hist[today] = [false, false, false, false, false];
   var done = hist[today];
+  var dayChanged = false;
   document.addEventListener('pointerdown', function(){
     var now = jstStr(new Date());
-    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false]; done = hist[today]; render(); }
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false]; done = hist[today]; dayChanged = true; }
   }, true);
+  document.addEventListener('click', function(){ if (dayChanged) { dayChanged = false; render(); } });
+  window.addEventListener('pageshow', function(){
+    var now = jstStr(new Date());
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false]; done = hist[today]; render(); }
+  });
   var btns = document.getElementById('clean-btns'), msg = document.getElementById('clean-msg'), totalEl = document.getElementById('clean-total');
   function render(){
     if (btns) btns.innerHTML = ROOMS.map(function(r, i){
@@ -2819,10 +2833,16 @@
   try { var sv = JSON.parse(localStorage.getItem('mori_body_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
   if (!hist[today]) hist[today] = [false, false, false, false, false, false];
   var done = hist[today];
+  var dayChanged = false;
   document.addEventListener('pointerdown', function(){
     var now = jstStr(new Date());
-    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false, false]; done = hist[today]; render(); }
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false, false]; done = hist[today]; dayChanged = true; }
   }, true);
+  document.addEventListener('click', function(){ if (dayChanged) { dayChanged = false; render(); } });
+  window.addEventListener('pageshow', function(){
+    var now = jstStr(new Date());
+    if (now !== today) { today = now; if (!hist[today]) hist[today] = [false, false, false, false, false, false]; done = hist[today]; render(); }
+  });
   var zones = document.getElementById('area-zones'), btns = document.getElementById('area-btns'), msg = document.getElementById('area-msg'), totalEl = document.getElementById('area-total');
   function render(){
     if (zones) zones.innerHTML = AREAS.map(function(a, i){
