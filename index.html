@@ -2218,14 +2218,17 @@
     modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
     return { modal: modal, hide: hide };
   }
-  var sky = wire('corner-sky', 'sky-modal', ['sky-close', 'sky-close-b']);
+  var skyModalEl = document.getElementById('sky-modal');
+  function skyHide(){ if (skyModalEl) skyModalEl.style.display = 'none'; }
+  ['sky-close', 'sky-close-b'].forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', skyHide); });
+  if (skyModalEl) skyModalEl.addEventListener('click', function(e){ if (e.target === skyModalEl) skyHide(); });
   wire('corner-food', 'food-modal', ['food-close', 'food-close-b']);
   wire('corner-color', 'color-modal', ['color-close', 'color-close-b']);
   wire('corner-ex', 'ex-modal', ['ex-close', 'ex-close-b']);
-  if (sky) {
-    document.getElementById('sky-to-moon').addEventListener('click', function(){ sky.hide(); document.getElementById('kou-line').click(); });
-    document.getElementById('sky-to-planet').addEventListener('click', function(){ sky.hide(); document.getElementById('planet-open-hero').click(); });
-  }
+  var stmBtn = document.getElementById('sky-to-moon');
+  if (stmBtn) stmBtn.addEventListener('click', function(){ skyHide(); document.getElementById('kou-line').click(); });
+  var stpBtn = document.getElementById('sky-to-planet');
+  if (stpBtn) stpBtn.addEventListener('click', function(){ skyHide(); document.getElementById('planet-open-hero').click(); });
   var now = new Date();
   var doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
   var todayEl = EL[doy % 5];
