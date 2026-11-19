@@ -347,6 +347,8 @@
   .goshiki-btns.five { display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; }
   .goshiki-btns.five .goshiki-btn { justify-content:center; padding:9px 2px; }
   .mood-btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .gs-msg:empty { display:none; }
+  .counter-box:empty { display:none; }
 </style>
 </head>
 <body>
@@ -390,16 +392,15 @@
 
   <section id="corners">
     <h2>森の調べもの</h2>
-    <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>空、食事、色、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
+    <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>食事、色、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
     <div class="all-counter-wrap" style="display:none; margin-top:14px">
       <p class="gs-msg" style="font-weight:700; color:#7a7264">全部のコーナーを合わせた、あなたの色</p>
       <div class="counter-box" data-counter="all" data-mode="week" style="border-top:none; margin-top:4px; padding-top:0"></div>
     </div>
     <div class="corner-grid">
-      <button type="button" class="corner-card" id="corner-sky"><span class="cc-dot" style="background:#E9C46A"></span><span class="cc-title">お空</span><span class="cc-sub">月と惑星のようす</span></button>
       <button type="button" class="corner-card" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span></button>
       <button type="button" class="corner-card" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色</span><span class="cc-sub">色と気持ち、色の組み合わせ</span></button>
-      <button type="button" class="corner-card" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
       <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span></button>
       <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span></button>
     </div>
