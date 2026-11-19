@@ -326,6 +326,8 @@
   .gaze-circle { width:150px; height:150px; border-radius:50%; border:none; cursor:pointer; display:block; margin:0 auto; padding:0; }
   .gaze-bar-track { width:150px; height:5px; border-radius:3px; background:#E7EEE1; margin:14px auto 0; overflow:hidden; }
   .gaze-bar { height:100%; width:0; border-radius:3px; }
+  .bk-btns { display:flex; gap:10px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+  .bk-btn { font-family:inherit; font-size:14px; font-weight:700; color:#33513c; background:#F2F7EE; border:2px solid #C9D4C0; border-radius:999px; padding:9px 18px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -369,13 +371,14 @@
 
   <section id="corners">
     <h2>森の調べもの</h2>
-    <p class="sec-lead">空、食事、色、運動。<br>気になるものを、1つだけ開いてみてくださいね。</p>
+    <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>空、食事、色、運動、からだ、お掃除。<br>気になるものを、1つだけ開いてみてくださいね。</p>
     <div class="corner-grid">
       <button type="button" class="corner-card" id="corner-sky"><span class="cc-dot" style="background:#E9C46A"></span><span class="cc-title">お空</span><span class="cc-sub">月と惑星のようす</span></button>
       <button type="button" class="corner-card" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span></button>
       <button type="button" class="corner-card" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色</span><span class="cc-sub">色と気持ち、色の組み合わせ</span></button>
       <button type="button" class="corner-card" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span></button>
       <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span></button>
     </div>
   </section>
 
@@ -449,6 +452,16 @@
       <div class="koyomi-title" id="koyomi-title"></div>
       <div class="koyomi-grid" id="koyomi-grid"></div>
       <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
+    </div>
+    <div class="koyomi-box" style="margin-top:14px">
+      <div class="koyomi-title">記録のバックアップ</div>
+      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
+      <div class="bk-btns">
+        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
+        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
+      </div>
+      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
+      <p class="gs-msg" id="bk-msg"></p>
     </div>
   </section>
 
@@ -2039,6 +2052,7 @@
       <div class="plate" id="gs-plate"></div>
       <div class="goshiki-btns" id="gs-btns"></div>
       <p class="gs-msg" id="gs-msg"></p>
+      <p class="gs-msg" id="gs-total" style="color:#7a7264"></p>
       <p class="c-p">1日で全部そろえなくて、大丈夫です。偏りに気づいたら、今週のどこかで、足りない色を1つ足してみてくださいね。</p>
       <p class="gs-msg" id="food-minna"></p>
       <div class="c-h">今日のおすすめの色</div>
@@ -2076,6 +2090,7 @@
       <div class="goshiki-btns" id="wear-btns"></div>
       <p class="gs-msg" id="wear-msg"></p>
       <p class="gs-msg" id="wear-minna"></p>
+      <p class="gs-msg" id="wear-total" style="color:#7a7264"></p>
       <div class="c-h">この色には、この色</div>
       <p class="c-p">服の色合わせの、基礎の基礎です。色は3つまでが、すっきり見える目安ですよ。</p>
       <div id="pair-list"></div>
@@ -2148,6 +2163,8 @@
   var week = {};
   try { var wsv = JSON.parse(localStorage.getItem('mori_goshiki_week') || 'null'); if (wsv) week = wsv; } catch(e) {}
   if (!week[todayStr2]) week[todayStr2] = [false, false, false, false, false];
+  var gsTotal = 0;
+  try { gsTotal = parseInt(localStorage.getItem('mori_goshiki_total') || '0', 10) || 0; } catch(e) {}
   function weekUnion(){ var u = [false, false, false, false, false]; last7().forEach(function(ds){ var a = week[ds]; if (a) a.forEach(function(v, i){ if (v) u[i] = true; }); }); return u; }
   function saveWeek(){ try { var keep = {}; last7().forEach(function(ds){ if (week[ds]) keep[ds] = week[ds]; }); if (!keep[todayStr2]) keep[todayStr2] = week[todayStr2]; week = keep; localStorage.setItem('mori_goshiki_week', JSON.stringify(week)); } catch(e) {} }
   var plate = document.getElementById('gs-plate'), btns = document.getElementById('gs-btns'), msg = document.getElementById('gs-msg');
@@ -2162,11 +2179,13 @@
       else if (!missing.length) msg.textContent = 'この1週間で、五色そろいましたね。いろんな色が、体に入りました。';
       else msg.textContent = 'この1週間で、' + picked.join('と') + 'が集まりました。あとは' + missing.join('と') + '。今週のどこかで、足してみてくださいね。';
     }
+    var gsTotEl = document.getElementById('gs-total');
+    if (gsTotEl) gsTotEl.textContent = gsTotal > 0 ? 'あなたの記録：いままでに、' + gsTotal + '回、色を集めました。' : '';
     if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var i = +b.getAttribute('data-i');
         week[todayStr2][i] = !week[todayStr2][i];
-        if (week[todayStr2][i]) rpcColor('eat', i);
+        if (week[todayStr2][i]) { rpcColor('eat', i); gsTotal++; try { localStorage.setItem('mori_goshiki_total', String(gsTotal)); } catch(e) {} }
         saveWeek(); renderGs();
       });
     });
@@ -2199,12 +2218,15 @@
         if (wearSel === i) return;
         wearSel = i;
         try { localStorage.setItem('mori_wear', JSON.stringify({ date: todayStr2, color: i })); } catch(e) {}
+        try { var wd = JSON.parse(localStorage.getItem('mori_wear_days') || '[]'); if (wd.indexOf(todayStr2) < 0) { wd.push(todayStr2); localStorage.setItem('mori_wear_days', JSON.stringify(wd)); } } catch(e) {}
         rpcColor('wear', i);
+        renderWearTotal();
         renderWear();
       });
     });
   }
-  renderWear();
+  function renderWearTotal(){ var el = document.getElementById('wear-total'); if (!el) return; var n = 0; try { n = JSON.parse(localStorage.getItem('mori_wear_days') || '[]').length; } catch(e) {} el.textContent = n > 0 ? 'あなたの記録：いままでに、' + n + '日、色を選んできました。' : ''; }
+  renderWear(); renderWearTotal();
   if (wmn) {
     fetch(SB2 + '/mori_colors?select=color,cnt&kind=eq.wear&day=eq.' + todayStr2, { headers: H2 })
       .then(function(r){ return r.json(); })
@@ -2321,6 +2343,33 @@
   if (xl) xl.innerHTML = EX.map(function(x){
     return '<div class="ex-row"><span class="ex-day">' + x.day + '</span><span><b>' + x.name + '</b></span></div>';
   }).join('');
+  /* 記録のバックアップ */
+  var bkMsg = document.getElementById('bk-msg');
+  var bkExp = document.getElementById('bk-export'), bkImp = document.getElementById('bk-import-btn'), bkFile = document.getElementById('bk-file');
+  if (bkExp) bkExp.addEventListener('click', function(){
+    var data = {};
+    for (var k = 0; k < localStorage.length; k++) { var key = localStorage.key(k); if (key && key.indexOf('mori') === 0) data[key] = localStorage.getItem(key); }
+    var blob = new Blob([JSON.stringify({ app: 'mizujoshinomori', exported: todayStr2, data: data }, null, 1)], { type: 'application/json' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'mori-backup-' + todayStr2 + '.json'; document.body.appendChild(a); a.click(); a.remove();
+    if (bkMsg) bkMsg.textContent = '書き出しました。大事に、しまっておいてくださいね。';
+  });
+  if (bkImp && bkFile) {
+    bkImp.addEventListener('click', function(){ bkFile.click(); });
+    bkFile.addEventListener('change', function(){
+      var f = bkFile.files && bkFile.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function(){
+        try {
+          var obj = JSON.parse(r.result);
+          var d = obj.data || obj;
+          Object.keys(d).forEach(function(key){ if (key.indexOf('mori') === 0) localStorage.setItem(key, d[key]); });
+          if (bkMsg) bkMsg.textContent = '読み込みました。森が、元に戻ります。';
+          setTimeout(function(){ location.reload(); }, 900);
+        } catch(e) { if (bkMsg) bkMsg.textContent = '読み込めませんでした。ファイルを確認してみてくださいね。'; }
+      };
+      r.readAsText(f);
+    });
+  }
 })();
 </script>
   <div class="intro-overlay" id="body-modal" style="display:none">
@@ -2348,6 +2397,77 @@
       <button type="button" class="modal-close-bottom" id="body-close-b">閉じる</button>
     </div>
   </div>
+  <div class="intro-overlay" id="clean-modal" style="display:none">
+    <div class="intro-card">
+      <button type="button" class="intro-close" id="clean-close" aria-label="とじる">×</button>
+      <div class="c-title">お掃除コーナー</div>
+      <p class="c-lead">色に合わせた場所を、少しだけお掃除。</p>
+      <p class="c-p">1か所、一拭きでも大丈夫です。箒ひとはき、コロコロ1回でも、それで十分ですよ。</p>
+      <div class="goshiki-list">
+        <div class="goshiki-row"><span class="gs-chip" style="background:#6FA287"></span><span class="gs-el">木</span><span class="gs-food">玄関（緑）…外とつながる入口</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#D97757"></span><span class="gs-el">火</span><span class="gs-food">キッチン（赤）…火を使う場所</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#E0B84F"></span><span class="gs-el">土</span><span class="gs-food">リビング（黄）…集まる場所</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#F2EFE6;border:1.5px solid #CFC8B4"></span><span class="gs-el">金</span><span class="gs-food">廊下（白）…通り道</span></div>
+        <div class="goshiki-row"><span class="gs-chip" style="background:#44546A"></span><span class="gs-el">水</span><span class="gs-food">寝室（黒）…静かに休む場所</span></div>
+      </div>
+      <p class="c-p" style="margin-top:14px">できたら、その場所のボタンを押してくださいね。</p>
+      <div class="goshiki-btns" id="clean-btns"></div>
+      <p class="gs-msg" id="clean-msg"></p>
+      <p class="gs-msg" id="clean-total" style="color:#7a7264"></p>
+      <button type="button" class="modal-close-bottom" id="clean-close-b">閉じる</button>
+    </div>
+  </div>
+<script>
+(function(){
+  var ROOMS = [
+    { place:'玄関', color:'緑', hex:'#6FA287' },
+    { place:'キッチン', color:'赤', hex:'#D97757' },
+    { place:'リビング', color:'黄', hex:'#E0B84F' },
+    { place:'廊下', color:'白', hex:'#F2EFE6' },
+    { place:'寝室', color:'黒', hex:'#44546A' }
+  ];
+  var open = document.getElementById('corner-clean'), modal = document.getElementById('clean-modal');
+  if (!open || !modal) return;
+  function hide(){ modal.style.display = 'none'; }
+  open.addEventListener('click', function(){ modal.style.display = 'flex'; });
+  document.getElementById('clean-close').addEventListener('click', hide);
+  document.getElementById('clean-close-b').addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
+  function jstStr(d){ return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(d); }
+  var today = jstStr(new Date());
+  var hist = {};
+  try { var sv = JSON.parse(localStorage.getItem('mori_clean_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
+  if (!hist[today]) hist[today] = [false, false, false, false, false];
+  var done = hist[today];
+  var btns = document.getElementById('clean-btns'), msg = document.getElementById('clean-msg'), totalEl = document.getElementById('clean-total');
+  function render(){
+    if (btns) btns.innerHTML = ROOMS.map(function(r, i){
+      return '<button type="button" class="goshiki-btn' + (done[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="background:' + r.hex + (r.color === '白' ? ';border:1.5px solid #CFC8B4' : '') + '"></span>' + r.place + '（' + r.color + '）</button>';
+    }).join('');
+    if (msg) {
+      var picked = ROOMS.filter(function(r, i){ return done[i]; }).map(function(r){ return r.place; });
+      if (!picked.length) msg.textContent = '';
+      else if (picked.length === 5) msg.textContent = '全部の場所が、すっきりしましたね。';
+      else msg.textContent = picked.join('と') + 'が、できましたね。';
+    }
+    if (totalEl) {
+      var tot = 0;
+      Object.keys(hist).forEach(function(d){ hist[d].forEach(function(v){ if (v) tot++; }); });
+      totalEl.textContent = tot > 0 ? 'あなたの記録：いままでに、' + tot + 'か所お掃除できました。' : '';
+    }
+    if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
+      b.addEventListener('click', function(){
+        var i = +b.getAttribute('data-i');
+        done[i] = !done[i];
+        try { localStorage.setItem('mori_clean_hist', JSON.stringify(hist)); } catch(e) {}
+        render();
+      });
+    });
+  }
+  render();
+})();
+</script>
+
 
 <script>
 (function(){
