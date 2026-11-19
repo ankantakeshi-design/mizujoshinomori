@@ -2278,6 +2278,7 @@
       <p class="c-p">さすれたら、その色のボタンを押してくださいね。</p>
       <div class="area-btns" id="area-btns"></div>
       <p class="gs-msg" id="area-msg"></p>
+      <p class="gs-msg" id="area-total" style="color:#7a7264"></p>
       <button type="button" class="modal-close-bottom" id="body-close-b">閉じる</button>
     </div>
   </div>
@@ -2301,9 +2302,11 @@
   modal.addEventListener('click', function(e){ if (e.target === modal) hide(); });
   function jstStr(d){ return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(d); }
   var today = jstStr(new Date());
-  var done = [false, false, false, false, false, false];
-  try { var sv = JSON.parse(localStorage.getItem('mori_body') || 'null'); if (sv && sv.date === today && sv.done) done = sv.done; } catch(e) {}
-  var zones = document.getElementById('area-zones'), btns = document.getElementById('area-btns'), msg = document.getElementById('area-msg');
+  var hist = {};
+  try { var sv = JSON.parse(localStorage.getItem('mori_body_hist') || 'null'); if (sv) hist = sv; } catch(e) {}
+  if (!hist[today]) hist[today] = [false, false, false, false, false, false];
+  var done = hist[today];
+  var zones = document.getElementById('area-zones'), btns = document.getElementById('area-btns'), msg = document.getElementById('area-msg'), totalEl = document.getElementById('area-total');
   function render(){
     if (zones) zones.innerHTML = AREAS.map(function(a, i){
       var tc = (a.color === '白' || a.color === '黄') ? '#5a5344' : '#FFFFFF';
@@ -2319,11 +2322,16 @@
       else if (picked.length === 6) msg.textContent = '全部のエリアを、さすれましたね。体が、ほっとしています。';
       else msg.textContent = picked.join('と') + 'を、さすれましたね。';
     }
+    if (totalEl) {
+      var tot = 0;
+      Object.keys(hist).forEach(function(d){ hist[d].forEach(function(v){ if (v) tot++; }); });
+      totalEl.textContent = tot > 0 ? 'あなたの記録：いままでに、' + tot + '回エリアをさすれました。' : '';
+    }
     if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
       b.addEventListener('click', function(){
         var i = +b.getAttribute('data-i');
         done[i] = !done[i];
-        try { localStorage.setItem('mori_body', JSON.stringify({ date: today, done: done })); } catch(e) {}
+        try { localStorage.setItem('mori_body_hist', JSON.stringify(hist)); } catch(e) {}
         render();
       });
     });
