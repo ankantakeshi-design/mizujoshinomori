@@ -2244,7 +2244,7 @@
       <button type="button" class="sky-btn" id="sky-to-moon">月のカレンダー</button>
       <button type="button" class="sky-btn" id="sky-to-planet">惑星の順行・逆行</button>
       <div class="c-h">お知らせの通知</div>
-      <p class="c-p">新月・満月と、惑星の逆行・順行を、3日前の朝8時ごろにお知らせします。欲しいものだけ、選べます。</p>
+      <p class="c-p">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。欲しいものだけ、選べます。</p>
       <div id="push-ui"></div>
       <p class="gs-msg" id="push-msg"></p>
       <button type="button" class="modal-close-bottom" id="sky-close-b">閉じる</button>
@@ -3138,7 +3138,7 @@
       return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyToBytes(VAPID) }).then(function (sub) {
         var p = getPrefs();
         var body = { endpoint: sub.endpoint, keys: { p256dh: b64u(sub.getKey('p256dh')), auth: b64u(sub.getKey('auth')) }, moon: p.moon, planet: p.planet };
-        return post('/subscribe', body).then(function () { setEndpoint(sub.endpoint); renderOn(); say('設定しました。3日前の朝に、お知らせしますね。'); });
+        return post('/subscribe', body).then(function () { setEndpoint(sub.endpoint); renderOn(); say('設定しました。3日前と当日に、お知らせしますね。'); });
       });
     }).catch(function () { say('うまく設定できませんでした。少し時間をおいて、試してくださいね。'); });
   }
