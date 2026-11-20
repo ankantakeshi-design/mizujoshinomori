@@ -983,15 +983,11 @@
   var started = false; // 実際に鳴り始めたか
 
   function getBgmSrc(){
-    var now = new Date();
-    var hour = now.getHours();
-    var day = now.getDate();
-    var slot;
-    if (hour >= 5 && hour < 12)       slot = 'Morning';
-    else if (hour >= 12 && hour < 21) slot = 'Day';
-    else                              slot = 'Night';
-    var set = (day % 2 === 0) ? '1' : '2';
-    return slot + set + '.mp3';
+    // 時間帯で3曲（2026-11-21 総入れ替え：朝＝木漏れ日／昼＝揺蕩う／夜＝まどろみの中、すべて もっぴーさうんど）
+    var hour = new Date().getHours();
+    if (hour >= 5 && hour < 12)       return 'bgm-morning.mp3';
+    else if (hour >= 12 && hour < 21) return 'bgm-day.mp3';
+    else                              return 'bgm-night.mp3';
   }
 
   function updateBtn(){
