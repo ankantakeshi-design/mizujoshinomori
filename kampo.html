@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢方じてん｜集まれ水女子の森</title>
+<meta name="description" content="症状や体質、仲間の括りから引ける、ツムラ漢方の小さな辞典です。">
+<style>
+  :root{ --ink:#2f3a2f; --sub:#6b7d6b; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
+  .back{font-size:13px;font-weight:700;color:var(--green);text-decoration:none;}
+  header{text-align:center;margin:14px 0 6px;}
+  header img{width:84px;height:84px;border-radius:50%;object-fit:cover;}
+  h1{font-size:24px;font-weight:900;color:var(--green-deep);margin-top:6px;}
+  .lead{text-align:center;font-size:13.5px;color:var(--sub);margin:6px 0 18px;line-height:2.0;}
+  .tabs{display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
+  .tab{border:2px solid var(--line);background:#fff;color:var(--green-deep);font-weight:800;font-size:14px;border-radius:999px;padding:8px 16px;cursor:pointer;font-family:inherit;}
+  .tab.on{background:var(--green);border-color:var(--green);color:#fff;}
+  .search{width:100%;font-size:15px;padding:11px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;font-family:inherit;margin-bottom:12px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px;}
+  .chips .cap{width:100%;font-size:12px;font-weight:800;color:var(--green);margin-top:6px;}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);}
+  .chip.on{background:#e7f0e2;border-color:var(--green);color:var(--green-deep);}
+  .count{font-size:12.5px;color:var(--sub);margin:10px 2px;}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;}
+  .badge{flex:none;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;margin-top:2px;}
+  .c-main{flex:1;min-width:0;}
+  .c-name{font-size:16.5px;font-weight:900;}
+  .c-read{font-size:12px;color:var(--sub);margin-left:6px;font-weight:500;}
+  .c-sym{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+  .c-sym span{background:#f2f7ee;border-radius:999px;padding:2px 9px;font-size:12px;}
+  .c-const{font-size:12.5px;color:var(--sub);margin-top:7px;}
+  .c-fam{display:inline-block;margin-top:7px;font-size:12px;font-weight:800;color:var(--green-deep);background:#e7f0e2;border-radius:999px;padding:3px 10px;cursor:pointer;}
+  .fam-head{font-size:16px;font-weight:900;color:var(--green-deep);margin:20px 0 4px;}
+  .fam-role{font-size:12.5px;color:var(--sub);margin-left:8px;font-weight:500;}
+  .note{margin-top:30px;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;font-size:12.5px;color:var(--sub);line-height:2.0;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 森へもどる</a>
+  <header>
+    <img src="keeper-2.webp" alt="森の番人">
+    <h1>漢方じてん</h1>
+  </header>
+  <p class="lead">ツムラの漢方、63種の小さな辞典です。<br>症状から、名前と番号から、仲間の括りから、引いてみてくださいね。</p>
+
+  <div class="tabs">
+    <button class="tab on" data-tab="sym">症状から</button>
+    <button class="tab" data-tab="list">名前・番号から</button>
+    <button class="tab" data-tab="fam">仲間の括り</button>
+  </div>
+
+  <div id="paneSym">
+    <input class="search" id="q" type="search" placeholder="言葉で探す（例：肩こり、葛根湯、かっこん）">
+    <div class="chips" id="symChips"><span class="cap">よくある症状</span></div>
+    <div class="chips" id="constChips"><span class="cap">体質でしぼる</span></div>
+  </div>
+  <div id="paneList" class="hidden"></div>
+  <div id="paneFam" class="hidden"></div>
+
+  <p class="count" id="count"></p>
+  <div id="results"></div>
+
+  <div class="note">
+    この辞典は、漢方を知るための一般的な情報です。薬の使い方を案内するものではありません。<br>
+    体の症状が続くときや、気になるときは、医師や薬剤師に相談してくださいね。<br>
+    出典：ツムラ医療用漢方製剤の添付文書などをもとに作成しました。番号の色は、ツムラの分包の色分け（番号の一の位の色）です。
+  </div>
+</div>
+<script>
+var DATA = [{"no": 1, "name": "葛根湯", "reading": "かっこんとう", "symptoms": ["感冒（かぜ）", "鼻かぜ", "熱性疾患の初期", "肩こり", "上半身の神経痛", "じんましん", "炎症性疾患（結膜炎・角膜炎・中耳炎・扁桃腺炎・乳腺炎・リンパ腺炎）"], "constitution": ["比較的体力がある"], "family": "葛根湯系", "familyRole": "基本形"}, {"no": 2, "name": "葛根湯加川芎辛夷", "reading": "かっこんとうかせんきゅうしんい", "symptoms": ["鼻づまり", "蓄膿症", "慢性鼻炎"], "constitution": [], "family": "葛根湯系", "familyRole": "葛根湯に川芎・辛夷を加えたもの（鼻の症状が中心のタイプ）"}, {"no": 3, "name": "乙字湯", "reading": "おつじとう", "symptoms": ["キレ痔", "イボ痔"], "constitution": ["体力中等度で衰弱していない"], "family": null}, {"no": 5, "name": "安中散", "reading": "あんちゅうさん", "symptoms": ["胃痛", "腹痛", "胸やけ", "げっぷ", "食欲不振", "はきけ", "神経性胃炎", "慢性胃炎", "胃アトニー"], "constitution": ["やせ型で腹部筋肉が弛緩する傾向"], "family": null}, {"no": 6, "name": "十味敗毒湯", "reading": "じゅうみはいどくとう", "symptoms": ["化膿性皮膚疾患", "急性皮膚疾患の初期", "じんましん", "急性湿疹", "水虫"], "constitution": [], "family": null}, {"no": 7, "name": "八味地黄丸", "reading": "はちみじおうがん", "symptoms": ["疲労・倦怠感", "腰痛", "坐骨神経痛", "頻尿・尿量減少", "口渇", "手足の冷感と熱感", "腎炎", "糖尿病", "陰萎", "脚気", "膀胱カタル", "前立腺肥大", "高血圧"], "constitution": [], "family": "地黄丸系", "familyRole": "基本形（派生処方の牛車腎気丸は107番）"}, {"no": 8, "name": "大柴胡湯", "reading": "だいさいことう", "symptoms": ["便秘", "胆石症", "胆のう炎", "黄疸", "肝機能障害", "高血圧症", "胃酸過多症", "急性胃腸カタル", "悪心・嘔吐", "食欲不振", "痔", "糖尿病", "ノイローゼ", "不眠症", "じんましん"], "constitution": ["比較的体力がある", "便秘がち"], "family": "柴胡系", "familyRole": "体力があり便秘・上腹部の張りを伴うタイプの柴胡剤"}, {"no": 9, "name": "小柴胡湯", "reading": "しょうさいことう", "symptoms": ["感冒", "気管支炎", "気管支喘息", "肺炎", "諸種の急性熱性病", "リンパ腺炎", "慢性胃腸障害", "産後回復不全", "慢性肝炎における肝機能障害の改善"], "constitution": ["体力中等度"], "family": "柴胡系", "familyRole": "基本形"}, {"no": 10, "name": "柴胡桂枝湯", "reading": "さいこけいしとう", "symptoms": ["感冒・流感などの熱性疾患", "肺炎", "肺結核", "胃潰瘍・十二指腸潰瘍・胆のう炎・胆石・肝機能障害・膵臓炎などの心下部緊張疼痛"], "constitution": [], "family": "柴胡系", "familyRole": "小柴胡湯と桂枝湯を合わせた合方"}, {"no": 11, "name": "柴胡桂枝乾姜湯", "reading": "さいこけいしかんきょうとう", "symptoms": ["更年期障害", "血の道症", "神経症", "不眠症"], "constitution": ["体力が弱い", "冷え症", "貧血気味", "神経過敏"], "family": "柴胡系", "familyRole": "柴胡桂枝湯の関連処方（体力が弱く冷えのあるタイプ）"}, {"no": 12, "name": "柴胡加竜骨牡蛎湯", "reading": "さいこかりゅうこつぼれいとう", "symptoms": ["高血圧症", "動脈硬化症", "慢性腎臓病", "神経衰弱症", "神経性心悸亢進症", "てんかん", "ヒステリー", "小児夜啼症", "陰萎", "不眠", "いらだち"], "constitution": ["比較的体力がある"], "family": "柴胡系", "familyRole": "柴胡剤に竜骨・牡蛎を加えたもの（精神症状・動悸が目立つタイプ）"}, {"no": 14, "name": "半夏瀉心湯", "reading": "はんげしゃしんとう", "symptoms": ["みぞおちのつかえ", "悪心・嘔吐", "下痢・軟便", "急・慢性胃腸カタル", "醗酵性下痢", "消化不良", "胃下垂", "神経性胃炎", "胃弱", "二日酔", "げっぷ", "胸やけ", "口内炎", "神経症"], "constitution": [], "family": null}, {"no": 15, "name": "黄連解毒湯", "reading": "おうれんげどくとう", "symptoms": ["鼻出血", "高血圧", "不眠症", "ノイローゼ", "胃炎", "二日酔", "血の道症", "めまい", "動悸", "湿疹・皮膚炎", "皮膚そう痒症", "のぼせ", "いらいら"], "constitution": ["比較的体力がある", "のぼせぎみで顔色が赤い", "いらいらしやすい"], "family": null}, {"no": 16, "name": "半夏厚朴湯", "reading": "はんげこうぼくとう", "symptoms": ["のどの異物感", "不安神経症", "神経性胃炎", "つわり", "せき", "しわがれ声", "神経性食道狭窄症", "不眠症"], "constitution": [], "family": null}, {"no": 17, "name": "五苓散", "reading": "ごれいさん", "symptoms": ["口渇・尿量減少", "浮腫", "ネフローゼ", "二日酔", "急性胃腸カタル", "下痢", "悪心・嘔吐", "めまい", "胃内停水", "頭痛", "尿毒症", "暑気あたり", "糖尿病"], "constitution": [], "family": null}, {"no": 18, "name": "桂枝加朮附湯", "reading": "けいしかじゅつぶとう", "symptoms": ["関節痛", "神経痛"], "constitution": [], "family": "桂枝湯系", "familyRole": "桂枝湯に朮・附子を加えたもの（関節痛・神経痛のタイプ）"}, {"no": 19, "name": "小青竜湯", "reading": "しょうせいりゅうとう", "symptoms": ["気管支炎", "気管支喘息", "鼻炎", "アレルギー性鼻炎", "アレルギー性結膜炎", "感冒", "水様の痰・鼻汁", "鼻閉", "くしゃみ", "流涙"], "constitution": [], "family": null}, {"no": 20, "name": "防已黄耆湯", "reading": "ぼういおうぎとう", "symptoms": ["浮腫", "腎炎", "ネフローゼ", "妊娠腎", "陰嚢水腫", "肥満症", "関節炎", "癰・せつ", "筋炎", "皮膚病", "多汗症", "月経不順", "膝関節の腫痛"], "constitution": ["色白で筋肉が軟らかく水ぶとりの体質", "疲れやすい", "汗が多い"], "family": null}, {"no": 21, "name": "小半夏加茯苓湯", "reading": "しょうはんげかぶくりょうとう", "symptoms": ["妊娠嘔吐（つわり）", "そのほかの諸病の嘔吐（急性胃腸炎など）"], "constitution": ["体力中等度"], "family": "小半夏湯系", "familyRole": "小半夏湯に茯苓を加えたもの"}, {"no": 22, "name": "消風散", "reading": "しょうふうさん", "symptoms": ["湿疹", "蕁麻疹", "水虫", "あせも", "皮膚そう痒症", "分泌物が多くかゆみの強い慢性の皮膚病"], "constitution": [], "family": null}, {"no": 23, "name": "当帰芍薬散", "reading": "とうきしゃくやくさん", "symptoms": ["貧血", "倦怠感", "更年期障害（頭重・頭痛・めまい・肩こり等）", "月経不順", "月経困難", "不妊症", "動悸", "慢性腎炎", "妊娠中の諸病（浮腫・習慣性流産・痔・腹痛）", "脚気", "半身不随", "心臓弁膜症"], "constitution": ["筋肉が軟弱で疲れやすい", "腰や脚が冷えやすい"], "family": null}, {"no": 24, "name": "加味逍遙散", "reading": "かみしょうようさん", "symptoms": ["冷え症", "虚弱体質", "月経不順", "月経困難", "更年期障害", "血の道症"], "constitution": ["体質虚弱な女性", "肩こり・疲れやすい", "精神不安がある", "便秘の傾向"], "family": "四逆散・逍遙散系", "familyRole": "四逆散から発展した逍遙散に牡丹皮・山梔子を加えたもの"}, {"no": 25, "name": "桂枝茯苓丸", "reading": "けいしぶくりょうがん", "symptoms": ["子宮並びにその付属器の炎症", "子宮内膜炎", "月経不順", "月経困難", "帯下", "更年期障害（頭痛・めまい・のぼせ・肩こり等）", "冷え症", "腹膜炎", "打撲症", "痔疾患", "睾丸炎"], "constitution": ["体格はしっかりしていて赤ら顔が多い", "腹部は大体充実している"], "family": null}, {"no": 26, "name": "桂枝加竜骨牡蛎湯", "reading": "けいしかりゅうこつぼれいとう", "symptoms": ["小児夜尿症", "神経衰弱", "性的神経衰弱", "遺精", "陰萎"], "constitution": ["比較的体力が衰えている"], "family": "桂枝湯系", "familyRole": "桂枝湯に竜骨・牡蛎を加えたもの（神経衰弱・夜尿のタイプ）"}, {"no": 27, "name": "麻黄湯", "reading": "まおうとう", "symptoms": ["感冒", "インフルエンザ（初期のもの）", "関節リウマチ", "喘息", "乳児の鼻閉塞", "哺乳困難", "悪寒・発熱・頭痛・腰痛"], "constitution": [], "family": "麻黄湯系", "familyRole": "基本形"}, {"no": 28, "name": "越婢加朮湯", "reading": "えっぴかじゅつとう", "symptoms": ["浮腫", "腎炎", "ネフローゼ", "脚気", "関節リウマチ", "夜尿症", "湿疹"], "constitution": [], "family": "越婢湯系", "familyRole": "越婢湯に朮を加えたもの"}, {"no": 29, "name": "麦門冬湯", "reading": "ばくもんどうとう", "symptoms": ["痰の切れにくい咳", "気管支炎", "気管支ぜんそく"], "constitution": [], "family": null}, {"no": 30, "name": "真武湯", "reading": "しんぶとう", "symptoms": ["胃腸疾患", "胃腸虚弱症", "慢性腸炎", "消化不良", "胃アトニー症", "胃下垂症", "ネフローゼ", "腹膜炎", "脳溢血", "神経衰弱", "高血圧症", "心臓弁膜症", "心不全で心悸亢進", "半身不随", "リウマチ", "老人性瘙痒症"], "constitution": ["新陳代謝が衰えている"], "family": null}, {"no": 31, "name": "呉茱萸湯", "reading": "ごしゅゆとう", "symptoms": ["習慣性偏頭痛", "習慣性頭痛", "嘔吐", "脚気衝心"], "constitution": ["体力中等度以下", "手足が冷えやすい"], "family": null}, {"no": 32, "name": "人参湯", "reading": "にんじんとう", "symptoms": ["急性・慢性胃腸カタル", "胃アトニー症", "胃拡張", "悪阻（つわり）", "萎縮腎"], "constitution": ["体質虚弱", "虚弱により体力が低下している"], "family": null}, {"no": 33, "name": "大黄牡丹皮湯", "reading": "だいおうぼたんぴとう", "symptoms": ["月経不順", "月経困難", "便秘", "痔疾", "下腹部痛"], "constitution": ["比較的体力がある", "便秘がち"], "family": null}, {"no": 34, "name": "白虎加人参湯", "reading": "びゃっこかにんじんとう", "symptoms": ["のどの渇き", "ほてり"], "constitution": [], "family": "白虎湯系", "familyRole": "白虎湯に人参を加えたもの"}, {"no": 35, "name": "四逆散", "reading": "しぎゃくさん", "symptoms": ["胆嚢炎", "胆石症", "胃炎", "胃酸過多", "胃潰瘍", "鼻カタル", "気管支炎", "神経質", "ヒステリー"], "constitution": ["比較的体力がある"], "family": "四逆散・逍遙散系", "familyRole": "基本形（逍遙散・加味逍遙散のもとになった処方）"}, {"no": 36, "name": "木防已湯", "reading": "もくぼういとう", "symptoms": ["心臓性喘息", "浮腫", "心臓・腎臓にもとづく疾患", "呼吸困難"], "constitution": [], "family": null}, {"no": 37, "name": "半夏白朮天麻湯", "reading": "はんげびゃくじゅつてんまとう", "symptoms": ["めまい", "頭痛"], "constitution": ["胃腸虚弱", "下肢が冷える"], "family": null}, {"no": 38, "name": "当帰四逆加呉茱萸生姜湯", "reading": "とうきしぎゃくかごしゅゆしょうきょうとう", "symptoms": ["しもやけ", "頭痛", "下腹部痛", "腰痛", "手足の冷え"], "constitution": ["手足の冷えを感じる"], "family": "当帰四逆湯系", "familyRole": "当帰四逆湯に呉茱萸・生姜を加えたもの"}, {"no": 39, "name": "苓桂朮甘湯", "reading": "りょうけいじゅつかんとう", "symptoms": ["めまい", "ふらつき", "動悸", "息切れ", "頭痛", "神経質", "ノイローゼ"], "constitution": [], "family": null}, {"no": 40, "name": "猪苓湯", "reading": "ちょれいとう", "symptoms": ["尿道炎", "腎臓炎", "腎石症", "淋炎", "排尿痛", "血尿", "腰以下の浮腫", "残尿感", "下痢", "尿量減少・小便難", "口渇"], "constitution": [], "family": null}, {"no": 41, "name": "補中益気湯", "reading": "ほちゅうえっきとう", "symptoms": ["夏やせ", "病後の体力増強", "結核症", "食欲不振", "胃下垂", "感冒", "痔", "脱肛", "子宮下垂", "陰萎", "半身不随", "多汗症"], "constitution": ["虚弱体質で消化機能が衰えている"], "family": null}, {"no": 43, "name": "六君子湯", "reading": "りっくんしとう", "symptoms": ["胃炎", "胃アトニー", "胃下垂", "消化不良", "食欲不振", "胃痛", "嘔吐"], "constitution": ["胃腸が弱い", "疲れやすい", "貧血ぎみで手足が冷えやすい"], "family": "四君子湯系", "familyRole": "四君子湯（75番）に半夏・陳皮を加えたもの"}, {"no": 45, "name": "桂枝湯", "reading": "けいしとう", "symptoms": ["体力が衰えたときの風邪の初期"], "constitution": ["体力が衰えている"], "family": "桂枝湯系", "familyRole": "基本形"}, {"no": 46, "name": "七物降下湯", "reading": "しちもつこうかとう", "symptoms": ["高血圧に伴う随伴症状（のぼせ・肩こり・耳なり・頭重）"], "constitution": ["身体虚弱の傾向がある"], "family": "四物湯系", "familyRole": "四物湯（71番）に黄耆・釣藤鈎・黄柏を加えたもの"}, {"no": 47, "name": "釣藤散", "reading": "ちょうとうさん", "symptoms": ["慢性に続く頭痛（中年以降、または高血圧の傾向のある人）"], "constitution": [], "family": null}, {"no": 48, "name": "十全大補湯", "reading": "じゅうぜんたいほとう", "symptoms": ["病後の体力低下", "疲労倦怠", "食欲不振", "ねあせ", "手足の冷え", "貧血"], "constitution": [], "family": "四君子湯・四物湯の合方", "familyRole": "四君子湯（75番）と四物湯（71番）を合わせ、黄耆・桂皮を加えたもの"}, {"no": 50, "name": "荊芥連翹湯", "reading": "けいがいれんぎょうとう", "symptoms": ["蓄膿症", "慢性鼻炎", "慢性扁桃炎", "にきび"], "constitution": [], "family": null}, {"no": 51, "name": "潤腸湯", "reading": "じゅんちょうとう", "symptoms": ["便秘"], "constitution": [], "family": null}, {"no": 52, "name": "薏苡仁湯", "reading": "よくいにんとう", "symptoms": ["関節痛", "筋肉痛"], "constitution": [], "family": null}, {"no": 53, "name": "疎経活血湯", "reading": "そけいかっけつとう", "symptoms": ["関節痛", "神経痛", "腰痛", "筋肉痛"], "constitution": [], "family": null}, {"no": 54, "name": "抑肝散", "reading": "よくかんさん", "symptoms": ["神経症", "不眠症", "小児夜なき", "小児疳症"], "constitution": ["虚弱な体質", "神経がたかぶりやすい"], "family": null}, {"no": 55, "name": "麻杏甘石湯", "reading": "まきょうかんせきとう", "symptoms": ["小児ぜんそく", "気管支ぜんそく"], "constitution": [], "family": "麻黄湯系", "familyRole": "麻黄湯の関連処方（桂枝を石膏に替えた形・ぜんそく向き）"}, {"no": 56, "name": "五淋散", "reading": "ごりんさん", "symptoms": ["頻尿", "排尿痛", "残尿感"], "constitution": [], "family": null}, {"no": 57, "name": "温清飲", "reading": "うんせいいん", "symptoms": ["月経不順", "月経困難", "血の道症", "更年期障害", "神経症"], "constitution": ["皮膚の色つやが悪い", "のぼせやすい"], "family": "四物湯・黄連解毒湯の合方", "familyRole": "四物湯（71番）と黄連解毒湯（15番）を合わせた合方"}, {"no": 58, "name": "清上防風湯", "reading": "せいじょうぼうふうとう", "symptoms": ["にきび"], "constitution": [], "family": null}, {"no": 59, "name": "治頭瘡一方", "reading": "じとうそういっぽう", "symptoms": ["湿疹", "くさ", "乳幼児の湿疹"], "constitution": [], "family": null}, {"no": 60, "name": "桂枝加芍薬湯", "reading": "けいしかしゃくやくとう", "symptoms": ["しぶり腹", "腹痛", "腹部膨満感"], "constitution": ["腹部膨満感がある"], "family": "桂枝湯系", "familyRole": "桂枝湯の芍薬を増量したもの（お腹の張り・腹痛のタイプ）"}, {"no": 61, "name": "桃核承気湯", "reading": "とうかくじょうきとう", "symptoms": ["月経不順", "月経困難症", "月経時や産後の精神不安", "腰痛", "便秘", "高血圧の随伴症状（頭痛・めまい・肩こり）"], "constitution": ["比較的体力がある", "のぼせて便秘しがち"], "family": null}, {"no": 62, "name": "防風通聖散", "reading": "ぼうふうつうしょうさん", "symptoms": ["高血圧の随伴症状（どうき・肩こり・のぼせ）", "肥満症", "むくみ", "便秘"], "constitution": ["腹部に皮下脂肪が多く、便秘がち"], "family": null}, {"no": 63, "name": "五積散", "reading": "ごしゃくさん", "symptoms": ["胃腸炎", "腰痛", "神経痛", "関節痛", "月経痛", "頭痛", "冷え症", "更年期障害", "感冒"], "constitution": [], "family": null}, {"no": 64, "name": "炙甘草湯", "reading": "しゃかんぞうとう", "symptoms": ["動悸", "息切れ"], "constitution": ["体力が衰えている", "疲れやすい"], "family": null}, {"no": 65, "name": "帰脾湯", "reading": "きひとう", "symptoms": ["貧血", "不眠症"], "constitution": ["虚弱体質で血色が悪い"], "family": null}, {"no": 66, "name": "参蘇飲", "reading": "じんそいん", "symptoms": ["感冒", "せき"], "constitution": [], "family": null}, {"no": 67, "name": "女神散", "reading": "にょしんさん", "symptoms": ["産前産後の神経症", "月経不順", "血の道症", "のぼせ", "めまい"], "constitution": ["のぼせとめまいがある"], "family": null}, {"no": 68, "name": "芍薬甘草湯", "reading": "しゃくやくかんぞうとう", "symptoms": ["急激におこる筋肉のけいれんを伴う疼痛", "筋肉・関節痛", "胃痛", "腹痛"], "constitution": [], "family": null}];
+var SYM_CHIPS = ["肩こり", "冷え", "むくみ", "めまい", "不眠", "いらいら", "月経痛", "更年期", "かぜ", "感冒", "せき", "便秘", "下痢", "疲労", "頭痛", "のぼせ", "ほてり", "食欲不振", "頻尿", "腰痛", "関節痛", "鼻炎", "じんましん", "動悸", "貧血", "神経痛", "つわり", "不安", "多汗", "のどの異物感", "腹痛", "はきけ", "嘔吐", "発熱", "悪寒", "汗"];
+var CONSTS = ["いらいらしやすい", "のぼせぎみで顔色が赤い", "のぼせて便秘しがち", "のぼせとめまいがある", "のぼせやすい", "やせ型で腹部筋肉が弛緩する傾向", "下肢が冷える", "体力が弱い", "体力が衰えている", "体力中等度", "体力中等度で衰弱していない", "体力中等度以下", "体格はしっかりしていて赤ら顔が多い", "体質虚弱", "体質虚弱な女性", "便秘がち", "便秘の傾向", "冷え症", "手足が冷えやすい", "手足の冷えを感じる", "新陳代謝が衰えている", "比較的体力がある", "比較的体力が衰えている", "汗が多い", "疲れやすい", "皮膚の色つやが悪い", "神経がたかぶりやすい", "神経過敏", "筋肉が軟弱で疲れやすい", "精神不安がある", "肩こり・疲れやすい", "胃腸が弱い", "胃腸虚弱", "腰や脚が冷えやすい", "腹部に皮下脂肪が多く、便秘がち", "腹部は大体充実している", "腹部膨満感がある", "色白で筋肉が軟らかく水ぶとりの体質", "虚弱な体質", "虚弱により体力が低下している", "虚弱体質で消化機能が衰えている", "虚弱体質で血色が悪い", "貧血ぎみで手足が冷えやすい", "貧血気味", "身体虚弱の傾向がある"];
+var COLORS = {0:['#33507e','#fff'],1:['#6fa8cf','#fff'],2:['#4f9e57','#fff'],3:['#9dbb4a','#fff'],4:['#e3c93c','#43352b'],5:['#e8862e','#fff'],6:['#c8a87e','#43352b'],7:['#8a5a2b','#fff'],8:['#cf4b4b','#fff'],9:['#ec8fb0','#43352b']};
+var selSym = null, selConst = null, tab = 'sym';
+
+function badge(no){
+  var c = COLORS[no % 10];
+  return '<span class="badge" style="background:' + c[0] + ';color:' + c[1] + '">' + no + '</span>';
+}
+function card(it){
+  var h = '<div class="card">' + badge(it.no) + '<div class="c-main">';
+  h += '<span class="c-name">' + it.name + '</span><span class="c-read">' + it.reading + '（ツムラ' + it.no + '番）</span>';
+  h += '<div class="c-sym">' + it.symptoms.map(function(s){ return '<span>' + s + '</span>'; }).join('') + '</div>';
+  if (it.constitution && it.constitution.length) h += '<p class="c-const">体質の目安：' + it.constitution.join('、') + '</p>';
+  if (it.family) h += '<span class="c-fam" data-fam="' + it.family + '">' + it.family + 'の仲間</span>';
+  return h + '</div></div>';
+}
+function render(){
+  var box = document.getElementById('results');
+  var cnt = document.getElementById('count');
+  document.getElementById('paneSym').classList.toggle('hidden', tab !== 'sym');
+  document.getElementById('paneList').classList.toggle('hidden', tab !== 'list');
+  document.getElementById('paneFam').classList.toggle('hidden', tab !== 'fam');
+  if (tab === 'list'){
+    box.innerHTML = DATA.map(card).join('');
+    cnt.textContent = '全' + DATA.length + '種（番号順）';
+    return;
+  }
+  if (tab === 'fam'){
+    var groups = {}, order = [];
+    DATA.forEach(function(it){ if (it.family){ if (!groups[it.family]){ groups[it.family] = []; order.push(it.family); } groups[it.family].push(it); } });
+    var singles = DATA.filter(function(it){ return !it.family; });
+    var h = '';
+    order.forEach(function(g){
+      h += '<div class="fam-head">' + g + '</div>';
+      h += groups[g].map(function(it){
+        var c = card(it);
+        if (it.familyRole) c = c.replace('</div></div>', '<span class="fam-role">' + it.familyRole + '</span></div></div>');
+        return c;
+      }).join('');
+    });
+    h += '<div class="fam-head">括りのない処方</div>' + singles.map(card).join('');
+    box.innerHTML = h;
+    cnt.textContent = '';
+    bindFam();
+    return;
+  }
+  var q = document.getElementById('q').value.trim();
+  var list = DATA.filter(function(it){
+    if (selSym && !it.symptoms.some(function(s){ return s.indexOf(selSym) >= 0; })) return false;
+    if (selConst && !(it.constitution || []).join('').indexOf(selConst) >= 0 && !(it.constitution || []).some(function(c){ return c.indexOf(selConst) >= 0; })) return false;
+    if (q){
+      var hay = it.name + it.reading + it.symptoms.join(' ');
+      if (hay.indexOf(q) < 0) return false;
+    }
+    return true;
+  });
+  box.innerHTML = list.length ? list.map(card).join('') : '<p class="count">見つかりませんでした。言葉を変えてみてくださいね。</p>';
+  cnt.textContent = list.length + '件';
+  bindFam();
+}
+function bindFam(){
+  document.querySelectorAll('.c-fam').forEach(function(el){
+    el.addEventListener('click', function(){
+      tab = 'fam';
+      document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.dataset.tab === 'fam'); });
+      render();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+}
+var sc = document.getElementById('symChips');
+SYM_CHIPS.forEach(function(s){
+  var b = document.createElement('button');
+  b.className = 'chip'; b.textContent = s;
+  b.addEventListener('click', function(){
+    selSym = (selSym === s) ? null : s;
+    sc.querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('on', c.textContent === selSym); });
+    render();
+  });
+  sc.appendChild(b);
+});
+var cc = document.getElementById('constChips');
+CONSTS.forEach(function(s){
+  var b = document.createElement('button');
+  b.className = 'chip'; b.textContent = s;
+  b.addEventListener('click', function(){
+    selConst = (selConst === s) ? null : s;
+    cc.querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('on', c.textContent === selConst); });
+    render();
+  });
+  cc.appendChild(b);
+});
+document.getElementById('q').addEventListener('input', render);
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    tab = t.dataset.tab;
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('on', x === t); });
+    render();
+  });
+});
+render();
+</script>
+</body>
+</html>
