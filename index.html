@@ -452,7 +452,7 @@
       <button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button>
       <button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button>
     </div>
-    <a class="hotto-hero" href="https://hotto-news.pages.dev/"><img class="hotto-hero-img" src="guide-hotto-keeper2.jpg" alt="森の番人"><span class="hotto-hero-txt"><span class="hotto-hero-title">森のほっとニュース</span><span class="hotto-hero-sub">今日のいいニュースは、こちら<span class="hotto-new">NEW</span></span></span></a>
+    <a class="link-card slim hotto-hero" href="https://hotto-news.pages.dev/"><img src="guide-hotto-keeper2.jpg" alt="森の番人"><div><div class="t hotto-hero-title">森のほっとニュース</div><div class="d">今日のいいニュースは、こちら<span class="hotto-new">NEW</span></div></div></a>
       <a class="link-card slim" href="shun.html">
         <img src="guide-shun.jpg" alt="">
         <div>
@@ -3173,11 +3173,10 @@
 .push-chip[aria-pressed="true"]{background:#7FB069;border-color:#7FB069;color:#fff}
 .push-stop{background:none;border:none;color:#8a7f72;font-size:13px;text-decoration:underline;cursor:pointer;margin-top:6px;min-height:44px}
 .push-hero-note{display:block;margin:8px auto 0;background:none;border:none;color:#5E8C61;font-size:14px;text-decoration:underline;cursor:pointer;min-height:44px;padding:6px 12px}
-.hotto-hero{display:flex;align-items:center;gap:12px;text-align:left;margin:12px 0 2px;background:linear-gradient(120deg,#eef5e6,#dfedd8);border:1px solid #b9d3ac;border-radius:18px;padding:10px 18px 12px;text-decoration:none;box-shadow:0 2px 8px rgba(80,120,70,.12)}
-.hotto-hero .hotto-hero-img{width:54px;height:54px;border-radius:50%;object-fit:cover;flex:none}
-.hotto-hero .hotto-hero-txt{flex:1}
-.hotto-hero .hotto-hero-title{display:block;color:#356045;font-weight:900;font-size:16.5px;white-space:nowrap}
-.hotto-hero .hotto-hero-sub{display:block;margin-top:1px;font-size:12.5px;font-weight:700;color:#5c8266}
+.hotto-hero{margin:12px 0 2px;background:linear-gradient(120deg,#eef5e6,#dfedd8);border-color:#b9d3ac;box-shadow:0 2px 8px rgba(80,120,70,.12)}
+.hotto-hero img{border-radius:50%;object-fit:cover}
+.hotto-hero .hotto-hero-title{font-size:16.5px;color:#356045}
+.hotto-hero .d{color:#5c8266}
 .hotto-new{display:none;background:#e8837a;color:#fff;font-size:11px;font-weight:900;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap}
 .hotto-new.on{display:inline-block}
 </style>
