@@ -435,6 +435,18 @@
   .keeper-mini { display:block; width:80px; margin:0 auto 4px; }
   .keeper-closing { display:block; width:110px; margin:10px auto 2px; }
 </style>
+<style>
+/* FAQ（よくある質問） */
+.faq-sec{margin:48px auto 0;text-align:left;}
+.faq-sec>h2{font-size:14px;font-weight:700;letter-spacing:.1em;text-align:center;margin:0 0 10px;color:#7c7165;}
+.faq-item{border-top:1px solid #dfe7da;}
+.faq-item:last-child{border-bottom:1px solid #dfe7da;}
+.faq-item summary{cursor:pointer;list-style:none;padding:15px 26px 15px 4px;font-size:15px;font-weight:700;line-height:1.6;position:relative;color:#3d4a3a;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:"＋";position:absolute;right:6px;top:15px;font-size:13px;color:#7c7165;font-weight:400;}
+.faq-item[open ] summary::after{content:"−";}
+.faq-a{padding:2px 4px 18px;font-size:15px;line-height:1.9;color:#3d4a3a;}
+</style>
 </head>
 <body>
 <div id="season-bg"></div>
@@ -687,7 +699,16 @@
     <button type="button" class="home-howto-link" id="home-howto-open">ホーム画面への置き方を見る</button>
   </div>
 
-  <footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
+    <section class="faq-sec" aria-label="よくある質問">
+  <h2>よくある質問</h2>
+  <details class="faq-item"><summary>集まれ水女子の森は、どんな場所ですか？</summary><div class="faq-a">感じているのに言葉にできない、水の性質が強い女性が、静かに休んでいける場所です。森の番人が迎えてくれて、気持ちの葉っぱを置いたり、みーちゃんの日記を読んだり、うらないや天体暦を眺めたりできます。何かを頑張る場所ではなく、ただ一息つくための場所として作りました。読むだけでも、立派な参加ですよ。</div></details>
+  <details class="faq-item"><summary>利用は無料ですか？登録はいりますか？</summary><div class="faq-a">無料で、登録もいりません。開いて、そのまま使えます。うらないを引いた日や集めた色などの記録は、この端末の中にだけ残る仕組みです。外に送られることはありませんので、安心してくださいね。</div></details>
+  <details class="faq-item"><summary>「水女子」ではないのですが、入ってもいいですか？</summary><div class="faq-a">大丈夫ですよ。水の性質が強い方を思い浮かべて作った場所ですが、どなたでも静かに過ごしていただけます。水男子の方も、火の性質が強い方も、どうぞ。</div></details>
+  <details class="faq-item"><summary>気持ちの葉っぱは、誰かに見られますか？</summary><div class="faq-a">選んだ葉っぱは、この端末の中に残るもので、誰が置いたか分かる形で見られることはありません。「昨日の森」では、昨日いちばん多かった気持ちだけが、3枚以上集まったときに、みんなの様子として静かに表示されます。気持ちは、置いていくだけで大丈夫ですよ。</div></details>
+  <details class="faq-item"><summary>通知は、どんなものが届きますか？</summary><div class="faq-a">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。天体暦のところで、欲しいものだけ選べます。通知を受け取るには、このサイトをホーム画面に追加していただくのがおすすめです。</div></details>
+  <details class="faq-item"><summary>森を作ったのは、誰ですか？</summary><div class="faq-a">心体調整塾の、たけちゃんです。感じているのに言葉にできなかった妻の姿を、そばで見てきました。言葉にならなくても居ていい場所がほしくて、この森を作りました。無理に話さなくて、大丈夫ですよ。</div></details>
+  </section>
+<footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
 </div>
 
@@ -3318,6 +3339,62 @@
   };
   document.head.appendChild(sc);
 })();
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "集まれ水女子の森は、どんな場所ですか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "感じているのに言葉にできない、水の性質が強い女性が、静かに休んでいける場所です。森の番人が迎えてくれて、気持ちの葉っぱを置いたり、みーちゃんの日記を読んだり、うらないや天体暦を眺めたりできます。何かを頑張る場所ではなく、ただ一息つくための場所として作りました。読むだけでも、立派な参加ですよ。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "利用は無料ですか？登録はいりますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "無料で、登録もいりません。開いて、そのまま使えます。うらないを引いた日や集めた色などの記録は、この端末の中にだけ残る仕組みです。外に送られることはありませんので、安心してくださいね。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "「水女子」ではないのですが、入ってもいいですか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "大丈夫ですよ。水の性質が強い方を思い浮かべて作った場所ですが、どなたでも静かに過ごしていただけます。水男子の方も、火の性質が強い方も、どうぞ。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "気持ちの葉っぱは、誰かに見られますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "選んだ葉っぱは、この端末の中に残るもので、誰が置いたか分かる形で見られることはありません。「昨日の森」では、昨日いちばん多かった気持ちだけが、3枚以上集まったときに、みんなの様子として静かに表示されます。気持ちは、置いていくだけで大丈夫ですよ。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "通知は、どんなものが届きますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。天体暦のところで、欲しいものだけ選べます。通知を受け取るには、このサイトをホーム画面に追加していただくのがおすすめです。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "森を作ったのは、誰ですか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "心体調整塾の、たけちゃんです。感じているのに言葉にできなかった妻の姿を、そばで見てきました。言葉にならなくても居ていい場所がほしくて、この森を作りました。無理に話さなくて、大丈夫ですよ。"
+   }
+  }
+ ]
+}
 </script>
 </body>
 </html>
