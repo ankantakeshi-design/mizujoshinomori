@@ -12,6 +12,9 @@
 <link rel="canonical" href="https://mizujoshinomori.pages.dev/">
 <meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="集まれ水女子の森｜水女子の共感・憩いの場">
+<meta name="twitter:description" content="感じているのに、言葉にできない。そんな水女子が、ほっと一息つける森です。">
+<meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.json">
@@ -449,6 +452,18 @@
 </style>
 </head>
 <body>
+  <div class="intro-overlay" id="intro-modal" style="display:none">
+    <div class="intro-card" role="dialog" aria-modal="true" aria-label="はじめまして">
+      <button type="button" class="intro-close" id="intro-close" aria-label="とじる">×</button>
+      <img loading="lazy" class="intro-img" id="intro-img" src="hero.jpg" alt="森の広場に集まる水女子たち">
+      <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
+      <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
+      <img src="keeper-2.webp" alt="森の番人" style="display:block; width:96px; margin:8px auto 2px;" loading="lazy" width="640" height="640">
+      <button type="button" class="btn" id="intro-ok">森へ入る</button>
+      <button type="button" class="modal-close-bottom" id="intro-close-b">閉じる</button>
+    </div>
+  </div>
+
 <div id="season-bg"></div>
 <div id="season-fx"></div>
 <div class="wrap">
@@ -547,18 +562,6 @@
       <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span><span class="cc-counter" data-ccounter="clean"></span></button>
     </div>
   </section>
-
-  <div class="intro-overlay" id="intro-modal" style="display:none">
-    <div class="intro-card" role="dialog" aria-modal="true" aria-label="はじめまして">
-      <button type="button" class="intro-close" id="intro-close" aria-label="とじる">×</button>
-      <img loading="lazy" class="intro-img" id="intro-img" src="hero.jpg" alt="森の広場に集まる水女子たち">
-      <h1>集まれ<span class="water">水女子</span>の<span class="mori">森</span></h1>
-      <p class="lead">感じているのに、言葉にできない。<br>そんな水女子が、ほっと一息つける森です。</p>
-      <img src="keeper-2.webp" alt="森の番人" style="display:block; width:96px; margin:8px auto 2px;" loading="lazy" width="640" height="640">
-      <button type="button" class="btn" id="intro-ok">森へ入る</button>
-      <button type="button" class="modal-close-bottom" id="intro-close-b">閉じる</button>
-    </div>
-  </div>
 
   <section id="leaves">
     <h2>気持ちの葉っぱ</h2>
