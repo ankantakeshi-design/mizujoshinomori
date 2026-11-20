@@ -445,6 +445,7 @@
     </div>
     <p><span class="special" id="special-line"></span></p>
     <p class="yesterday" id="yesterday-line"></p>
+    <a class="hotto-hero" href="https://hotto-news.pages.dev/">📰 森のほっとニュース<span class="hotto-hero-sub">今日のいいニュースは、こちら</span></a>
     <a id="today-diary" class="today-diary" href="#nikki" style="display:none"><span class="new-badge" id="nb-diary2" style="display:none">NEW</span>
       <img id="today-diary-img" alt="今日のみーちゃん">
       <span class="td-body">
@@ -515,7 +516,7 @@
     </div>
     <p class="leaf-msg" id="leaf-msg"></p>
     <div class="leaf-pile-wrap">
-      <div class="leaf-pile-label">今日の葉っぱ</div>
+      <div class="leaf-pile-label">森に集まった葉っぱ</div>
       <div class="leaf-pile" id="leaf-pile"></div>
     </div>
   </section>
@@ -796,6 +797,7 @@
   var PALETTE = ['#7FB069', '#5E9C63', '#A7C796', '#8FBC7A', '#6AA84F', '#95C08A'];
   var todayCounts = {};
   var todayTotal = 0;
+  var totalAll = 0;
   var msg = document.getElementById('leaf-msg');
   var pile = document.getElementById('leaf-pile');
   var storeKey = 'mori_leaf_' + todayStr;
@@ -809,11 +811,11 @@
   function renderPile(animateLast){
     if (!pile) return;
     pile.innerHTML = '';
-    if (!todayTotal) {
+    if (!totalAll) {
       pile.innerHTML = '<span class="pile-empty">まだ、葉っぱはありません</span>';
       return;
     }
-    var n = Math.min(todayTotal, 80);
+    var n = Math.min(totalAll, 80);
     for (var i = 0; i < n; i++) {
       var sp = document.createElement('span');
       sp.className = 'pile-leaf' + (animateLast && i === n - 1 ? ' drop-in' : '');
@@ -826,8 +828,8 @@
     if (!msg) return;
     if (chosen) {
       msg.innerHTML = '「' + leafName(chosen) + '」を、森に置きました。<br>' + (REPLIES[chosen] || '');
-    } else if (todayTotal > 0) {
-      msg.textContent = '今日の森には、葉っぱが置かれています。あなたの気持ちも、どうぞ。';
+    } else if (totalAll > 0) {
+      msg.textContent = '森には、みんなの葉っぱが集まっています。あなたの気持ちも、どうぞ。';
     } else {
       msg.textContent = '今日の森は、まだ静かです。最初の葉っぱを、どうぞ。';
     }
@@ -842,12 +844,15 @@
       if (grid) grid.style.display = 'none';
     }
   }
-  fetch(SB + '/mori_leaves?select=leaf,cnt&day=eq.' + todayStr, { headers: H })
+  fetch(SB + '/mori_leaves?select=leaf,cnt,day', { headers: H })
     .then(function(r){ return r.json(); })
     .then(function(rows){
       if (Array.isArray(rows)) rows.forEach(function(x){
-        todayCounts[x.leaf] = (todayCounts[x.leaf] || 0) + Number(x.cnt || 0);
-        todayTotal += Number(x.cnt || 0);
+        totalAll += Number(x.cnt || 0);
+        if (x.day === todayStr) {
+          todayCounts[x.leaf] = (todayCounts[x.leaf] || 0) + Number(x.cnt || 0);
+          todayTotal += Number(x.cnt || 0);
+        }
       });
       applyChosen(); renderPile(false); showMsg();
     })
@@ -885,6 +890,7 @@
         chosen = id;
         todayCounts[id] = (todayCounts[id] || 0) + 1;
         todayTotal += 1;
+        totalAll += 1;
         try { localStorage.setItem(storeKey, id); } catch(e) {}
         applyChosen(); renderPile(true); showMsg();
       })
@@ -3113,6 +3119,8 @@
 .push-chip[aria-pressed="true"]{background:#7FB069;border-color:#7FB069;color:#fff}
 .push-stop{background:none;border:none;color:#8a7f72;font-size:13px;text-decoration:underline;cursor:pointer;margin-top:6px;min-height:44px}
 .push-hero-note{display:block;margin:8px auto 0;background:none;border:none;color:#5E8C61;font-size:14px;text-decoration:underline;cursor:pointer;min-height:44px;padding:6px 12px}
+.hotto-hero{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 2px;max-width:420px;background:linear-gradient(120deg,#fdf6e9,#fdeeda);border:1px solid #ecd9ae;border-radius:999px;padding:11px 18px;color:#8a5a1d;font-weight:900;font-size:15.5px;text-decoration:none;box-shadow:0 2px 8px rgba(160,120,40,.12)}
+.hotto-hero .hotto-hero-sub{font-size:12.5px;font-weight:700;color:#a5804f}
 </style>
 <script>
 (function(){
