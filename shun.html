@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>旬辞典｜集まれ水女子の森</title>
+<meta name="description" content="月ごとに引ける、旬の食材の小さな辞典です。">
+<style>
+  :root{ --ink:#2f3a2f; --sub:#6b7d6b; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
+  .back{font-size:13px;font-weight:700;color:var(--green);text-decoration:none;}
+  header{text-align:center;margin:14px 0 6px;}
+  header img{width:84px;height:84px;border-radius:50%;object-fit:cover;}
+  h1{font-size:24px;font-weight:900;color:var(--green-deep);margin-top:6px;}
+  .lead{text-align:center;font-size:13.5px;color:var(--sub);margin:6px 0 18px;line-height:2.0;}
+  .search{width:100%;font-size:15px;padding:11px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;font-family:inherit;margin-bottom:14px;}
+  .mtabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+  .mtab{border:2px solid var(--line);background:#fff;color:var(--green-deep);font-weight:800;font-size:13.5px;border-radius:999px;padding:6px 13px;cursor:pointer;font-family:inherit;}
+  .mtab.on{background:var(--green);border-color:var(--green);color:#fff;}
+  .count{font-size:12.5px;color:var(--sub);margin:10px 2px;}
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;}
+  .c-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .dot{flex:none;width:16px;height:16px;border-radius:50%;}
+  .c-name{font-size:16.5px;font-weight:900;}
+  .c-cat{font-size:11.5px;font-weight:800;color:var(--green-deep);background:#e7f0e2;border-radius:999px;padding:2px 9px;}
+  .c-color{font-size:12px;color:var(--sub);}
+  .c-month{margin-left:auto;font-size:12px;font-weight:800;color:var(--green);}
+  .c-point{font-size:13.5px;margin-top:7px;line-height:1.9;}
+  .c-recipe{margin-top:9px;background:#f2f7ee;border-radius:12px;padding:9px 12px;font-size:13px;line-height:1.9;}
+  .c-recipe .cap{display:block;font-size:11.5px;font-weight:800;color:var(--green);margin-bottom:2px;}
+  .note{margin-top:30px;font-size:12px;color:var(--sub);text-align:center;line-height:2.0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 森へもどる</a>
+  <header>
+    <img src="keeper-3.webp" alt="森の番人">
+    <h1>旬辞典</h1>
+  </header>
+  <p class="lead">その季節にいちばんおいしくなる、旬の食材の小さな辞典です。<br>月のタブで、季節をめぐってみてくださいね。</p>
+
+  <input class="search" id="q" type="search" placeholder="食材の名前で探す（例：たけのこ、さんま）">
+  <div class="mtabs" id="mtabs"></div>
+
+  <p class="count" id="count"></p>
+  <div id="results"></div>
+
+  <p class="note">季節の目安は地域によって少し変わります。</p>
+</div>
+<script>
+var DATA = [{"month": 1, "items": [{"name": "みかん", "category": "果物", "color": "黄", "point": "ビタミンCが豊富で、冬の乾燥する季節にうれしい果物です。", "recipe": "そのまま食べるのが一番です。皮は干してお風呂に入れると、昔ながらの温まる工夫になりますよ。"}, {"name": "大根", "category": "野菜", "color": "白", "point": "冬に甘みが増します。消化を助ける成分を含むといわれる、冬の代表野菜です。", "recipe": "厚めに切ってふろふき大根に。だしで柔らかく煮て、味噌をのせるだけでごちそうになります。"}, {"name": "白菜", "category": "野菜", "color": "白", "point": "水分が多く、冬に甘みが増します。鍋に欠かせない野菜です。", "recipe": "鍋に入れるのが定番です。塩もみして浅漬けにすると、もう一品ほしいときに助かりますよ。"}, {"name": "ほうれん草", "category": "野菜", "color": "緑", "point": "鉄分や葉酸が豊富です。寒さに当たると甘みが増すといわれます。", "recipe": "さっと茹でておひたしに。根元の赤い部分にも栄養があるので、よく洗って一緒にどうぞ。"}, {"name": "小松菜", "category": "野菜", "color": "緑", "point": "カルシウムが豊富な緑黄色野菜です。冬に味が濃くなります。", "recipe": "油揚げと一緒に煮びたしに。炒めてもおいしく、忙しい日にも助かります。"}, {"name": "ブリ", "category": "魚介", "color": "白", "point": "DHAなどを含むといわれる魚です。冬の「寒ブリ」は脂がのって格別です。", "recipe": "照り焼きが定番です。大根と煮るぶり大根も、冬らしい一品になりますよ。"}]}, {"month": 2, "items": [{"name": "菜の花", "category": "野菜", "color": "緑", "point": "春の訪れを告げる野菜です。ビタミンCが豊富といわれます。", "recipe": "さっと茹でて、からし和えやおひたしに。ほろ苦さが春の味です。"}, {"name": "ブロッコリー", "category": "野菜", "color": "緑", "point": "ビタミンCが豊富な野菜です。冬から早春に甘みが増します。", "recipe": "小房に分けて蒸し煮にすると、栄養が逃げにくいといわれます。塩とオリーブオイルだけでおいしいですよ。"}, {"name": "長ねぎ", "category": "野菜", "color": "白", "point": "冬に甘みが増します。香りの成分は体を温めるといわれます。", "recipe": "鍋や味噌汁にたっぷりと。青い部分も刻んで薬味に使うと、無駄がありません。"}, {"name": "いちご", "category": "果物", "color": "赤", "point": "ビタミンCが豊富な果物です。", "recipe": "洗ってそのままが一番です。つぶして牛乳と混ぜるいちごミルクも、懐かしい味になりますよ。"}, {"name": "タラ", "category": "魚介", "color": "白", "point": "淡白で消化のよい白身魚です。冬が旬で、鍋によく合います。", "recipe": "白菜と一緒に鍋に。ポン酢でさっぱりと。フライにしてもふんわりします。"}, {"name": "牡蠣", "category": "魚介", "color": "白", "point": "亜鉛や鉄分を含むといわれる、海の幸です。", "recipe": "よく洗って、片栗粉をまぶしてバター焼きに。加熱用はしっかり火を通してくださいね。"}]}, {"month": 3, "items": [{"name": "新玉ねぎ", "category": "野菜", "color": "白", "point": "春だけの、みずみずしい玉ねぎです。辛みが少なく、生で食べられます。", "recipe": "薄くスライスして、水にさらさずそのままサラダに。かつお節と醤油でどうぞ。"}, {"name": "春キャベツ", "category": "野菜", "color": "緑", "point": "柔らかく甘い、春のキャベツです。ビタミンCや食物繊維が含まれます。", "recipe": "ざく切りにして塩昆布と和えるだけ。生の甘みを楽しんでくださいね。"}, {"name": "わかめ", "category": "その他", "color": "緑", "point": "海の野菜です。ミネラルや食物繊維が含まれます。", "recipe": "酢の物や味噌汁に。乾燥わかめは水で戻すだけなので、常備しておくと助かります。"}, {"name": "ホタルイカ", "category": "魚介", "color": "白", "point": "春に楽しめる、小さなイカです。", "recipe": "茹でたものを酢味噌で。目と口ばしを取ると、食べやすくなりますよ。"}, {"name": "はっさく", "category": "果物", "color": "黄", "point": "さっぱりした酸味とほろ苦さのある柑橘です。ビタミンCが含まれます。", "recipe": "皮をむいてそのまま。ほろ苦さが苦手な方は、サラダに散らすと爽やかです。"}, {"name": "うど", "category": "野菜", "color": "白", "point": "春の山菜です。独特の香りと歯ざわりが楽しめます。", "recipe": "皮を厚めにむいて酢味噌和えに。皮はきんぴらにすると、香りが楽しめますよ。"}]}, {"month": 4, "items": [{"name": "たけのこ", "category": "野菜", "color": "黄", "point": "春の味覚の代表です。食物繊維が含まれます。", "recipe": "若竹煮が定番です。わかめと一緒に炊くと、春らしい香りが広がります。"}, {"name": "新じゃがいも", "category": "野菜", "color": "黄", "point": "皮が薄く、みずみずしい春のじゃがいもです。", "recipe": "皮ごと蒸して、バターと塩で。シンプルなほど、新じゃがの味が分かりますよ。"}, {"name": "アスパラガス", "category": "野菜", "color": "緑", "point": "アスパラギン酸という成分を含むことで知られます。春に太く甘くなります。", "recipe": "下の硬い部分を折って、さっと茹でるかグリルで焼いて。塩やマヨネーズでどうぞ。"}, {"name": "そら豆", "category": "野菜", "color": "緑", "point": "初夏の短い間だけ楽しめる豆です。たんぱく質やビタミンを含みます。", "recipe": "さやごとグリルで焼くと、ほくほくになります。塩を少しふってどうぞ。"}, {"name": "カツオ", "category": "魚介", "color": "赤", "point": "春の「初鰹」で知られます。鉄分やたんぱく質が豊富といわれます。", "recipe": "たたきにして、玉ねぎスライスとポン酢で。薬味をたっぷりのせるのが、おいしさの秘訣です。"}, {"name": "あさり", "category": "魚介", "color": "白", "point": "春に身がふっくらします。鉄分を含むといわれます。", "recipe": "酒蒸しや味噌汁に。砂抜きは塩水に浸けて、暗い場所に置くと進みますよ。"}]}, {"month": 5, "items": [{"name": "スナップエンドウ", "category": "野菜", "color": "緑", "point": "さやごと食べられる豆です。甘みがあり、ビタミンCを含みます。", "recipe": "筋を取ってさっと茹で、マヨネーズで。炒め物にも合いますよ。"}, {"name": "グリーンピース", "category": "野菜", "color": "緑", "point": "さやから出したての甘さが格別です。食物繊維を含みます。", "recipe": "豆ごはんが定番です。炊き上がりに混ぜると、色がきれいに仕上がります。"}, {"name": "びわ", "category": "果物", "color": "黄", "point": "初夏の短い旬の果物です。やさしい甘さがあります。", "recipe": "皮をむいてそのまま。種のまわりは渋みがあるので、少し厚めにむくといいですよ。"}, {"name": "キス", "category": "魚介", "color": "白", "point": "上品な白身魚です。初夏の天ぷらで知られます。", "recipe": "天ぷらが定番です。塩焼きでも、淡白な味わいが楽しめますよ。"}, {"name": "アジ", "category": "魚介", "color": "白", "point": "初夏から脂がのってきます。DHAなどを含むといわれます。", "recipe": "たたきやなめろうに。刺身用でないものは、塩焼きやフライでどうぞ。"}, {"name": "ふき", "category": "野菜", "color": "緑", "point": "春の山菜です。香りとほろ苦さが特徴です。", "recipe": "下茹でして皮をむき、煮物に。油揚げと一緒に炊くと、味がしみますよ。"}]}, {"month": 6, "items": [{"name": "梅", "category": "果物", "color": "緑", "point": "クエン酸を含むといわれる、日本の伝統食材です。", "recipe": "梅シロップがおすすめです。梅1kgに氷砂糖1kgを重ねて漬け、毎日瓶を揺らして、2週間ほどで完成します。"}, {"name": "さくらんぼ", "category": "果物", "color": "赤", "point": "初夏の、宝石のような果物です。カリウムなどを含みます。", "recipe": "冷やしてそのまま。軸が緑で、実につやのあるものが新鮮といわれます。"}, {"name": "とうもろこし", "category": "野菜", "color": "黄", "point": "夏の甘い野菜です。食物繊維やビタミンB群を含みます。", "recipe": "皮を1〜2枚残して蒸すと、甘みが増します。茹でたてに塩を少しどうぞ。"}, {"name": "枝豆", "category": "野菜", "color": "緑", "point": "たんぱく質や葉酸を含む、栄養豊かな豆です。", "recipe": "塩もみしてから茹でると、色よく仕上がります。茹で時間は4分ほどが目安です。"}, {"name": "きゅうり", "category": "野菜", "color": "緑", "point": "水分が多く、体を涼しくする食材といわれます。", "recipe": "板ずりして塩もみに。酢の物や浅漬けで、さっぱりとどうぞ。"}, {"name": "アユ", "category": "魚介", "color": "白", "point": "清流の魚で、「香魚」とも呼ばれます。初夏が旬です。", "recipe": "塩焼きが定番です。内臓のほろ苦さも、鮎らしい味わいですよ。"}]}, {"month": 7, "items": [{"name": "トマト", "category": "野菜", "color": "赤", "point": "リコピンやビタミンCを含むことで知られます。夏に甘みが増します。", "recipe": "冷やして、塩を少しふるだけ。オリーブオイルと合わせてもおいしいですよ。"}, {"name": "なす", "category": "野菜", "color": "黒", "point": "水分が多く、夏の体にうれしい野菜といわれます。皮の色は、ポリフェノールの一種を含みます。", "recipe": "焼きなすがおすすめです。皮ごと焼いてむくと、とろける食感になります。"}, {"name": "ピーマン", "category": "野菜", "color": "緑", "point": "ビタミンCが豊富な野菜です。夏にたくさん出回ります。", "recipe": "細切りにして炒め物に。丸ごと焼いてもおいしいですよ。"}, {"name": "オクラ", "category": "野菜", "color": "緑", "point": "ねばねばの成分は、食物繊維の一種です。夏に人気の野菜です。", "recipe": "さっと茹でて刻み、納豆やそうめんの薬味に。ねばりが食欲を誘います。"}, {"name": "スイカ", "category": "果物", "color": "赤", "point": "水分がたっぷりで、夏の水分補給に親しまれてきました。", "recipe": "冷やしてそのまま。少し塩をふると、甘みが引き立つといわれます。"}, {"name": "ウナギ", "category": "魚介", "color": "黒", "point": "ビタミンAやB群が豊富といわれ、土用の丑の日に親しまれます。", "recipe": "市販の蒲焼は、フライパンで酒蒸しするとふっくらします。温かいごはんにのせてどうぞ。"}, {"name": "桃", "category": "果物", "color": "白", "point": "やさしい甘さと香りの果物です。食物繊維やカリウムを含みます。", "recipe": "食べる1時間ほど前に冷やすのがおすすめです。冷やしすぎると、甘みを感じにくくなりますよ。"}]}, {"month": 8, "items": [{"name": "ゴーヤ", "category": "野菜", "color": "緑", "point": "苦みが特徴の夏野菜です。ビタミンCが豊富といわれます。", "recipe": "ゴーヤチャンプルーが定番です。塩もみすると、苦みがやわらぎますよ。"}, {"name": "かぼちゃ", "category": "野菜", "color": "黄", "point": "ビタミンやβ-カロテンが豊富といわれます。夏に収穫されます。", "recipe": "煮物が定番です。面取りすると、煮崩れしにくくなりますよ。"}, {"name": "モロヘイヤ", "category": "野菜", "color": "緑", "point": "刻むとねばりが出る、栄養豊かな夏の葉野菜です。", "recipe": "さっと茹でて刻み、おひたしや味噌汁に。ねばりが、夏の食卓にうれしい一品です。"}, {"name": "ぶどう", "category": "果物", "color": "黒", "point": "ポリフェノールを含むことで知られます。品種ごとの味比べも楽しい果物です。", "recipe": "冷やしてそのまま。凍らせると、シャーベットのようなデザートになりますよ。"}, {"name": "梨", "category": "果物", "color": "白", "point": "みずみずしく、シャキシャキした食感です。水分と食物繊維を含みます。", "recipe": "皮をむいてそのまま。サラダに入れると、爽やかな甘みがアクセントになります。"}, {"name": "ハモ", "category": "魚介", "color": "白", "point": "夏の関西で親しまれる魚です。小骨が多いので、「骨切り」されて売られます。", "recipe": "湯引きして梅肉で。照り焼きや天ぷらでも楽しめますよ。"}]}, {"month": 9, "items": [{"name": "サンマ", "category": "魚介", "color": "白", "point": "秋の味覚の代表です。DHAなどを含むといわれます。", "recipe": "塩焼きが一番です。大根おろしとすだちを添えると、秋のごちそうになりますよ。"}, {"name": "栗", "category": "その他", "color": "黄", "point": "秋の実りです。食物繊維やビタミンCを含みます。", "recipe": "栗ごはんが定番です。皮むきは、お湯に浸けると少し楽になりますよ。"}, {"name": "さつまいも", "category": "野菜", "color": "黄", "point": "食物繊維が豊富な芋です。焼くと甘みが増します。", "recipe": "焼き芋が一番です。じっくり加熱すると、ねっとり甘くなりますよ。"}, {"name": "柿", "category": "果物", "color": "黄", "point": "ビタミンCが豊富といわれる、秋の果物です。", "recipe": "そのまま食べても、サラダや白和えに入れても。やわらかくなった柿は、デザートのように甘いですよ。"}, {"name": "まいたけ", "category": "その他", "color": "黒", "point": "香りのよいキノコです。食物繊維を含みます。", "recipe": "天ぷらや炊き込みごはんに。手でほぐすと、香りが立ちますよ。"}, {"name": "りんご", "category": "果物", "color": "赤", "point": "食物繊維やカリウムを含みます。「医者いらず」と、昔からいわれてきました。", "recipe": "皮ごと食べると栄養を余さず取れるといわれます。よく洗ってどうぞ。"}]}, {"month": 10, "items": [{"name": "里芋", "category": "野菜", "color": "白", "point": "ねっとりした食感の、秋の芋です。食物繊維を含みます。", "recipe": "煮物が定番です。塩もみしてぬめりを取ると、味がしみやすくなりますよ。"}, {"name": "れんこん", "category": "野菜", "color": "白", "point": "穴の向こうが見えることから、縁起のよい食材といわれます。ビタミンCを含みます。", "recipe": "きんぴらや天ぷらに。酢水にさらすと、色が白く仕上がります。"}, {"name": "サケ", "category": "魚介", "color": "赤", "point": "秋に川をのぼる「秋鮭」が知られます。身の色は、アスタキサンチンという色素によるものです。", "recipe": "塩焼きやホイル焼きに。きのこや野菜と一緒に蒸すと、一品で満足できますよ。"}, {"name": "ししゃも", "category": "魚介", "color": "白", "point": "秋が旬の小さな魚です。子持ちは、卵がたっぷりです。", "recipe": "グリルで焼くだけ。丸ごと食べられて、カルシウムも取れるといわれます。"}, {"name": "しいたけ", "category": "その他", "color": "黒", "point": "香りとうまみのキノコです。干ししいたけは、うまみが凝縮します。", "recipe": "網焼きにして、醤油をたらすだけ。軸も刻んで、炒め物にどうぞ。"}, {"name": "りんご", "category": "果物", "color": "赤", "point": "食物繊維やカリウムを含みます。秋から冬が旬です。", "recipe": "焼きりんごにすると、甘みが増してデザートになります。すりおろしてヨーグルトに混ぜてもおいしいですよ。"}]}, {"month": 11, "items": [{"name": "ゆず", "category": "果物", "color": "黄", "point": "香りのよい柑橘です。皮に、香りの成分が多く含まれます。", "recipe": "皮を刻んで薬味に。果汁はポン酢に。冬至には、お風呂に入れる風習もありますね。"}, {"name": "ごぼう", "category": "野菜", "color": "黒", "point": "食物繊維が豊富な根菜です。秋から冬に、味が濃くなります。", "recipe": "きんぴらごぼうが定番です。皮の近くに香りがあるので、たわしで軽く洗う程度でどうぞ。"}, {"name": "かぶ", "category": "野菜", "color": "白", "point": "冬に甘みが増す野菜です。葉にも栄養があります。", "recipe": "浅漬けや煮物に。葉は刻んで味噌汁やふりかけにすると、無駄がありません。"}, {"name": "カニ", "category": "魚介", "color": "赤", "point": "冬のごちそうです。たんぱく質などを含むといわれます。", "recipe": "茹でガニは、そのままが一番です。残ったら、炊き込みごはんやお味噌汁にどうぞ。"}, {"name": "サバ", "category": "魚介", "color": "白", "point": "「秋サバ」といわれ、脂がのります。DHAなどを含むといわれます。", "recipe": "味噌煮が定番です。塩焼きなら、大根おろしを添えてどうぞ。"}, {"name": "ブロッコリー", "category": "野菜", "color": "緑", "point": "ビタミンCが豊富な野菜です。冬のはじめにも甘みがあります。", "recipe": "スープやシチューに入れても。冬の食卓の緑に、助かりますよ。"}]}, {"month": 12, "items": [{"name": "みかん", "category": "果物", "color": "黄", "point": "ビタミンCが豊富で、冬の乾燥する季節にうれしい果物です。", "recipe": "炬燵で食べる、冬の味です。白い筋にも栄養があるといわれ、そのまま食べても大丈夫ですよ。"}, {"name": "かぼちゃ", "category": "野菜", "color": "黄", "point": "冬至に食べる風習があります。ビタミンやβ-カロテンが豊富といわれます。", "recipe": "小豆と煮る「いとこ煮」も、冬の味です。ゆず湯と合わせて、温まってくださいね。"}, {"name": "ほうれん草", "category": "野菜", "color": "緑", "point": "鉄分や葉酸が豊富です。寒締めのものは、甘みが強いといわれます。", "recipe": "胡麻和えが定番です。さっと茹でて、水気を絞ってどうぞ。"}, {"name": "小松菜", "category": "野菜", "color": "緑", "point": "カルシウムが豊富な緑黄色野菜です。冬に味が濃くなります。", "recipe": "味噌汁や炒め物に。油と合わせると、栄養の吸収がよいといわれます。"}, {"name": "白菜", "category": "野菜", "color": "白", "point": "水分が多く、冬に甘みが増します。鍋に欠かせない野菜です。", "recipe": "豚肉と重ねるミルフィーユ鍋が簡単です。漬物にすると、冬の保存食になりますよ。"}, {"name": "アンコウ", "category": "魚介", "color": "白", "point": "冬の鍋で知られる魚です。コラーゲンを含むといわれます。", "recipe": "あんこう鍋が定番です。肝のあん肝は、お酒のお供に珍重されます。"}]}];
+var COLOR_HEX = {'赤':'#cf4b4b','白':'#f7f4ec','黄':'#e0b73e','緑':'#4f9e57','黒':'#3c3c3c'};
+var curMonth = new Date().getMonth() + 1;
+
+function card(it, month){
+  var h = '<div class="card"><div class="c-top">';
+  h += '<span class="dot" style="background:' + COLOR_HEX[it.color] + ';border:1.5px solid #d8d2c0"></span>';
+  h += '<span class="c-name">' + it.name + '</span>';
+  h += '<span class="c-cat">' + it.category + '</span>';
+  h += '<span class="c-color">' + it.color + 'の食材</span>';
+  if (month) h += '<span class="c-month">' + month + '月の旬</span>';
+  h += '</div>';
+  h += '<p class="c-point">' + it.point + '</p>';
+  h += '<div class="c-recipe"><span class="cap">おすすめの食べ方</span>' + it.recipe + '</div>';
+  return h + '</div>';
+}
+function render(){
+  var box = document.getElementById('results');
+  var cnt = document.getElementById('count');
+  var q = document.getElementById('q').value.trim();
+  document.querySelectorAll('.mtab').forEach(function(t){ t.classList.toggle('on', Number(t.dataset.m) === curMonth && !q); });
+  if (q){
+    var hits = [];
+    DATA.forEach(function(m){ m.items.forEach(function(it){ if (it.name.indexOf(q) >= 0) hits.push({it: it, month: m.month}); }); });
+    box.innerHTML = hits.length ? hits.map(function(h){ return card(h.it, h.month); }).join('') : '<p class="count">見つかりませんでした。別の名前で探してみてくださいね。</p>';
+    cnt.textContent = hits.length ? hits.length + '件見つかりました' : '';
+    return;
+  }
+  var m = DATA.filter(function(x){ return x.month === curMonth; })[0];
+  box.innerHTML = m.items.map(function(it){ return card(it, null); }).join('');
+  cnt.textContent = curMonth + '月の旬（' + m.items.length + '品）';
+}
+var mt = document.getElementById('mtabs');
+DATA.forEach(function(m){
+  var b = document.createElement('button');
+  b.className = 'mtab'; b.dataset.m = m.month; b.textContent = m.month + '月';
+  b.addEventListener('click', function(){ curMonth = m.month; document.getElementById('q').value = ''; render(); });
+  mt.appendChild(b);
+});
+document.getElementById('q').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
