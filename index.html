@@ -123,17 +123,21 @@
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
   .cal-push-btn { display:block; margin:12px auto 0; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:14px; font-weight:700; border-radius:999px; padding:12px 22px; min-height:48px; cursor:pointer; }
   .shun-link { display:inline-block; color:#41729E; font-size:13px; font-weight:700; text-decoration:underline; text-underline-offset:3px; padding:8px 2px; margin-left:2px; }
-  .cal-block { border-radius:16px; padding:12px 14px 14px; margin-top:12px; text-align:left; }
-  .cal-block-h { font-size:14.5px; font-weight:900; letter-spacing:.05em; margin-bottom:4px; }
-  .cal-block-moon { background:#EDEFFA; }
-  .cal-block-moon .cal-block-h { color:#454A8C; }
-  .cal-block-lucky { background:#FBF3D9; }
-  .cal-block-lucky .cal-block-h { color:#7A5E10; }
-  .cal-block-lucky .moon-lucky { color:#7A5E10; }
-  .cal-block-shun { background:#EDF5E2; }
-  .cal-block-shun .cal-block-h { color:#457034; }
-  .cal-block-shun .moon-shun { color:#93591F; }
-  .cal-block .moon-event, .cal-block .moon-lucky, .cal-block .moon-shun { margin-top:0; font-size:16px; }
+  .cal-acc { border-radius:16px; margin-top:12px; text-align:left; overflow:hidden; }
+  .cal-acc-btn { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:48px; padding:12px 16px; background:none; border:none; font-family:inherit; font-size:16px; font-weight:900; letter-spacing:.03em; cursor:pointer; }
+  .cal-acc-arrow { flex:none; font-size:13px; transition:transform .25s ease; }
+  .cal-acc.open .cal-acc-arrow { transform:rotate(180deg); }
+  .cal-acc-panel { padding:2px 16px 15px; }
+  .cal-acc-panel[hidden] { display:none; }
+  .cal-acc-moon { background:#EDEFFA; }
+  .cal-acc-moon .cal-acc-btn { color:#454A8C; }
+  .cal-acc-lucky { background:#FBF3D9; }
+  .cal-acc-lucky .cal-acc-btn { color:#7A5E10; }
+  .cal-acc-lucky .moon-lucky { color:#7A5E10; }
+  .cal-acc-shun { background:#EDF5E2; }
+  .cal-acc-shun .cal-acc-btn { color:#457034; }
+  .cal-acc-shun .moon-shun { color:#93591F; }
+  .cal-acc .moon-event, .cal-acc .moon-lucky, .cal-acc .moon-shun { margin-top:0; font-size:16px; }
   .cal-planet-link { display:block; margin:6px auto 0; background:none; border:none; font-family:inherit; font-size:13px; font-weight:700; color:#41729E; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:14px 20px; min-height:48px; }
   .planet-link-btn { margin-top:14px; width:100%; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:10px 18px; font-size:13.5px; font-weight:900; cursor:pointer; font-family:inherit; }
   .planet-row { display:flex; align-items:flex-start; gap:10px; padding:10px 2px; border-bottom:1px dashed #E3EDE4; text-align:left; }
@@ -548,17 +552,23 @@
       <div class="moon-head"><img src="moon-mii.jpg" alt=""><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
-      <div class="cal-block cal-block-moon">
-        <div class="cal-block-h">🌙 新月・満月</div>
-        <p class="moon-event" id="moon-events"></p>
+      <div class="cal-acc cal-acc-moon">
+        <button type="button" class="cal-acc-btn" id="cal-btn-moon" aria-expanded="false" aria-controls="cal-panel-moon">🌙 月のメッセージ<span class="cal-acc-arrow">▾</span></button>
+        <div class="cal-acc-panel" id="cal-panel-moon" hidden>
+          <p class="moon-event" id="moon-events"></p>
+        </div>
       </div>
-      <div class="cal-block cal-block-lucky">
-        <div class="cal-block-h">🍀 開運日</div>
-        <p class="moon-lucky" id="moon-lucky"></p>
+      <div class="cal-acc cal-acc-lucky">
+        <button type="button" class="cal-acc-btn" id="cal-btn-lucky" aria-expanded="false" aria-controls="cal-panel-lucky">🍀 開運日<span class="cal-acc-arrow">▾</span></button>
+        <div class="cal-acc-panel" id="cal-panel-lucky" hidden>
+          <p class="moon-lucky" id="moon-lucky"></p>
+        </div>
       </div>
-      <div class="cal-block cal-block-shun">
-        <div class="cal-block-h">🍎 この月の旬</div>
-        <p class="moon-shun" id="moon-shun"></p>
+      <div class="cal-acc cal-acc-shun">
+        <button type="button" class="cal-acc-btn" id="cal-btn-shun" aria-expanded="false" aria-controls="cal-panel-shun">🍎 この月の旬<span class="cal-acc-arrow">▾</span></button>
+        <div class="cal-acc-panel" id="cal-panel-shun" hidden>
+          <p class="moon-shun" id="moon-shun"></p>
+        </div>
       </div>
     </div>
     <button type="button" class="cal-push-btn" id="cal-push-open">🔔 新月・満月のお知らせが欲しい人は、こちら</button>
@@ -2286,6 +2296,16 @@ var shiftMoon = function(delta){
         };
       document.getElementById('moon-prev').addEventListener('click', function(){ shiftMoon(-1); });
       document.getElementById('moon-next-btn').addEventListener('click', function(){ shiftMoon(1); });
+      [['cal-btn-moon', 'cal-panel-moon'], ['cal-btn-lucky', 'cal-panel-lucky'], ['cal-btn-shun', 'cal-panel-shun']].forEach(function(pair){
+        var btn = document.getElementById(pair[0]), panel = document.getElementById(pair[1]);
+        if (!btn || !panel) return;
+        btn.addEventListener('click', function(){
+          var open = panel.hidden;
+          panel.hidden = !open;
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.parentElement.classList.toggle('open', open);
+        });
+      });
       var card = sec.querySelector('.cal-box');
       if (card) {
         var tx = 0, ty = 0;
