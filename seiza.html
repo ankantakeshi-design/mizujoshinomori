@@ -34,7 +34,8 @@
   .keys { margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
   .keys span { background:#F4F8EC; color:#3F5A36; border-radius:999px; padding:6px 14px; font-size:14px; font-weight:700; }
   .nav-btns { display:flex; justify-content:space-between; margin-top:16px; }
-  .nav-btns button { font-family:inherit; font-size:15px; font-weight:700; color:#41729E; background:#fff; border:1.5px solid #CBDDC2; border-radius:999px; padding:10px 18px; min-height:48px; cursor:pointer; }
+  .nav-btns button, .nav-top button { font-family:inherit; font-size:15px; font-weight:700; color:#41729E; background:#fff; border:1.5px solid #CBDDC2; border-radius:999px; padding:10px 18px; min-height:48px; cursor:pointer; }
+  .nav-top { display:flex; justify-content:space-between; margin-bottom:14px; }
   h2 { font-size:16px; font-weight:900; margin:28px 0 10px; text-align:center; color:#3c5a34; }
   .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
   .grid button { font-family:inherit; background:#fff; border:1.5px solid #E4EDDA; border-radius:12px; padding:10px 2px; min-height:52px; font-size:15px; font-weight:700; color:#3d4a3a; cursor:pointer; }
@@ -101,11 +102,13 @@ function moonHtml(it){
     '</div>';
 }
 function render(){ var it=DATA[cur];
-  document.getElementById('card').innerHTML = '<img class="now-img" src="'+it.img+'" alt="'+it.alt+'" width="512" height="512" loading="lazy" decoding="async"><div class="now-name"><span class="sym">'+it.symbol+'</span>'+it.name+'</div><div class="now-period">'+it.period+'</div><div><span class="el-chip '+ELC[it.element]+'">'+it.element+'の星座</span></div><div class="now-body">'+it.feature+'</div><div class="keys">'+it.keywords.map(function(k){return '<span>'+k+'</span>'}).join('')+'</div>' + kasuiHtml(it) + moonHtml(it);
+  document.getElementById('card').innerHTML = '<div class="nav-top"><button type="button" onclick="stepPrev()">← 前の星座</button><button type="button" onclick="stepNext()">次の星座 →</button></div><img class="now-img" src="'+it.img+'" alt="'+it.alt+'" width="512" height="512" loading="lazy" decoding="async"><div class="now-name"><span class="sym">'+it.symbol+'</span>'+it.name+'</div><div class="now-period">'+it.period+'</div><div><span class="el-chip '+ELC[it.element]+'">'+it.element+'の星座</span></div><div class="now-body">'+it.feature+'</div><div class="keys">'+it.keywords.map(function(k){return '<span>'+k+'</span>'}).join('')+'</div>' + kasuiHtml(it) + moonHtml(it);
   var g=document.getElementById('grid'); g.innerHTML=''; DATA.forEach(function(x,i){ var b=document.createElement('button'); b.textContent=x.symbol+' '+x.name; if(i===cur)b.className='on'; b.onclick=function(){cur=i;render();window.scrollTo({top:0,behavior:'smooth'})}; g.appendChild(b); });
 }
-document.getElementById('prev').onclick=function(){cur=(cur+DATA.length-1)%DATA.length;render()};
-document.getElementById('next').onclick=function(){cur=(cur+1)%DATA.length;render()};
+function stepPrev(){cur=(cur+DATA.length-1)%DATA.length;render()}
+function stepNext(){cur=(cur+1)%DATA.length;render()}
+document.getElementById('prev').onclick=stepPrev;
+document.getElementById('next').onclick=stepNext;
 render();
 /* 火水データ（割合・一言・考察）は seiza-data.json が正本。読み込めたら反映して再表示する */
 fetch('seiza-data.json').then(function(r){ return r.json(); }).then(function(j){
