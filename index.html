@@ -918,7 +918,7 @@
             <li>大事にしたい気持ちは、どんな気持ちですか</li>
           </ul>
         </div>
-        <button type="button" class="negai-q-btn" id="negai-ex-btn" aria-expanded="false" aria-controls="negai-ex-panel">例が欲しい人は、こちら<span aria-hidden="true">▾</span></button>
+        <button type="button" class="negai-q-btn" id="negai-ex-btn" aria-expanded="false" aria-controls="negai-ex-panel">おすすめ例は、こちら<span aria-hidden="true">▾</span></button>
         <div class="negai-q-panel" id="negai-ex-panel" hidden>
           <p class="negai-q-lead" id="negai-ex-lead"></p>
           <div id="negai-ex-list"></div>
@@ -1006,7 +1006,7 @@
     var lead = document.getElementById('negai-ex-lead');
     var list = document.getElementById('negai-ex-list');
     if (!lead || !list || !nm) return;
-    lead.textContent = nm.sign + 'の新月に寄せた見本です。タップすると、そのまま入力できますよ。';
+    lead.textContent = nm.sign + 'の新月のおすすめ例です。タップすると、そのまま入力できますよ。';
     list.innerHTML = '';
     (EXAMPLES[nm.sign] || []).forEach(function(ex){
       var b = document.createElement('button');
@@ -1015,7 +1015,7 @@
       b.textContent = ex;
       b.addEventListener('click', function(){
         textEl.value = ex;
-        statusEl.textContent = '見本を入れました。書き換えても、そのままでも大丈夫ですよ。';
+        statusEl.textContent = 'おすすめ例を入れました。書き換えても、そのままでも大丈夫ですよ。';
       });
       list.appendChild(b);
     });
@@ -2479,6 +2479,30 @@
   var MOON_NAMES = ['ウルフムーン','スノームーン','ワームムーン','ピンクムーン','フラワームーン','ストロベリームーン','バックムーン','スタージョンムーン','コーンムーン','ハンターズムーン','ビーバームーン','コールドムーン'];
   var NEW_MSG = { '牡羊座':'新しい一歩を、踏み出す日です。', '牡牛座':'好きなものを、大事にしはじめる日です。', '双子座':'感じたことを、言葉にしてみる日です。', '蟹座':'大切な人を、思い浮かべる日です。', '獅子座':'自分を表現してみる日です。', '乙女座':'暮らしを、少し整える日です。', '天秤座':'バランスを取り戻す日です。', '蠍座':'本当の気持ちと、向き合う日です。', '射手座':'小さな冒険を、はじめる日です。', '山羊座':'目標を、そっと立てる日です。', '水瓶座':'自分らしいやり方を、試す日です。', '魚座':'感じるままに、願う日です。' };
   var FULL_MSG = { '牡羊座':'がんばってきた自分を、認めてあげる日です。', '牡牛座':'心地よさに、感謝する日です。', '双子座':'伝わったことに、気づく日です。', '蟹座':'やさしさを受け取る日です。', '獅子座':'輝いてきた自分を、ほめる日です。', '乙女座':'できたことに、目を向ける日です。', '天秤座':'人とのつながりに、感謝する日です。', '蠍座':'抱えてきたものを、手放す日です。', '射手座':'広がった世界に、気づく日です。', '山羊座':'積み重ねてきたことを、認める日です。', '水瓶座':'新しい自分に、気づく日です。', '魚座':'やさしい気持ちで、いっぱいの日です。' };
+  var SEIZA_KASUI = null;
+  var moonRerender = null;
+  fetch('seiza-data.json').then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if (!j || !j.signs) return;
+    var m = {};
+    j.signs.forEach(function(s){ if (s && s.name) m[s.name] = { fire: s.fire, water: s.water }; });
+    SEIZA_KASUI = m;
+    if (moonRerender) moonRerender();
+  }).catch(function(){});
+  function kasuiText(sign, isFull){
+    if (!SEIZA_KASUI) return '';
+    var k = SEIZA_KASUI[sign];
+    if (!k || typeof k.fire !== 'number' || typeof k.water !== 'number') return '';
+    var ratio = '（火' + k.fire + '%・水' + k.water + '%）';
+    var lean = k.fire >= 60 ? 1 : (k.fire <= 40 ? -1 : 0);
+    if (isFull) {
+      if (lean > 0) return '<br>火のエネルギーが強い満月です' + ratio + '。';
+      if (lean < 0) return '<br>水のエネルギーが強い満月です' + ratio + '。';
+      return '<br>火と水が半々くらいの満月です' + ratio + '。';
+    }
+    if (lean > 0) return '<br>静かな新月です' + ratio + '。心の奥では、火の芽がそっと育っていますね。';
+    if (lean < 0) return '<br>静かに、水が満ちる新月です' + ratio + '。';
+    return '<br>静かな新月です' + ratio + '。火と水が、半々に寄り添っていますね。';
+  }
   function ageAt(t){
     var rad = Math.PI / 180;
     var d = (t - Date.UTC(2000, 0, 1, 12, 0)) / 86400000;
@@ -2679,8 +2703,8 @@ function renderMoon(vy, vm){
           });
         });
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + kasuiText(ns, false)); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true)); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>') + '<a class="shun-link" href="seiza.html">星座メモはこちら →</a>';
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
@@ -2722,6 +2746,8 @@ var shiftMoon = function(delta){
         }, { passive: true });
       }
       renderMoon(todayJ.y, todayJ.m);
+      moonRerender = function(){ renderMoon(Math.floor(viewIdx / 12), viewIdx % 12); };
+      if (SEIZA_KASUI) moonRerender();
     })();
   }
   // today's recommendation shelf (rotates daily)
