@@ -119,6 +119,7 @@
   .legend-box { display:inline-block; width:10px; height:10px; border-radius:3px; background:#EFE9FA; border:1.5px solid #A78FDB; margin-right:5px; vertical-align:-1px; }
   .moon-lucky { margin-top:10px; font-size:12.5px; font-weight:700; color:#8a6d1f; line-height:2.0; text-align:left; text-wrap:balance; word-break:auto-phrase; }
   .cal-sec { margin-top:26px; }
+  .visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
   .cal-box { background:#FDFEFB; border:2px solid #E4EFE6; border-radius:22px; padding:20px 16px 22px; margin-top:14px; }
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
   .cal-push-btn { display:block; margin:12px auto 0; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:14px; font-weight:700; border-radius:999px; padding:12px 22px; min-height:48px; cursor:pointer; }
@@ -547,7 +548,7 @@
   </header>
 
   <section id="koyomi-cal" class="cal-sec">
-    <h2>月のカレンダー</h2>
+    <h2 class="visually-hidden">月のカレンダー</h2>
     <div class="cal-box">
       <div class="moon-head"><img src="moon-mii.jpg" alt=""><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
