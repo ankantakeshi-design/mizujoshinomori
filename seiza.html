@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星座メモ｜集まれ水女子の森</title>
+<meta name="description" content="12星座の期間とエレメント、キーワードと特徴を、基礎だけパッと引けるメモです。開くと、今の太陽の星座から表示されます。">
+<link rel="canonical" href="https://mizujoshinomori.pages.dev/seiza">
+<meta property="og:title" content="星座メモ｜集まれ水女子の森">
+<meta property="og:description" content="12星座の期間とエレメント、キーワードと特徴を、基礎だけパッと引けるメモです。開くと、今の太陽の星座から表示されます。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mizujoshinomori.pages.dev/seiza">
+<meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="星座メモ｜集まれ水女子の森">
+<meta name="twitter:description" content="12星座の期間とエレメント、キーワードと特徴を、基礎だけパッと引けるメモです。開くと、今の太陽の星座から表示されます。">
+<meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif; background:#F7F3E8; color:#2B2B2B; line-height:1.8; }
+  .wrap { max-width:680px; margin:0 auto; padding:20px 18px 56px; }
+  .back { display:inline-block; padding:10px 6px; color:#41729E; text-decoration:none; font-weight:700; font-size:15px; margin-bottom:10px; }
+  h1 { font-size:24px; font-weight:900; text-align:center; }
+  .lead { text-align:center; font-size:16px; color:#6b5f4f; margin:6px 0 18px; font-weight:500; }
+  .now-card { background:#fff; border:2px solid #E4EDDA; border-radius:20px; padding:22px 20px; box-shadow:0 2px 10px rgba(90,120,80,.08); text-align:center; }
+  .now-img { width:min(300px,84%); height:auto; border-radius:16px; }
+  .now-name { font-size:26px; font-weight:900; color:#3c5a34; margin-top:10px; }
+  .now-name .sym { margin-right:6px; }
+  .now-period { font-size:14px; color:#5F594E; font-weight:700; margin-bottom:10px; }
+  .el-chip { display:inline-block; font-size:14px; font-weight:900; border-radius:999px; padding:4px 16px; margin-bottom:12px; }
+  .el-hi { background:#FBE7DC; color:#8A3A0E; }
+  .el-chi { background:#F1EAD3; color:#5A4A17; }
+  .el-kaze { background:#E0EEF5; color:#2C587A; }
+  .el-mizu { background:#E1EBF9; color:#2B4F81; }
+  .now-body { font-size:16px; font-weight:500; line-height:1.8; text-align:left; }
+  .keys { margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .keys span { background:#F4F8EC; color:#3F5A36; border-radius:999px; padding:6px 14px; font-size:14px; font-weight:700; }
+  .nav-btns { display:flex; justify-content:space-between; margin-top:16px; }
+  .nav-btns button { font-family:inherit; font-size:15px; font-weight:700; color:#41729E; background:#fff; border:1.5px solid #CBDDC2; border-radius:999px; padding:10px 18px; min-height:48px; cursor:pointer; }
+  h2 { font-size:16px; font-weight:900; margin:28px 0 10px; text-align:center; color:#3c5a34; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .grid button { font-family:inherit; background:#fff; border:1.5px solid #E4EDDA; border-radius:12px; padding:10px 2px; min-height:52px; font-size:15px; font-weight:700; color:#3d4a3a; cursor:pointer; }
+  .grid button.on { background:#5e9c63; border-color:#5e9c63; color:#fff; }
+  .note { margin-top:26px; font-size:13.5px; color:#5F594E; font-weight:500; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← 森へ戻る</a>
+  <h1>星座メモ</h1>
+  <p class="lead">12星座の特徴を、基礎だけパッと引けるメモです。</p>
+  <div class="now-card" id="card"></div>
+  <div class="nav-btns"><button id="prev">← 前の星座</button><button id="next">次の星座 →</button></div>
+  <h2>12星座</h2>
+  <div class="grid" id="grid"></div>
+  <p class="note">星座の期間は目安です。本によって、1日前後することがあります。<br>特徴は、一般的に言われているイメージです。楽しむ気持ちで読んでくださいね。</p>
+</div>
+<script>
+var DATA = [{"name": "牡羊座", "symbol": "♈", "period": "3月21日〜4月19日", "start": [3, 21], "end": [4, 19], "element": "火", "keywords": ["はじまり", "まっすぐ", "元気"], "feature": "思い立ったら、すぐ動けるスタートの星座です。新しいことを始める力にあふれていますね。", "img": "seiza-img-01.webp", "alt": "ひーくんと羊の水彩イラスト"}, {"name": "牡牛座", "symbol": "♉", "period": "4月20日〜5月20日", "start": [4, 20], "end": [5, 20], "element": "地", "keywords": ["ゆっくり", "心地よさ", "こつこつ"], "feature": "自分のペースを大切にする星座です。おいしいものや心地よい時間に、幸せを感じやすいですね。", "img": "seiza-img-02.webp", "alt": "森の番人と牛の水彩イラスト"}, {"name": "双子座", "symbol": "♊", "period": "5月21日〜6月21日", "start": [5, 21], "end": [6, 21], "element": "風", "keywords": ["好奇心", "おしゃべり", "軽やか"], "feature": "知りたい気持ちが旺盛な星座です。いろいろなことに興味が広がって、毎日がにぎやかになりますね。", "img": "seiza-img-03.webp", "alt": "ひーくんとみーちゃんが手をつないだ水彩イラスト"}, {"name": "蟹座", "symbol": "♋", "period": "6月22日〜7月22日", "start": [6, 22], "end": [7, 22], "element": "水", "keywords": ["やさしさ", "大切な人", "安心"], "feature": "大切な人を守りたい気持ちが強い星座です。ほっとできる場所で、心がほぐれていきますね。", "img": "seiza-img-04.webp", "alt": "みーちゃんと蟹の水彩イラスト"}, {"name": "獅子座", "symbol": "♌", "period": "7月23日〜8月22日", "start": [7, 23], "end": [8, 22], "element": "火", "keywords": ["明るさ", "表現", "主役"], "feature": "太陽みたいに明るい星座です。自分らしく輝くことが、元気の源になりますね。", "img": "seiza-img-05.webp", "alt": "ひーくんとライオンの水彩イラスト"}, {"name": "乙女座", "symbol": "♍", "period": "8月23日〜9月22日", "start": [8, 23], "end": [9, 22], "element": "地", "keywords": ["ていねい", "工夫", "整える"], "feature": "細やかな気配りができる星座です。暮らしを整えることで、心もすっきりしていきますね。", "img": "seiza-img-06.webp", "alt": "みーちゃんと麦の穂と花畑の水彩イラスト"}, {"name": "天秤座", "symbol": "♎", "period": "9月23日〜10月23日", "start": [9, 23], "end": [10, 23], "element": "風", "keywords": ["バランス", "美しさ", "調和"], "feature": "心地よいバランスを好む星座です。きれいなものに触れると、気持ちが整っていきますね。", "img": "seiza-img-07.webp", "alt": "森の番人と天秤の水彩イラスト"}, {"name": "蠍座", "symbol": "♏", "period": "10月24日〜11月22日", "start": [10, 24], "end": [11, 22], "element": "水", "keywords": ["深さ", "集中", "絆"], "feature": "ひとつのことを深く見つめる星座です。大切な人との、深い絆を育てていきますね。", "img": "seiza-img-08.webp", "alt": "みーちゃんと小さなサソリの水彩イラスト"}, {"name": "射手座", "symbol": "♐", "period": "11月23日〜12月21日", "start": [11, 23], "end": [12, 21], "element": "火", "keywords": ["冒険", "自由", "前向き"], "feature": "遠くへ行ってみたい気持ちが強い星座です。新しい景色が、心を軽くしてくれますね。", "img": "seiza-img-09.webp", "alt": "ひーくんが弓を持った水彩イラスト"}, {"name": "山羊座", "symbol": "♑", "period": "12月22日〜1月19日", "start": [12, 22], "end": [1, 19], "element": "地", "keywords": ["努力", "責任感", "積み重ね"], "feature": "こつこつ積み重ねる力のある星座です。時間をかけて、確かなものを育てていきますね。", "img": "seiza-img-10.webp", "alt": "森の番人と山羊の水彩イラスト"}, {"name": "水瓶座", "symbol": "♒", "period": "1月20日〜2月18日", "start": [1, 20], "end": [2, 18], "element": "風", "keywords": ["個性", "自由な発想", "未来"], "feature": "自分らしい視点を持つ星座です。新しいアイデアが、毎日を面白くしてくれますね。", "img": "seiza-img-11.webp", "alt": "みーちゃんが壺から水を注ぐ水彩イラスト"}, {"name": "魚座", "symbol": "♓", "period": "2月19日〜3月20日", "start": [2, 19], "end": [3, 20], "element": "水", "keywords": ["共感", "やさしさ", "夢"], "feature": "人の気持ちに寄り添える星座です。感じる力が豊かで、心の世界が広がっていますね。", "img": "seiza-img-12.webp", "alt": "みーちゃんと2匹の魚の水彩イラスト"}];
+var ELC = {"火":"el-hi", "地":"el-chi", "風":"el-kaze", "水":"el-mizu"};
+function curIdx(){ var d=new Date(), y=d.getFullYear();
+  for(var i=0;i<DATA.length;i++){ var it=DATA[i];
+    var s=new Date(y, it.start[0]-1, it.start[1]), e=new Date(y, it.end[0]-1, it.end[1]);
+    if(it.start[0] > it.end[0]){ /* 年をまたぐ山羊座 */
+      if(d>=s || d<=e) return i;
+    } else if(d>=s && d<=e) return i;
+  }
+  return 0;
+}
+var cur = curIdx();
+function render(){ var it=DATA[cur];
+  document.getElementById('card').innerHTML = '<img class="now-img" src="'+it.img+'" alt="'+it.alt+'" width="512" height="512" loading="lazy" decoding="async"><div class="now-name"><span class="sym">'+it.symbol+'</span>'+it.name+'</div><div class="now-period">'+it.period+'</div><div><span class="el-chip '+ELC[it.element]+'">'+it.element+'の星座</span></div><div class="now-body">'+it.feature+'</div><div class="keys">'+it.keywords.map(function(k){return '<span>'+k+'</span>'}).join('')+'</div>';
+  var g=document.getElementById('grid'); g.innerHTML=''; DATA.forEach(function(x,i){ var b=document.createElement('button'); b.textContent=x.symbol+' '+x.name; if(i===cur)b.className='on'; b.onclick=function(){cur=i;render();window.scrollTo({top:0,behavior:'smooth'})}; g.appendChild(b); });
+}
+document.getElementById('prev').onclick=function(){cur=(cur+DATA.length-1)%DATA.length;render()};
+document.getElementById('next').onclick=function(){cur=(cur+1)%DATA.length;render()};
+render();
+</script>
+</body>
+</html>
