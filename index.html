@@ -112,6 +112,10 @@
   .moon-tag.tensha-tag { background:#A78FDB; color:#fff; }
   .koyomi-cell.negai-cell { cursor:pointer; appearance:none; -webkit-appearance:none; width:100%; }
   .moon-tag.negai-tag { text-decoration:underline dotted; text-underline-offset:2px; }
+  .koyomi-cell.fullmoon-cell { cursor:pointer; appearance:none; -webkit-appearance:none; width:100%; }
+  .moon-tag.full-tag { text-decoration:underline dotted; text-underline-offset:2px; }
+  .moon-line { border-radius:6px; transition:background-color .45s ease; }
+  .moon-line.hl { background:#FFE9A8; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
   .moon-nav { flex:none; width:48px; height:48px; border-radius:50%; border:1.5px solid #C9D8C2; background:#fff; color:#4a7a52; font-size:21px; font-weight:900; cursor:pointer; line-height:1; padding:0; }
   .moon-nav.off { opacity:.3; pointer-events:none; }
   #moon-title { flex:1; }
@@ -2688,9 +2692,11 @@ function renderMoon(vy, vm){
           var cellInner = '<span class="koyomi-day">' + d + '</span>' +
             '<span class="moon-dot' + (tag === '満月' ? ' full' : '') + '" style="background:' + gradFor(ageAt(noon)) + '"></span>' +
             (isI ? '<span class="lucky-dot"></span>' : '') +
-            (tag ? '<span class="moon-tag' + tagCls + (tag === '新月' ? ' negai-tag' : '') + '">' + tag + '</span>' : '');
+            (tag ? '<span class="moon-tag' + tagCls + (tag === '新月' ? ' negai-tag' : '') + (tag === '満月' ? ' full-tag' : '') + '">' + tag + '</span>' : '');
           if (tag === '新月') {
             html += '<button type="button" class="koyomi-cell moon-cell negai-cell' + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は新月です。タップすると、願いごとカードを作れます">' + cellInner + '</button>';
+          } else if (tag === '満月') {
+            html += '<button type="button" class="koyomi-cell moon-cell fullmoon-cell' + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は満月です。タップすると、月のメッセージが見られます">' + cellInner + '</button>';
           } else {
             html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + (isT ? ' tensha' : '') + '">' + cellInner + '</div>';
           }
@@ -2702,9 +2708,25 @@ function renderMoon(vy, vm){
             if (nb) nb.click();
           });
         });
+        grid.querySelectorAll('.fullmoon-cell').forEach(function(c){
+          c.addEventListener('click', function(){
+            var btn = document.getElementById('cal-btn-moon');
+            var panel = document.getElementById('cal-panel-moon');
+            if (btn && panel && panel.hidden) btn.click();
+            setTimeout(function(){
+              var el = document.getElementById('moon-line-full');
+              var target = el || panel;
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              if (el) {
+                el.classList.add('hl');
+                setTimeout(function(){ el.classList.remove('hl'); }, 2600);
+              }
+            }, 80);
+          });
+        });
         var lines = [];
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + kasuiText(ns, false)); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true)); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true) + '</span>'); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>') + '<a class="shun-link" href="seiza.html">星座メモはこちら →</a>';
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
