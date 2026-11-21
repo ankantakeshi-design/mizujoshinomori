@@ -112,6 +112,9 @@
   .moon-tag.tensha-tag { background:#A78FDB; color:#fff; }
   .koyomi-cell.negai-cell { cursor:pointer; appearance:none; -webkit-appearance:none; width:100%; }
   .moon-tag.negai-tag { text-decoration:underline dotted; text-underline-offset:2px; }
+  .moon-negai-pill { flex:none; font-size:9px; font-weight:900; color:#FFF6D8; background:#47679C; border-radius:999px; padding:0 4px; line-height:1.35; white-space:nowrap; letter-spacing:.02em; }
+  .koyomi-cell.negai-cell.has-negai { min-height:74px; gap:0; padding:3px 1px; }
+  .koyomi-cell.negai-cell.has-negai .moon-dot { width:15px; height:15px; }
   .koyomi-cell.fullmoon-cell { cursor:pointer; appearance:none; -webkit-appearance:none; width:100%; }
   .moon-tag.full-tag { text-decoration:underline dotted; text-underline-offset:2px; }
   .moon-line { border-radius:6px; transition:background-color .45s ease; }
@@ -2750,12 +2753,19 @@ function renderMoon(vy, vm){
           if (brd === 5) miDays.push(d);
           if (isI) ichiryuDays.push(d);
           if (isT) { tenshaDays.push(d); if (!tag) { tag = '天赦日'; tagCls = ' tensha-tag'; } }
+          var showNegai = false;
+          if (tag === '新月' && ev.newT) {
+            var ndp2 = jstParts(ev.newT);
+            var diffN = Math.round((Date.UTC(ndp2.y, ndp2.m, ndp2.d) - Date.UTC(todayJ.y, todayJ.m, todayJ.d)) / 86400000);
+            if (diffN >= 0 && diffN <= 3) showNegai = true;
+          }
           var cellInner = '<span class="koyomi-day">' + d + '</span>' +
             '<span class="moon-dot' + (tag === '満月' ? ' full' : '') + '" style="background:' + gradFor(ageAt(noon)) + '"></span>' +
             (isI ? '<span class="lucky-dot"></span>' : '') +
-            (tag ? '<span class="moon-tag' + tagCls + (tag === '新月' ? ' negai-tag' : '') + (tag === '満月' ? ' full-tag' : '') + '">' + tag + '</span>' : '');
+            (tag ? '<span class="moon-tag' + tagCls + (tag === '新月' ? ' negai-tag' : '') + (tag === '満月' ? ' full-tag' : '') + '">' + tag + '</span>' : '') +
+            (showNegai ? '<span class="moon-negai-pill">願いごと</span>' : '');
           if (tag === '新月') {
-            html += '<button type="button" class="koyomi-cell moon-cell negai-cell' + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は新月です。タップすると、願いごとカードを作れます">' + cellInner + '</button>';
+            html += '<button type="button" class="koyomi-cell moon-cell negai-cell' + (showNegai ? ' has-negai' : '') + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は新月です。タップすると、願いごとカードを作れます">' + cellInner + '</button>';
           } else if (tag === '満月') {
             html += '<button type="button" class="koyomi-cell moon-cell fullmoon-cell' + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は満月です。タップすると、月のメッセージが見られます">' + cellInner + '</button>';
           } else {
