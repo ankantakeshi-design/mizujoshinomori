@@ -123,6 +123,26 @@
   .cal-box { background:#FDFEFB; border:2px solid #E4EFE6; border-radius:22px; padding:20px 16px 22px; margin-top:14px; }
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
   .cal-push-btn { display:block; margin:12px auto 0; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:14px; font-weight:700; border-radius:999px; padding:12px 22px; min-height:48px; cursor:pointer; }
+  .cal-negai-btn { display:block; width:100%; margin:14px auto 0; background:linear-gradient(135deg,#2B4470,#47679C); border:none; color:#FBF6E3; font-family:inherit; font-size:15px; font-weight:900; letter-spacing:.03em; border-radius:999px; padding:14px 22px; min-height:52px; cursor:pointer; box-shadow:0 3px 10px rgba(38,58,96,.25); }
+  .cal-negai-btn:active { transform:scale(.98); }
+  #negai-modal .intro-close { width:48px; height:48px; }
+  .negai-title { text-align:center; font-size:20px; font-weight:900; color:#2B4470; margin-top:6px; }
+  .negai-lead { margin-top:12px; font-size:16px; font-weight:500; color:#3d362d; line-height:2.0; text-align:center; }
+  .negai-next { margin-top:8px; text-align:center; font-size:14px; font-weight:900; color:#47679C; }
+  .negai-textarea { display:block; width:100%; box-sizing:border-box; margin-top:14px; border:2px solid #C4D4BA; border-radius:14px; padding:14px; font-family:inherit; font-size:16px; line-height:1.8; color:#2B2B2B; background:#FFFDF5; resize:vertical; min-height:110px; }
+  .negai-textarea:focus { outline:none; border-color:#7FB069; }
+  .negai-note { margin-top:10px; font-size:13px; font-weight:500; color:#616d61; line-height:1.9; text-align:center; }
+  .negai-status { margin-top:8px; font-size:14px; font-weight:700; color:#B4552D; text-align:center; min-height:20px; }
+  .negai-make { display:block; margin:16px auto 0; border:none; cursor:pointer; font-family:inherit; min-height:52px; }
+  .negai-img-wrap { margin-top:14px; }
+  .negai-img-wrap img { width:100%; height:auto; border-radius:16px; display:block; box-shadow:0 4px 18px rgba(38,58,96,.25); }
+  .negai-save { display:block; text-align:center; margin:18px auto 0; max-width:320px; min-height:52px; box-sizing:border-box; }
+  .negai-back { display:block; margin:12px auto 0; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:12px 30px; min-height:48px; font-size:14px; font-weight:900; font-family:inherit; cursor:pointer; }
+  .negai-q-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:48px; margin-top:10px; background:none; border:none; font-family:inherit; font-size:14px; font-weight:700; color:#41729E; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:10px 16px; }
+  .negai-q-panel { margin-top:4px; background:#F2F7EE; border-radius:14px; padding:14px 16px; }
+  .negai-q-lead { font-size:13.5px; font-weight:700; color:#4a7a52; line-height:1.8; }
+  .negai-q-list { margin:8px 0 0; padding-left:20px; }
+  .negai-q-list li { font-size:15px; font-weight:700; color:#33513c; line-height:1.9; margin-top:4px; }
   .shun-link { display:inline-block; color:#41729E; font-size:13px; font-weight:700; text-decoration:underline; text-underline-offset:3px; padding:8px 2px; margin-left:2px; }
   .cal-acc { border-radius:16px; margin-top:12px; text-align:left; overflow:hidden; }
   .cal-acc-btn { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:48px; padding:12px 16px; background:none; border:none; font-family:inherit; font-size:16px; font-weight:900; letter-spacing:.03em; cursor:pointer; }
@@ -575,6 +595,7 @@
         </div>
       </div>
     </div>
+    <button type="button" class="cal-negai-btn" id="negai-open">🌙 新月の願いごとカードを作る</button>
     <button type="button" class="cal-push-btn" id="cal-push-open">🔔 新月・満月のお知らせが欲しい人は、こちら</button>
     <button type="button" class="cal-planet-link" id="cal-planet-link">🪐 惑星の順行・逆行はこちら</button>
   </section>
@@ -871,6 +892,305 @@
       <button type="button" class="modal-close-bottom" id="koyomi-close-b">閉じる</button>
     </div>
   </div>
+
+  <div class="intro-overlay" id="negai-modal" style="display:none">
+    <div class="intro-card" role="dialog" aria-modal="true" aria-label="新月の願いごとカード">
+      <button type="button" class="intro-close" id="negai-close" aria-label="とじる">×</button>
+      <div class="negai-title">🌙 新月の願いごと</div>
+      <div id="negai-step-input">
+        <p class="negai-lead">新月の夜に、願いを文字にしてみませんか。<br>書いた願いは、森のカードにして、あなたのスマホに残せます。</p>
+        <p class="negai-next" id="negai-next"></p>
+        <textarea id="negai-text" class="negai-textarea" rows="4" maxlength="120" placeholder="ここに、願いごとを書いてくださいね"></textarea>
+        <button type="button" class="negai-q-btn" id="negai-q-btn" aria-expanded="false" aria-controls="negai-q-panel">質問が欲しい人は、こちら<span aria-hidden="true">▾</span></button>
+        <div class="negai-q-panel" id="negai-q-panel" hidden>
+          <p class="negai-q-lead">こんな質問を、考えてみてくださいね。</p>
+          <ul class="negai-q-list">
+            <li>どんな自分に、なっていたいですか</li>
+            <li>一ヶ月後には、どうなっていたいですか</li>
+            <li>この一ヶ月で、手放したいことはありますか</li>
+            <li>大事にしたい気持ちは、どんな気持ちですか</li>
+          </ul>
+        </div>
+        <p class="negai-note">書いた願いは、このページの中だけで使われます。どこにも送られませんので、安心してくださいね。</p>
+        <p class="negai-status" id="negai-status"></p>
+        <button type="button" class="btn negai-make" id="negai-make">カードにする</button>
+      </div>
+      <div id="negai-step-result" style="display:none">
+        <p class="negai-lead">カードができました。</p>
+        <div class="negai-img-wrap"><img id="negai-img" alt="新月の願いごとカード"></div>
+        <a class="btn negai-save" id="negai-save" href="#" download="shingetsu-negai.png">画像を保存する</a>
+        <p class="negai-note">うまく保存できない時は、画像を長押ししても保存できますよ。</p>
+        <button type="button" class="negai-back" id="negai-back">書き直す</button>
+      </div>
+      <canvas id="negai-canvas" width="1080" height="1080" style="display:none"></canvas>
+      <button type="button" class="modal-close-bottom" id="negai-close-b">閉じる</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var modal = document.getElementById('negai-modal');
+  if (!modal) return;
+  var openBtn = document.getElementById('negai-open');
+  var textEl = document.getElementById('negai-text');
+  var statusEl = document.getElementById('negai-status');
+  var nextEl = document.getElementById('negai-next');
+  var stepInput = document.getElementById('negai-step-input');
+  var stepResult = document.getElementById('negai-step-result');
+  var imgEl = document.getElementById('negai-img');
+  var saveEl = document.getElementById('negai-save');
+  var canvas = document.getElementById('negai-canvas');
+  var SIGNS = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座','天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
+  var FONT = '"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif';
+  var keeperImg = new Image();
+  keeperImg.src = 'keeper-5.webp';
+  var lastURL = null;
+
+  // Moon age + longitude (same algorithm as the Mori calendar / push worker).
+  function moonAt(t){
+    var rad = Math.PI / 180;
+    var dd = (t - Date.UTC(2000, 0, 1, 12, 0)) / 86400000;
+    var Lp = 218.316 + 13.176396 * dd;
+    var M = (134.963 + 13.064993 * dd) * rad;
+    var F = (93.272 + 13.350350 * dd) * rad;
+    var D = (297.850 + 12.190749 * dd) * rad;
+    var Ms = (357.529 + 0.98560028 * dd) * rad;
+    var mlon = Lp + 6.289 * Math.sin(M) + 1.274 * Math.sin(2 * D - M) + 0.658 * Math.sin(2 * D) + 0.214 * Math.sin(2 * M) - 0.186 * Math.sin(Ms) - 0.114 * Math.sin(2 * F);
+    var Ls = 280.460 + 0.9856474 * dd;
+    var slon = Ls + 1.915 * Math.sin(Ms) + 0.020 * Math.sin(2 * Ms);
+    var age = (((mlon - slon) % 360) + 360) % 360 / 360 * 29.530588853;
+    return { age: age, mlon: ((mlon % 360) + 360) % 360 };
+  }
+  function nextNewMoon(){
+    var now = new Date();
+    for (var off = 0; off <= 31; off++) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
+      var t0 = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - 9 * 3600 * 1000;
+      var a0 = moonAt(t0).age, a1 = moonAt(t0 + 86400000).age;
+      if (a1 < a0 - 20) {
+        var mid = moonAt(t0 + 43200000);
+        return { date: d, sign: SIGNS[Math.floor(mid.mlon / 30) % 12], today: off === 0 };
+      }
+    }
+    return null;
+  }
+  var nm = nextNewMoon();
+  function dateStr(d){ return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  function refreshNext(){
+    if (!nm) { nextEl.textContent = ''; return; }
+    nextEl.textContent = nm.today
+      ? '今日は、' + nm.sign + 'の新月です。'
+      : '次の新月は、' + (nm.date.getMonth() + 1) + '月' + nm.date.getDate() + '日（' + nm.sign + '）です。';
+  }
+
+  function showStep(result){
+    stepInput.style.display = result ? 'none' : '';
+    stepResult.style.display = result ? '' : 'none';
+  }
+  function openModal(){
+    refreshNext();
+    showStep(false);
+    statusEl.textContent = '';
+    modal.style.display = 'flex';
+  }
+  function closeModal(){ modal.style.display = 'none'; }
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  ['negai-close', 'negai-close-b'].forEach(function(id){
+    var b = document.getElementById(id);
+    if (b) b.addEventListener('click', closeModal);
+  });
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+
+  var qBtn = document.getElementById('negai-q-btn');
+  var qPanel = document.getElementById('negai-q-panel');
+  if (qBtn && qPanel) {
+    qBtn.addEventListener('click', function(){
+      var open = qPanel.hidden;
+      qPanel.hidden = !open;
+      qBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  function rng(seed){
+    return function(){
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function pine(ctx, x, base, h, color){
+    ctx.fillStyle = color;
+    var w = h * 0.42;
+    ctx.beginPath();
+    ctx.moveTo(x - w / 2, base); ctx.lineTo(x, base - h); ctx.lineTo(x + w / 2, base);
+    ctx.closePath(); ctx.fill();
+    ctx.fillRect(x - h * 0.03, base - h * 0.06, h * 0.06, h * 0.08);
+  }
+  function drawMoon(ctx, cx, cy){
+    var layer = document.createElement('canvas');
+    layer.width = layer.height = 240;
+    var m = layer.getContext('2d');
+    var g = m.createRadialGradient(108, 108, 8, 120, 120, 86);
+    g.addColorStop(0, '#FCF2C8'); g.addColorStop(1, '#EFD68F');
+    m.fillStyle = g;
+    m.beginPath(); m.arc(120, 120, 84, 0, Math.PI * 2); m.fill();
+    m.globalCompositeOperation = 'destination-out';
+    m.beginPath(); m.arc(120 + 47, 120 - 15, 80, 0, Math.PI * 2); m.fill();
+    var glow = ctx.createRadialGradient(cx, cy, 10, cx, cy, 210);
+    glow.addColorStop(0, 'rgba(250,238,190,0.38)'); glow.addColorStop(1, 'rgba(250,238,190,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(cx - 210, cy - 210, 420, 420);
+    ctx.drawImage(layer, cx - 120, cy - 120);
+  }
+  function wrapLines(ctx, text, maxW){
+    var lines = [];
+    text.split('\n').forEach(function(para){
+      if (!para) { lines.push(''); return; }
+      var cur = '';
+      for (var i = 0; i < para.length; i++) {
+        var ch = para.charAt(i);
+        if (cur && ctx.measureText(cur + ch).width > maxW) { lines.push(cur); cur = ch; }
+        else cur += ch;
+      }
+      lines.push(cur);
+    });
+    while (lines.length && lines[lines.length - 1] === '') lines.pop();
+    return lines;
+  }
+  function drawCard(text){
+    var ctx = canvas.getContext('2d');
+    var W = 1080, H = 1080;
+    // night sky
+    var bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#141F3C'); bg.addColorStop(0.45, '#24365E');
+    bg.addColorStop(0.75, '#3A5A7C'); bg.addColorStop(1, '#2C4A5E');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    // soft watercolor-like light blobs
+    var blobs = [[210, 250, 260, 'rgba(110,160,200,0.13)'], [880, 420, 300, 'rgba(240,215,150,0.08)'], [520, 760, 340, 'rgba(120,180,170,0.10)']];
+    blobs.forEach(function(b){
+      var rg = ctx.createRadialGradient(b[0], b[1], 10, b[0], b[1], b[2]);
+      rg.addColorStop(0, b[3]); rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg; ctx.fillRect(b[0] - b[2], b[1] - b[2], b[2] * 2, b[2] * 2);
+    });
+    // stars
+    var rand = rng(20261122);
+    for (var i = 0; i < 230; i++) {
+      var sx = rand() * W, sy = rand() * 800, sr = rand() * 2.2 + 0.6, sa = 0.25 + rand() * 0.7;
+      ctx.fillStyle = 'rgba(255,252,238,' + sa.toFixed(2) + ')';
+      ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fill();
+    }
+    for (var j = 0; j < 14; j++) {
+      var px = 60 + rand() * (W - 120), py = 40 + rand() * 560, L = 7 + rand() * 6;
+      ctx.strokeStyle = 'rgba(255,250,220,0.75)'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(px - L, py); ctx.lineTo(px + L, py);
+      ctx.moveTo(px, py - L); ctx.lineTo(px, py + L);
+      ctx.stroke();
+    }
+    drawMoon(ctx, 540, 200);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.shadowColor = 'rgba(6,10,24,0.45)'; ctx.shadowBlur = 8;
+    // title
+    ctx.fillStyle = '#F8F0D2';
+    ctx.font = '900 68px ' + FONT;
+    ctx.fillText('新月の願いごと', 540, 330);
+    // date
+    ctx.font = '700 35px ' + FONT;
+    ctx.fillStyle = '#D9E5F0';
+    ctx.fillText(nm ? dateStr(nm.date) + '・' + nm.sign + 'の新月' : dateStr(new Date()), 540, 428);
+    ctx.shadowBlur = 0;
+    // divider dots
+    ctx.fillStyle = 'rgba(248,240,210,0.8)';
+    [-26, 0, 26].forEach(function(dx){
+      ctx.beginPath(); ctx.arc(540 + dx, 492, 4, 0, Math.PI * 2); ctx.fill();
+    });
+    // soft shade behind the wish text
+    var shade = ctx.createRadialGradient(540, 625, 40, 540, 625, 330);
+    shade.addColorStop(0, 'rgba(8,14,30,0.42)'); shade.addColorStop(1, 'rgba(8,14,30,0)');
+    ctx.fillStyle = shade; ctx.fillRect(210, 295, 660, 660);
+    // wish text (auto fit)
+    var size = 62, lines = [], lh = 0;
+    for (; size >= 30; size -= 4) {
+      ctx.font = '700 ' + size + 'px ' + FONT;
+      lines = wrapLines(ctx, text, 800);
+      lh = Math.round(size * 1.75);
+      if (lines.length * lh <= 250 && lines.length <= 6) break;
+    }
+    ctx.font = '700 ' + size + 'px ' + FONT;
+    ctx.fillStyle = '#FDFBF2';
+    ctx.shadowColor = 'rgba(6,10,24,0.5)'; ctx.shadowBlur = 6;
+    var totalH = lines.length * lh;
+    var y = 500 + Math.max(0, (250 - totalH) / 2);
+    lines.forEach(function(line){ ctx.fillText(line, 540, y); y += lh; });
+    ctx.shadowBlur = 0;
+    // forest silhouette
+    ctx.fillStyle = '#1D3252';
+    ctx.beginPath();
+    ctx.moveTo(0, 932);
+    ctx.quadraticCurveTo(270, 862, 540, 920);
+    ctx.quadraticCurveTo(810, 974, 1080, 906);
+    ctx.lineTo(1080, 1080); ctx.lineTo(0, 1080); ctx.closePath(); ctx.fill();
+    pine(ctx, 96, 950, 118, '#16283F'); pine(ctx, 205, 960, 88, '#16283F');
+    pine(ctx, 952, 944, 108, '#16283F'); pine(ctx, 336, 946, 68, '#16283F');
+    ctx.fillStyle = '#0C1729';
+    ctx.beginPath();
+    ctx.moveTo(0, 988);
+    ctx.quadraticCurveTo(300, 942, 620, 984);
+    ctx.quadraticCurveTo(880, 1014, 1080, 970);
+    ctx.lineTo(1080, 1080); ctx.lineTo(0, 1080); ctx.closePath(); ctx.fill();
+    pine(ctx, 58, 1016, 128, '#0C1729'); pine(ctx, 148, 1028, 92, '#0C1729'); pine(ctx, 1004, 1020, 116, '#0C1729');
+    // keeper sticker
+    (function(){
+      var cx = 818, cy = 868, r = 114;
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBF3DC'; ctx.fill();
+      ctx.beginPath(); ctx.arc(cx, cy, r - 10, 0, Math.PI * 2); ctx.clip();
+      ctx.fillStyle = '#F7F2E6'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+      if (keeperImg.complete && keeperImg.naturalWidth) {
+        ctx.drawImage(keeperImg, cx - (r - 10), cy - (r - 10), (r - 10) * 2, (r - 10) * 2);
+      }
+      ctx.restore();
+    })();
+    // footer
+    ctx.textAlign = 'left';
+    ctx.font = '700 30px ' + FONT;
+    ctx.fillStyle = 'rgba(233,240,246,0.92)';
+    ctx.fillText('集まれ水女子の森', 64, 1014);
+    ctx.textAlign = 'center';
+  }
+
+  document.getElementById('negai-make').addEventListener('click', function(){
+    var text = textEl.value.replace(/\s+$/, '').replace(/^\s+/, '');
+    if (!text) {
+      statusEl.textContent = '願いごとを書いてから、ボタンを押してくださいね。';
+      textEl.focus();
+      return;
+    }
+    statusEl.textContent = '';
+    drawCard(text);
+    if (canvas.toBlob) {
+      canvas.toBlob(function(blob){
+        if (!blob) return;
+        if (lastURL) URL.revokeObjectURL(lastURL);
+        lastURL = URL.createObjectURL(blob);
+        imgEl.src = lastURL;
+        saveEl.href = lastURL;
+        var d = nm ? nm.date : new Date();
+        saveEl.download = 'shingetsu-negai-' + d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) + '.png';
+        showStep(true);
+      }, 'image/png');
+    } else {
+      var url = canvas.toDataURL('image/png');
+      imgEl.src = url;
+      saveEl.href = url;
+      showStep(true);
+    }
+  });
+  document.getElementById('negai-back').addEventListener('click', function(){ showStep(false); });
+})();
+</script>
 
 <script>
 (function(){
