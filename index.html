@@ -110,6 +110,8 @@
   .koyomi-cell.tensha { background:#EFE9FA; }
   .koyomi-cell .lucky-dot { position:absolute; top:3px; right:3px; width:6px; height:6px; border-radius:50%; background:#A78FDB; box-shadow:0 0 0 1.5px #fff; }
   .moon-tag.tensha-tag { background:#A78FDB; color:#fff; }
+  .koyomi-cell.negai-cell { cursor:pointer; appearance:none; -webkit-appearance:none; width:100%; }
+  .moon-tag.negai-tag { text-decoration:underline dotted; text-underline-offset:2px; }
   .moon-nav { flex:none; width:48px; height:48px; border-radius:50%; border:1.5px solid #C9D8C2; background:#fff; color:#4a7a52; font-size:21px; font-weight:900; cursor:pointer; line-height:1; padding:0; }
   .moon-nav.off { opacity:.3; pointer-events:none; }
   #moon-title { flex:1; }
@@ -2601,13 +2603,23 @@ function renderMoon(vy, vm){
           if (brd === 5) miDays.push(d);
           if (isI) ichiryuDays.push(d);
           if (isT) { tenshaDays.push(d); if (!tag) { tag = '天赦日'; tagCls = ' tensha-tag'; } }
-          html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + (isT ? ' tensha' : '') + '">' +
-            '<span class="koyomi-day">' + d + '</span>' +
+          var cellInner = '<span class="koyomi-day">' + d + '</span>' +
             '<span class="moon-dot' + (tag === '満月' ? ' full' : '') + '" style="background:' + gradFor(ageAt(noon)) + '"></span>' +
             (isI ? '<span class="lucky-dot"></span>' : '') +
-            (tag ? '<span class="moon-tag' + tagCls + '">' + tag + '</span>' : '') + '</div>';
+            (tag ? '<span class="moon-tag' + tagCls + (tag === '新月' ? ' negai-tag' : '') + '">' + tag + '</span>' : '');
+          if (tag === '新月') {
+            html += '<button type="button" class="koyomi-cell moon-cell negai-cell' + (d === jp.d ? ' today' : '') + ' event' + (isT ? ' tensha' : '') + '" aria-label="' + d + '日は新月です。タップすると、願いごとカードを作れます">' + cellInner + '</button>';
+          } else {
+            html += '<div class="koyomi-cell moon-cell' + (d === jp.d ? ' today' : '') + (tag ? ' event' : '') + (isT ? ' tensha' : '') + '">' + cellInner + '</div>';
+          }
         }
         grid.innerHTML = html;
+        grid.querySelectorAll('.negai-cell').forEach(function(c){
+          c.addEventListener('click', function(){
+            var nb = document.getElementById('negai-open');
+            if (nb) nb.click();
+          });
+        });
         var lines = [];
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
         if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
