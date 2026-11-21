@@ -2291,7 +2291,7 @@ function renderMoon(vy, vm){
         var lines = [];
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
         if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
-        document.getElementById('moon-events').innerHTML = lines.join('<br>');
+        document.getElementById('moon-events').innerHTML = lines.join('<br>') + '<a class="shun-link" href="seiza.html">星座メモはこちら →</a>';
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
