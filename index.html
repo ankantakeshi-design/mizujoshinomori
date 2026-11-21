@@ -121,6 +121,7 @@
   .cal-sec { margin-top:26px; }
   .cal-box { background:#FDFEFB; border:2px solid #E4EFE6; border-radius:22px; padding:20px 16px 22px; margin-top:14px; }
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
+  .cal-push-btn { display:block; margin:12px auto 0; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:14px; font-weight:700; border-radius:999px; padding:12px 22px; min-height:48px; cursor:pointer; }
   .cal-planet-link { display:block; margin:6px auto 0; background:none; border:none; font-family:inherit; font-size:13px; font-weight:700; color:#41729E; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:14px 20px; min-height:48px; }
   .planet-link-btn { margin-top:14px; width:100%; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:10px 18px; font-size:13.5px; font-weight:900; cursor:pointer; font-family:inherit; }
   .planet-row { display:flex; align-items:flex-start; gap:10px; padding:10px 2px; border-bottom:1px dashed #E3EDE4; text-align:left; }
@@ -539,7 +540,7 @@
       <p class="moon-lucky" id="moon-lucky"></p>
       <p class="moon-shun" id="moon-shun"></p>
     </div>
-    <p class="cal-note">🔔 新月・満月や惑星のお知らせ通知は、下の「天体暦」のボタンから選べます。</p>
+    <button type="button" class="cal-push-btn" id="cal-push-open">🔔 新月・満月のお知らせが欲しい人は、こちら</button>
     <button type="button" class="cal-planet-link" id="cal-planet-link">惑星の順行・逆行はこちら</button>
   </section>
 
@@ -2570,6 +2571,8 @@ var shiftMoon = function(delta){
   function skyHide(){ if (skyModalEl) skyModalEl.style.display = 'none'; }
   ['sky-close', 'sky-close-b'].forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', skyHide); });
   if (skyModalEl) skyModalEl.addEventListener('click', function(e){ if (e.target === skyModalEl) skyHide(); });
+  var cpo = document.getElementById('cal-push-open');
+  if (cpo) cpo.addEventListener('click', function(){ if (skyModalEl) skyModalEl.style.display = 'flex'; });
   wire('corner-food', 'food-modal', ['food-close', 'food-close-b']);
   wire('corner-color', 'color-modal', ['color-close', 'color-close-b']);
   wire('corner-ex', 'ex-modal', ['ex-close', 'ex-close-b']);
