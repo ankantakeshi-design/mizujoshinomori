@@ -121,6 +121,7 @@
   .cal-sec { margin-top:26px; }
   .cal-box { background:#FDFEFB; border:2px solid #E4EFE6; border-radius:22px; padding:20px 16px 22px; margin-top:14px; }
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
+  .cal-planet-link { display:block; margin:6px auto 0; background:none; border:none; font-family:inherit; font-size:13px; font-weight:700; color:#41729E; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:14px 20px; min-height:48px; }
   .planet-link-btn { margin-top:14px; width:100%; background:#fff; color:#33513c; border:2px solid #9DBE9F; border-radius:999px; padding:10px 18px; font-size:13.5px; font-weight:900; cursor:pointer; font-family:inherit; }
   .planet-row { display:flex; align-items:flex-start; gap:10px; padding:10px 2px; border-bottom:1px dashed #E3EDE4; text-align:left; }
   .planet-row:last-of-type { border-bottom:none; }
@@ -535,11 +536,11 @@
       <div class="koyomi-grid" id="moon-grid"></div>
       <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
       <p class="moon-event" id="moon-events"></p>
-      <p class="moon-next" id="moon-next"></p>
       <p class="moon-lucky" id="moon-lucky"></p>
       <p class="moon-shun" id="moon-shun"></p>
     </div>
-    <p class="cal-note">🔔 新月・満月や惑星のお知らせ通知は、上の「天体暦」のボタンから選べます。</p>
+    <p class="cal-note">🔔 新月・満月や惑星のお知らせ通知は、下の「天体暦」のボタンから選べます。</p>
+    <button type="button" class="cal-planet-link" id="cal-planet-link">惑星の順行・逆行はこちら</button>
   </section>
 
   <nav class="mori-nav" aria-label="森の入口">
@@ -2195,6 +2196,8 @@
       ' <span class="kou-more">月のカレンダー</span></span>';
     var pob = document.getElementById('planet-open-hero');
     if (pob) pob.addEventListener('click', openPlanets);
+    var cpl = document.getElementById('cal-planet-link');
+    if (cpl) cpl.addEventListener('click', openPlanets);
     kel.addEventListener('click', function(){
       var sec = document.getElementById('koyomi-cal');
       if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2240,14 +2243,6 @@ function renderMoon(vy, vm){
         if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns]); }
         if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs]); }
         document.getElementById('moon-events').innerHTML = lines.join('<br>');
-        var nm = jp.m + 1, ny = jp.y;
-        if (nm > 11) { nm = 0; ny++; }
-        var nev = findEvents(ny, nm);
-        var nitems = [];
-        if (nev.newT) { var nnd = jstParts(nev.newT); nitems.push({ d: nnd.d, s: '新月は' + (nm + 1) + '月' + nnd.d + '日' + jstHM(nev.newT) + '（' + moonSign(nev.newT) + '）' }); }
-        if (nev.fullT) { var nfd = jstParts(nev.fullT); nitems.push({ d: nfd.d, s: '満月は' + (nm + 1) + '月' + nfd.d + '日' + jstHM(nev.fullT) + '（' + moonSign(nev.fullT) + '・<span class="nw">' + MOON_NAMES[nm] + '</span>）' }); }
-        nitems.sort(function(a, b){ return a.d - b.d; });
-        document.getElementById('moon-next').innerHTML = nitems.length ? ((vy === todayJ.y && vm === todayJ.m) ? '来月の' : (nm + 1) + '月の') + nitems.map(function(i){ return i.s; }).join('、') + 'です。' : '';
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
