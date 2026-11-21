@@ -1035,6 +1035,18 @@ window.MOON_EVENTS = (function(){
     return null;
   }
   var nm = nextNewMoon();
+  // 願いごとボタンは「次の新月の3日前〜新月当日」の期間内だけ表示する（マス内ピルと同じ条件）。
+  // 期間外の入口は、新月のマスのタップのみ（マスのクリックはこのボタンの click() を呼ぶので、非表示でも開く）。
+  if (openBtn) {
+    var showOpenBtn = false;
+    if (nm) {
+      var today0 = new Date();
+      today0.setHours(0, 0, 0, 0);
+      var diffBtn = Math.round((nm.date.getTime() - today0.getTime()) / 86400000);
+      if (diffBtn >= 0 && diffBtn <= 3) showOpenBtn = true;
+    }
+    openBtn.style.display = showOpenBtn ? '' : 'none';
+  }
   function dateStr(d){ return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   var EXAMPLES = {
     '牡羊座': ['新しい一歩を、元気に踏み出せますように', '始める勇気が、持てますように', 'やりたい気持ちを、大切にできますように'],
