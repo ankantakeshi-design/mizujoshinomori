@@ -145,6 +145,10 @@
   .negai-q-lead { font-size:13.5px; font-weight:700; color:#4a7a52; line-height:1.8; }
   .negai-q-list { margin:8px 0 0; padding-left:20px; }
   .negai-q-list li { font-size:15px; font-weight:700; color:#33513c; line-height:1.9; margin-top:4px; }
+  .negai-sign-wrap { margin-top:4px; text-align:center; }
+  .negai-sign-wrap .shun-link { font-size:14px; }
+  .negai-ex-item { display:block; width:100%; text-align:left; background:#fff; border:1.5px solid #CBDDC2; border-radius:12px; padding:12px 14px; margin-top:8px; font-family:inherit; font-size:15px; font-weight:700; color:#33513c; line-height:1.7; min-height:48px; cursor:pointer; }
+  .negai-ex-item:active { background:#F4F8EC; }
   .shun-link { display:inline-block; color:#41729E; font-size:13px; font-weight:700; text-decoration:underline; text-underline-offset:3px; padding:8px 2px; margin-left:2px; }
   .cal-acc { border-radius:16px; margin-top:12px; text-align:left; overflow:hidden; }
   .cal-acc-btn { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:48px; padding:12px 16px; background:none; border:none; font-family:inherit; font-size:16px; font-weight:900; letter-spacing:.03em; cursor:pointer; }
@@ -902,6 +906,7 @@
       <div id="negai-step-input">
         <p class="negai-lead">新月の夜に、願いを文字にしてみませんか。<br>書いた願いは、森のカードにして、あなたのスマホに残せます。</p>
         <p class="negai-next" id="negai-next"></p>
+        <p class="negai-sign-wrap"><a class="shun-link" id="negai-sign-link" href="seiza.html" style="display:none"></a></p>
         <textarea id="negai-text" class="negai-textarea" rows="4" maxlength="120" placeholder="ここに、願いごとを書いてくださいね"></textarea>
         <button type="button" class="negai-q-btn" id="negai-q-btn" aria-expanded="false" aria-controls="negai-q-panel">質問が欲しい人は、こちら<span aria-hidden="true">▾</span></button>
         <div class="negai-q-panel" id="negai-q-panel" hidden>
@@ -912,6 +917,11 @@
             <li>この一ヶ月で、手放したいことはありますか</li>
             <li>大事にしたい気持ちは、どんな気持ちですか</li>
           </ul>
+        </div>
+        <button type="button" class="negai-q-btn" id="negai-ex-btn" aria-expanded="false" aria-controls="negai-ex-panel">例が欲しい人は、こちら<span aria-hidden="true">▾</span></button>
+        <div class="negai-q-panel" id="negai-ex-panel" hidden>
+          <p class="negai-q-lead" id="negai-ex-lead"></p>
+          <div id="negai-ex-list"></div>
         </div>
         <p class="negai-note">書いた願いは、このページの中だけで使われます。どこにも送られませんので、安心してくださいね。</p>
         <p class="negai-status" id="negai-status"></p>
@@ -978,11 +988,50 @@
   }
   var nm = nextNewMoon();
   function dateStr(d){ return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  var EXAMPLES = {
+    '牡羊座': ['新しい一歩を、元気に踏み出せますように', '始める勇気が、持てますように', 'やりたい気持ちを、大切にできますように'],
+    '牡牛座': ['自分のペースを、大切にできますように', 'おいしい時間に、ほっとできますように', '心地よい暮らしが、少しずつ整いますように'],
+    '双子座': ['気になることを、楽しく学べますように', '気持ちを、言葉にできますように', '軽やかな気持ちで、過ごせますように'],
+    '蟹座': ['大切な人と、ほっとできる時間が増えますように', 'やさしさを、自分にも向けられますように', '自分の居場所で、安心できますように'],
+    '獅子座': ['自分らしく、明るくいられますように', '好きなことを、思いきり楽しめますように', '笑顔の時間が、増えますように'],
+    '乙女座': ['暮らしが、すっきり整いますように', '小さな工夫を、楽しめますように', '体も心も、軽くなりますように'],
+    '天秤座': ['心地よいバランスで、過ごせますように', 'きれいなものに、たくさん触れられますように', '人との時間を、穏やかに楽しめますように'],
+    '蠍座': ['大切な人との絆が、深まりますように', '本当の気持ちに、気づけますように', '静かな時間を、味わえますように'],
+    '射手座': ['新しいことを始める勇気が、持てますように', '遠くの景色に、会いに行けますように', '自由な気持ちで、過ごせますように'],
+    '山羊座': ['こつこつ続ける力が、実りますように', '目標に、少しずつ近づけますように', 'がんばる自分を、認めてあげられますように'],
+    '水瓶座': ['自分らしいアイデアが、形になりますように', '新しい出会いが、増えますように', '自由な発想を、大切にできますように'],
+    '魚座': ['感じる心を、大切にできますように', 'やさしい夢が、叶いますように', '心が、穏やかに満ちていきますように']
+  };
+  function buildExamples(){
+    var lead = document.getElementById('negai-ex-lead');
+    var list = document.getElementById('negai-ex-list');
+    if (!lead || !list || !nm) return;
+    lead.textContent = nm.sign + 'の新月に寄せた見本です。タップすると、そのまま入力できますよ。';
+    list.innerHTML = '';
+    (EXAMPLES[nm.sign] || []).forEach(function(ex){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'negai-ex-item';
+      b.textContent = ex;
+      b.addEventListener('click', function(){
+        textEl.value = ex;
+        statusEl.textContent = '見本を入れました。書き換えても、そのままでも大丈夫ですよ。';
+      });
+      list.appendChild(b);
+    });
+  }
   function refreshNext(){
     if (!nm) { nextEl.textContent = ''; return; }
     nextEl.textContent = nm.today
       ? '今日は、' + nm.sign + 'の新月です。'
       : '次の新月は、' + (nm.date.getMonth() + 1) + '月' + nm.date.getDate() + '日（' + nm.sign + '）です。';
+    var sl = document.getElementById('negai-sign-link');
+    if (sl) {
+      sl.href = 'seiza.html?sign=' + encodeURIComponent(nm.sign);
+      sl.textContent = nm.sign + 'の特徴はこちら →';
+      sl.style.display = '';
+    }
+    buildExamples();
   }
 
   function showStep(result){
@@ -1010,6 +1059,15 @@
       var open = qPanel.hidden;
       qPanel.hidden = !open;
       qBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  var exBtn = document.getElementById('negai-ex-btn');
+  var exPanel = document.getElementById('negai-ex-panel');
+  if (exBtn && exPanel) {
+    exBtn.addEventListener('click', function(){
+      var open = exPanel.hidden;
+      exPanel.hidden = !open;
+      exBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   }
 

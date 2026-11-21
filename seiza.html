@@ -42,6 +42,16 @@
   .grid button { font-family:inherit; background:#fff; border:1.5px solid #E4EDDA; border-radius:12px; padding:10px 2px; min-height:52px; font-size:15px; font-weight:700; color:#3d4a3a; cursor:pointer; }
   .grid button.on { background:#5e9c63; border-color:#5e9c63; color:#fff; }
   .note { margin-top:26px; font-size:13.5px; color:#5F594E; font-weight:500; text-align:center; }
+  .kasui { margin-top:18px; background:#FDF9F0; border:1.5px solid #EFE3C8; border-radius:14px; padding:14px 16px; text-align:left; }
+  .kasui-h { font-size:14px; font-weight:900; color:#8A5A2B; margin-bottom:8px; }
+  .kasui-bar { display:flex; height:14px; border-radius:999px; overflow:hidden; background:#E8EEF4; }
+  .kasui-bar .kf { background:#E2703A; flex:none; }
+  .kasui-bar .kw { background:#4A7FB5; flex:none; }
+  .kasui-num { margin-top:8px; font-size:15px; font-weight:900; color:#3d362d; }
+  .kasui-num .kf-t { color:#B4552D; }
+  .kasui-num .kw-t { color:#2B4F81; }
+  .kasui-short { margin-top:4px; font-size:15px; font-weight:700; color:#4d442e; line-height:1.7; }
+  .kasui-note { margin-top:8px; font-size:14.5px; font-weight:500; line-height:1.9; color:#4d442e; }
 </style>
 </head>
 <body>
@@ -68,13 +78,41 @@ function curIdx(){ var d=new Date(), y=d.getFullYear();
   return 0;
 }
 var cur = curIdx();
+(function(){ /* ?sign=星座名 があれば、その星座を初期表示にする */
+  try {
+    var q = new URLSearchParams(location.search).get('sign');
+    if (q) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].name === q) { cur = i; break; } } }
+  } catch(e) {}
+})();
+function kasuiHtml(it){
+  if (typeof it.fire !== 'number' || typeof it.water !== 'number') return '';
+  var h = '<div class="kasui"><div class="kasui-h">火水で見ると</div>' +
+    '<div class="kasui-bar" aria-hidden="true"><span class="kf" style="width:' + it.fire + '%"></span><span class="kw" style="width:' + it.water + '%"></span></div>' +
+    '<div class="kasui-num"><span class="kf-t">火' + it.fire + '%</span>・<span class="kw-t">水' + it.water + '%</span></div>';
+  if (it.kasui_short) h += '<div class="kasui-short">' + it.kasui_short + '</div>';
+  if (it.kasui_note) h += '<p class="kasui-note">' + it.kasui_note + '</p>';
+  return h + '</div>';
+}
 function render(){ var it=DATA[cur];
-  document.getElementById('card').innerHTML = '<img class="now-img" src="'+it.img+'" alt="'+it.alt+'" width="512" height="512" loading="lazy" decoding="async"><div class="now-name"><span class="sym">'+it.symbol+'</span>'+it.name+'</div><div class="now-period">'+it.period+'</div><div><span class="el-chip '+ELC[it.element]+'">'+it.element+'の星座</span></div><div class="now-body">'+it.feature+'</div><div class="keys">'+it.keywords.map(function(k){return '<span>'+k+'</span>'}).join('')+'</div>';
+  document.getElementById('card').innerHTML = '<img class="now-img" src="'+it.img+'" alt="'+it.alt+'" width="512" height="512" loading="lazy" decoding="async"><div class="now-name"><span class="sym">'+it.symbol+'</span>'+it.name+'</div><div class="now-period">'+it.period+'</div><div><span class="el-chip '+ELC[it.element]+'">'+it.element+'の星座</span></div><div class="now-body">'+it.feature+'</div><div class="keys">'+it.keywords.map(function(k){return '<span>'+k+'</span>'}).join('')+'</div>' + kasuiHtml(it);
   var g=document.getElementById('grid'); g.innerHTML=''; DATA.forEach(function(x,i){ var b=document.createElement('button'); b.textContent=x.symbol+' '+x.name; if(i===cur)b.className='on'; b.onclick=function(){cur=i;render();window.scrollTo({top:0,behavior:'smooth'})}; g.appendChild(b); });
 }
 document.getElementById('prev').onclick=function(){cur=(cur+DATA.length-1)%DATA.length;render()};
 document.getElementById('next').onclick=function(){cur=(cur+1)%DATA.length;render()};
 render();
+/* 火水データ（割合・一言・考察）は seiza-data.json が正本。読み込めたら反映して再表示する */
+fetch('seiza-data.json').then(function(r){ return r.json(); }).then(function(j){
+  if (!j || !j.signs) return;
+  j.signs.forEach(function(s){
+    for (var i = 0; i < DATA.length; i++) {
+      if (DATA[i].name === s.name && typeof s.fire === 'number') {
+        DATA[i].fire = s.fire; DATA[i].water = s.water;
+        DATA[i].kasui_short = s.kasui_short; DATA[i].kasui_note = s.kasui_note;
+      }
+    }
+  });
+  render();
+}).catch(function(){});
 </script>
 </body>
 </html>
