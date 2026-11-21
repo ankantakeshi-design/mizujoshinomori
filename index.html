@@ -944,6 +944,33 @@
   </div>
 
 <script>
+// 新月・満月の瞬間（JST）は、国立天文台 暦要項「朔弦望」で照合した値を正とする（2026〜2027年分）。
+// 表の範囲外の時期は、各所の近似計算にフォールバックする。照合記録: astrology-check-2026-11-22.md
+window.MOON_EVENTS = (function(){
+  var raw = [
+    '2026-01-03 19:03 f','2026-01-19 04:52 n','2026-02-02 07:09 f','2026-02-17 21:01 n',
+    '2026-03-03 20:38 f','2026-03-19 10:23 n','2026-04-02 11:12 f','2026-04-17 20:52 n',
+    '2026-05-02 02:23 f','2026-05-17 05:01 n','2026-05-31 17:45 f','2026-06-15 11:54 n',
+    '2026-06-30 08:57 f','2026-07-14 18:44 n','2026-07-29 23:36 f','2026-08-13 02:37 n',
+    '2026-08-28 13:19 f','2026-09-11 12:27 n','2026-09-27 01:49 f','2026-10-11 00:50 n',
+    '2026-10-26 13:12 f','2026-11-09 16:02 n','2026-11-24 23:54 f','2026-12-09 09:52 n',
+    '2026-12-24 10:28 f',
+    '2027-01-08 05:24 n','2027-01-22 21:17 f','2027-02-07 00:56 n','2027-02-21 08:24 f',
+    '2027-03-08 18:29 n','2027-03-22 19:44 f','2027-04-07 08:51 n','2027-04-21 07:27 f',
+    '2027-05-06 19:59 n','2027-05-20 19:59 f','2027-06-05 04:40 n','2027-06-19 09:44 f',
+    '2027-07-04 12:02 n','2027-07-19 00:45 f','2027-08-02 19:05 n','2027-08-17 16:29 f',
+    '2027-09-01 02:41 n','2027-09-16 08:04 f','2027-09-30 11:36 n','2027-10-15 22:47 f',
+    '2027-10-29 22:37 n','2027-11-14 12:26 f','2027-11-28 12:24 n','2027-12-14 01:09 f',
+    '2027-12-28 05:12 n'
+  ];
+  return raw.map(function(s){
+    var m = s.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+) ([nf])/);
+    return { t: Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) - 9 * 3600 * 1000, kind: m[6] };
+  }).sort(function(a, b){ return a.t - b.t; });
+})();
+</script>
+
+<script>
 (function(){
   var modal = document.getElementById('negai-modal');
   if (!modal) return;
@@ -978,6 +1005,20 @@
     return { age: age, mlon: ((mlon % 360) + 360) % 360 };
   }
   function nextNewMoon(){
+    if (window.MOON_EVENTS) {
+      var nowD = new Date();
+      var startJ = Date.UTC(nowD.getFullYear(), nowD.getMonth(), nowD.getDate()) - 9 * 3600 * 1000;
+      for (var i = 0; i < window.MOON_EVENTS.length; i++) {
+        var e = window.MOON_EVENTS[i];
+        if (e.kind !== 'n') continue;
+        var jp = new Date(e.t + 9 * 3600 * 1000);
+        var evDay = Date.UTC(jp.getUTCFullYear(), jp.getUTCMonth(), jp.getUTCDate()) - 9 * 3600 * 1000;
+        if (evDay >= startJ) {
+          var midE = moonAt(e.t);
+          return { date: new Date(jp.getUTCFullYear(), jp.getUTCMonth(), jp.getUTCDate()), sign: SIGNS[Math.floor(midE.mlon / 30) % 12], today: evDay === startJ };
+        }
+      }
+    }
     var now = new Date();
     for (var off = 0; off <= 31; off++) {
       var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
@@ -2555,6 +2596,17 @@
     return prevT + frac * (t - prevT);
   }
   function findEvents(y, m){
+    var evT = {};
+    if (window.MOON_EVENTS) {
+      for (var i = 0; i < window.MOON_EVENTS.length; i++) {
+        var e2 = window.MOON_EVENTS[i];
+        var pp = jstParts(e2.t);
+        if (pp.y === y && pp.m === m) {
+          if (e2.kind === 'n' && !evT.newT) evT.newT = e2.t;
+          if (e2.kind === 'f' && !evT.fullT) evT.fullT = e2.t;
+        }
+      }
+    }
     var start = Date.UTC(y, m, 1) - 9 * 3600 * 1000;
     var end = Date.UTC(y, m + 1, 1) - 9 * 3600 * 1000;
     var ev = {};
@@ -2575,6 +2627,8 @@
       prev = a;
       if (ev.newT && ev.fullT) break;
     }
+    if (evT.newT) ev.newT = evT.newT;
+    if (evT.fullT) ev.fullT = evT.fullT;
     return ev;
   }
   // 開運日（一粒万倍日・天赦日）: 節月×干支で計算（はねつーる等の公開暦と14か月分照合済み）
@@ -2638,6 +2692,13 @@
   // next full moon (for the hero line)
   var nextFull = null;
   (function(){
+    if (window.MOON_EVENTS) {
+      for (var i = 0; i < window.MOON_EVENTS.length; i++) {
+        var e3 = window.MOON_EVENTS[i];
+        if (e3.kind === 'f' && e3.t > now.getTime()) { nextFull = e3.t; break; }
+      }
+      if (nextFull) return;
+    }
     var prev = ageAt(now.getTime());
     for (var t = now.getTime() + 3600 * 1000; t < now.getTime() + 40 * 86400000; t += 3600 * 1000) {
       var a = ageAt(t);
