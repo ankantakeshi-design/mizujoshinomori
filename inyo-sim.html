@@ -41,7 +41,8 @@
   .gauge-row.active{border-color:var(--green);background:#eef5e9;}
   .gauge-name{flex:0 0 3.2em;font-size:16px;font-weight:900;color:var(--sub);line-height:1.6;}
   .gauge-row.active .gauge-name{color:var(--green-deep);}
-  .gauge-bar{position:relative;flex:1;height:14px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);}
+  .gauge-bar{position:relative;flex:1;height:14px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);touch-action:none;cursor:pointer;}
+  .gauge-bar::before{content:"";position:absolute;left:0;right:0;top:-13px;bottom:-13px;}
   .gauge-dot{position:absolute;top:50%;left:50%;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--green-deep);transform:translate(-50%,-50%);}
   .add-row{display:flex;gap:12px;margin-top:10px;}
   .add-btn{flex:1;min-height:60px;border-radius:16px;border:2px solid;font-family:inherit;font-size:19px;font-weight:900;cursor:pointer;line-height:1.4;padding:8px 6px;}
@@ -338,6 +339,35 @@
     row.addEventListener("keydown", function(e){
       if(e.key==="Enter" || e.key===" "){ e.preventDefault(); setRuler(row.getAttribute("data-axis")); }
     });
+  });
+
+  /* ゲージを指でスライドして、その軸の量を直接変える（タップ位置への移動も含む） */
+  document.querySelectorAll(".gauge-bar").forEach(function(bar){
+    var axis=bar.parentElement.getAttribute("data-axis");
+    var dragging=false;
+    function setFromEvent(e){
+      var rect=bar.getBoundingClientRect();
+      var frac=(e.clientX-rect.left)/rect.width;
+      if(frac<0) frac=0;
+      if(frac>1) frac=1;
+      amt[axis]=Math.round(frac*10-5);
+      amtCur[axis]=amt[axis];
+      updateMsg();
+      render();
+      animate();
+    }
+    bar.addEventListener("pointerdown", function(e){
+      e.preventDefault();
+      dragging=true;
+      try{ bar.setPointerCapture(e.pointerId); }catch(err){}
+      setRuler(axis);
+      setFromEvent(e);
+    });
+    bar.addEventListener("pointermove", function(e){
+      if(dragging) setFromEvent(e);
+    });
+    bar.addEventListener("pointerup", function(){ dragging=false; });
+    bar.addEventListener("pointercancel", function(){ dragging=false; });
   });
 
   syncRulerUI();
