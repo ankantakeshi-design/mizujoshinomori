@@ -150,16 +150,16 @@
     var dirs=[[1,-1],[-1,-1],[-1,1],[1,1]];
     dirs.forEach(function(d){
       var len=Math.hypot(d[0],d[1]), ux=d[0]/len, uy=d[1]/len;
-      var r1=inward?152:112, r2=inward?116:148;
+      var r1=inward?158:106, r2=inward?110:154;
       var x1=CX+ux*r1, y1=CY+uy*r1, x2=CX+ux*r2, y2=CY+uy*r2;
       var line=document.createElementNS(SVGNS,"line");
       line.setAttribute("x1",x1); line.setAttribute("y1",y1);
       line.setAttribute("x2",x2); line.setAttribute("y2",y2);
-      line.setAttribute("stroke-width","5"); line.setAttribute("stroke-linecap","round");
+      line.setAttribute("stroke-width","9"); line.setAttribute("stroke-linecap","round");
       g.appendChild(line);
       var sgn=inward?-1:1;
       var hx=x2, hy=y2;
-      var px=-uy, py=ux, hl=13, hw=6.5;
+      var px=-uy, py=ux, hl=22, hw=12;
       var bx=hx-ux*sgn*hl, by=hy-uy*sgn*hl;
       var poly=document.createElementNS(SVGNS,"polygon");
       poly.setAttribute("points", hx+","+hy+" "+(bx+px*hw)+","+(by+py*hw)+" "+(bx-px*hw)+","+(by-py*hw));
