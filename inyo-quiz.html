@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>陰陽クイズ｜集まれ水女子の森</title>
-<meta name="description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・人間の顔編の3つで、陰陽メガネをかける練習をしてみましょう。">
+<meta name="description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編の3つで、陰陽メガネをかける練習をしてみましょう。">
 <link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-quiz">
 <meta property="og:title" content="陰陽クイズ｜集まれ水女子の森">
-<meta property="og:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・人間の顔編で、陰陽メガネの練習をしてみましょう。">
+<meta property="og:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編で、陰陽メガネの練習をしてみましょう。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-quiz">
 <meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="陰陽クイズ｜集まれ水女子の森">
-<meta name="twitter:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・人間の顔編で、陰陽メガネの練習をしてみましょう。">
+<meta name="twitter:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編で、陰陽メガネの練習をしてみましょう。">
 <meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <style>
   :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
@@ -108,7 +108,7 @@
   </div>
 
   <div class="hen-acc hen-face">
-    <button type="button" class="hen-acc-btn" id="hen-btn-face" aria-expanded="false" aria-controls="hen-panel-face">🙂 人間の顔編（5問）<span class="hen-acc-arrow">▾</span></button>
+    <button type="button" class="hen-acc-btn" id="hen-btn-face" aria-expanded="false" aria-controls="hen-panel-face">🙂 顔編（5問）<span class="hen-acc-arrow">▾</span></button>
     <div class="hen-acc-panel" id="hen-panel-face" hidden><div id="quiz-face"></div></div>
   </div>
 
@@ -123,7 +123,7 @@
 </div>
 <script>
 var FOOD = [
-{"tag":"全体の眺め","q":"野菜とお肉。全体で見ると、どっちが陽でしょう？","opts":[{"t":"野菜","img":"quiz-q1-yasai.webp","alt":"野菜がたくさん入ったかご"},{"t":"お肉","img":"quiz-q1-niku.webp","alt":"まな板の上のお肉"}],"ans":1,"soft":"野菜と感じるのも、自然な見方ですね。","exp":"お肉は、中心へギュッと集まった力の姿です。野菜全体と比べると、お肉の方が陽寄りですね。"},
+{"tag":"食べ物の種類","q":"野菜とお肉。種類で比べると、どっちが陽でしょう？","opts":[{"t":"野菜","img":"quiz-q1-yasai.webp","alt":"野菜がたくさん入ったかご"},{"t":"お肉","img":"quiz-q1-niku.webp","alt":"まな板の上のお肉"}],"ans":1,"soft":"野菜と感じるのも、自然な見方ですね。","exp":"お肉は、中心へギュッと集まった力の姿です。野菜と比べると、お肉の方が陽寄りですね。"},
 {"tag":"見方① 上か下か","q":"キャベツと人参。「上か下か」では、どっちが陽でしょう？","opts":[{"t":"キャベツ","img":"quiz-q2-cabbage.webp","alt":"地面の上で葉を広げるキャベツ"},{"t":"人参","img":"quiz-q2-carrot.webp","alt":"土の中をまっすぐ下へ伸びる人参"}],"ans":1,"soft":"キャベツと感じるのも、自然な見方ですね。","exp":"地面の下へ、中心へ向かって伸びる根ほど、陽寄りの姿です。人参の方が陽寄りですね。"},
 {"tag":"見方② 形","q":"ネギとキャベツ。「形」では、どっちが陽でしょう？","opts":[{"t":"ネギ","img":"quiz-q3-negi.webp","alt":"細く長く上に伸びるネギ"},{"t":"キャベツ","img":"quiz-q3-cabbage.webp","alt":"まん丸いキャベツ"}],"ans":1,"soft":"ネギと感じるのも、自然な見方ですね。","exp":"よりギュッと丸くまとまった形ほど、陽寄りの姿です。キャベツの方が陽寄りですね。"},
 {"tag":"見方③ 密度","q":"キャベツとレタス。「密度」では、どっちが陽でしょう？","opts":[{"t":"キャベツ","img":"quiz-q4-cabbage.webp","alt":"葉がギュッと詰まったキャベツの断面"},{"t":"レタス","img":"quiz-q4-lettuce.webp","alt":"葉がふわっと広がるレタス"}],"ans":0,"soft":"レタスと感じるのも、自然な見方ですね。","exp":"よりギュッと詰まって固いものほど、陽寄りです。キャベツの方が陽寄りですね。"},
@@ -142,11 +142,11 @@ var BODY = [
 {"tag":"4つのタイプ","q":"虚弱タイプとカチカチタイプ。どっちが陽でしょう？","opts":[{"t":"虚弱タイプ","img":"quiz-b5-kyojaku.webp","alt":"ふわっと細く力の入りにくい体つきの人"},{"t":"カチカチタイプ","img":"quiz-b5-kachikachi.webp","alt":"四角くギュッと固い体つきの人"}],"ans":1,"soft":"虚弱タイプと感じるのも、自然な見方ですね。","exp":"より四角くギュッと固まったカチカチタイプの方が陽寄り、ふわっと力の入りにくい虚弱タイプの方が陰寄りと見ますね。"}
 ];
 var FACE = [
-{"tag":"物差し「ふくらむ・ちぢまる」","q":"「ふくらむ・ちぢまる」では、どっちが陽でしょう？","opts":[{"t":"大きな丸い顔","img":"quiz-f1-maru.webp","alt":"大きくまん丸くふっくらした顔"},{"t":"小さな丸い顔","img":"quiz-f1-shimaru.webp","alt":"小さなまん丸い顔"}],"ans":1,"soft":"大きな丸い顔と感じるのも、自然な見方ですね。","exp":"より大きく丸くふっくら広がるものほど、陰寄りの姿です。この見方では、小さな丸い顔の方が陽寄りですね。"},
+{"tag":"物差し「大きさ」","q":"「大きさ」では、どっちが陽でしょう？","opts":[{"t":"大きな顔","img":"quiz-f1-maru.webp","alt":"大きな顔の人"},{"t":"小さな顔","img":"quiz-f1-shimaru.webp","alt":"小さな顔の人"}],"ans":0,"soft":"小さな顔と感じるのも、自然な見方ですね。","exp":"より顔が大きく、ドンと塊が大きいものほど、陽寄りの姿です。体と同じ、大きさの見方ですね。"},
 {"tag":"物差し「固い・ゆるい」","q":"「固い・ゆるい」では、どっちが陽でしょう？","opts":[{"t":"固い表情","img":"quiz-f2-katai.webp","alt":"ギュッと力が入った固い表情の顔"},{"t":"ゆるんだ表情","img":"quiz-f2-yurui.webp","alt":"ふわっとゆるんだ表情の顔"}],"ans":0,"soft":"ゆるんだ表情と感じるのも、自然な見方ですね。","exp":"よりギュッと力が入った固い表情ほど、陽寄りの姿です。固い表情の方が陽寄りですね。"},
-{"tag":"物差し「気持ちの上がる・下がる」","q":"「気持ちの上がる・下がる」では、どっちが陽でしょう？","opts":[{"t":"上がった顔","img":"quiz-f3-agaru.webp","alt":"上を向いて、気持ちが上がっていそうな顔"},{"t":"下がった顔","img":"quiz-f3-sagaru.webp","alt":"下を向いて、気持ちが沈んでいそうな顔"}],"ans":0,"soft":"下がった顔と感じるのも、自然な見方ですね。","exp":"顔の向きではなく、気持ちで読む見方です。より気持ちが上を向いているものほど陽寄りで、上がった顔の方が陽寄りですね。"},
+{"tag":"物差し「気分のあたたかさ」","q":"「気分のあたたかさ」では、どっちが陽でしょう？","opts":[{"t":"あたたかい顔","img":"quiz-f3-agaru.webp","alt":"明るくあたたかい表情の顔"},{"t":"落ち込んだ顔","img":"quiz-f3-sagaru.webp","alt":"落ち込んで沈んだ表情の顔"}],"ans":0,"soft":"落ち込んだ顔と感じるのも、自然な見方ですね。","exp":"より気分があたたかく明るいものほど、陽寄りの姿です。あたたかい顔の方が陽寄りですね。"},
 {"tag":"物差し「色の濃さ」","q":"「色の濃さ」では、どっちが陽でしょう？","opts":[{"t":"濃い顔色","img":"quiz-f4-koi.webp","alt":"色が濃くはっきりした顔"},{"t":"うすい顔色","img":"quiz-f4-usui.webp","alt":"色がうすく淡い顔"}],"ans":0,"soft":"うすい顔色と感じるのも、自然な見方ですね。","exp":"より色が濃くはっきりした顔ほど、陽寄りの姿です。昔の見方では「血が濃い・うすい」と表現しましたね。"},
-{"tag":"物差し「顔のパーツの寄り具合」","q":"「顔のパーツの寄り具合」では、どっちが陽でしょう？","opts":[{"t":"肉食動物の顔","img":"quiz-f5-marushimaru.webp","alt":"目やパーツが顔の真ん中にギュッと寄った肉食動物（猫）の顔"},{"t":"草食動物の顔","img":"quiz-f5-shimayurui.webp","alt":"目が頭の横に離れてついた草食動物（うさぎ）の顔"}],"ans":0,"soft":"草食動物の顔と感じるのも、自然な見方ですね。","exp":"より顔のパーツが真ん中にギュッと寄っているものほど、陽寄りの姿です。反対に、目が離れ気味に広がるほど、陰寄りに見えてきますね。"}
+{"tag":"物差し「顔のパーツの寄り具合」","q":"「顔のパーツの寄り具合」では、どっちが陽でしょう？","opts":[{"t":"肉食動物の顔","img":"quiz-f5-marushimaru.webp","alt":"目やパーツが顔の真ん中にギュッと寄った肉食動物（猫）の顔"},{"t":"草食動物の顔（馬）","img":"quiz-f5-shimayurui.webp","alt":"細長い顔で、目が離れてついた草食動物（馬）の顔"}],"ans":0,"soft":"草食動物の顔と感じるのも、自然な見方ですね。","exp":"より顔のパーツが真ん中にギュッと寄っているものほど、陽寄りの姿です。反対に、目が離れ気味に広がるほど、陰寄りに見えてきますね。"}
 ];
 var SETS = [
   { box: 'quiz-food', data: FOOD },
