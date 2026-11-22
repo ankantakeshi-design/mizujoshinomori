@@ -53,10 +53,6 @@
   .reset-row{text-align:center;margin-top:8px;}
   .reset-btn{min-height:48px;padding:6px 26px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;}
   .reset-btn:active{transform:scale(.98);}
-  .ruler-label{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin:12px 0 6px;line-height:1.6;}
-  .ruler-row{display:flex;gap:10px;}
-  .ruler-btn{flex:1;min-height:52px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:6px 4px;}
-  .ruler-btn[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;}
   .endbox{text-align:center;margin-top:26px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
   .keeper-end{display:block;width:180px;height:auto;margin:0 auto 10px;border-radius:24px;}
   .endbox .words{font-size:16.5px;line-height:2.0;}
@@ -110,13 +106,6 @@
   </div>
   <div class="reset-row">
     <button type="button" class="reset-btn" id="btnReset">真ん中にもどす</button>
-  </div>
-
-  <p class="ruler-label">物差しを変えると、足す量が変わります（量は混ざります）</p>
-  <div class="ruler-row" role="group" aria-label="物差しの切り替え">
-    <button type="button" class="ruler-btn" data-ruler="size" aria-pressed="true">大きさ</button>
-    <button type="button" class="ruler-btn" data-ruler="shape" aria-pressed="false">形</button>
-    <button type="button" class="ruler-btn" data-ruler="density" aria-pressed="false">密度</button>
   </div>
 
   <div class="endbox">
@@ -313,9 +302,7 @@
   document.getElementById("btnReset").addEventListener("click", function(){
     amt.size=0; amt.shape=0; amt.density=0; apply();
   });
-  var rulerBtns=document.querySelectorAll(".ruler-btn");
   function syncRulerUI(){
-    rulerBtns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-ruler")===ruler?"true":"false"); });
     gaugeRows.forEach(function(row){
       var on=row.getAttribute("data-axis")===ruler;
       row.classList.toggle("active", on);
@@ -327,11 +314,6 @@
     syncRulerUI();
     updateMsg();
   }
-  rulerBtns.forEach(function(btn){
-    btn.addEventListener("click", function(){
-      setRuler(btn.getAttribute("data-ruler"));
-    });
-  });
   gaugeRows.forEach(function(row){
     row.addEventListener("click", function(){
       setRuler(row.getAttribute("data-axis"));
