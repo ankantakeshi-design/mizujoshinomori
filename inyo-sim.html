@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>比べてみようシミュレーター｜集まれ水女子の森</title>
+<meta name="description" content="2つのものを選んで、物差しを変えると、陰陽の読みが入れ替わる。触って体験する、陰陽の相対の見方の練習コーナーです。">
+<link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-sim">
+<meta property="og:title" content="比べてみようシミュレーター｜集まれ水女子の森">
+<meta property="og:description" content="2つのものを選んで、物差しを変えると、陰陽の読みが入れ替わる。触って体験する、相対の見方の練習コーナーです。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-sim">
+<meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="比べてみようシミュレーター｜集まれ水女子の森">
+<meta name="twitter:description" content="2つのものを選んで、物差しを変えると、陰陽の読みが入れ替わる。触って体験する、相対の見方の練習コーナーです。">
+<meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<style>
+  :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
+    --yin:#2f6fb2; --yin-bg:#e3eef8; --chuyo:#4a7c59; --chuyo-bg:#e7f0e2; --yo:#c1440e; --yo-bg:#fbe9dd; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;font-size:16.5px;}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
+  .back{display:inline-block;padding:10px 6px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  header{text-align:center;margin:10px 0 6px;}
+  .brand{display:inline-block;background:var(--yo);color:#fff;font-weight:900;font-size:15.5px;letter-spacing:.06em;border-radius:999px;padding:6px 18px;}
+  h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:10px;}
+  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:10px 0 18px;line-height:2.0;}
+  .sim{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 16px 20px;}
+  .step{font-size:15px;font-weight:900;color:var(--green-deep);margin:16px 0 10px;}
+  .step:first-child{margin-top:0;}
+  .themes{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .theme-btn{border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:56px;}
+  .theme-btn img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:9px;background:#faf4e6;}
+  .theme-btn span{font-size:15.5px;font-weight:900;color:var(--green-deep);line-height:1.5;}
+  .theme-btn.on{border-color:var(--green-deep);background:var(--chuyo-bg);box-shadow:0 0 0 2px var(--line) inset;}
+  .stage{display:flex;gap:10px;align-items:stretch;margin-top:4px;}
+  .frame{flex:1;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px;text-align:center;}
+  .frame img{display:block;width:100%;height:auto;border-radius:9px;background:#faf4e6;}
+  .frame .fname{font-size:16.5px;font-weight:900;color:var(--ink);margin-top:6px;line-height:1.5;}
+  .scales{display:flex;gap:8px;flex-wrap:wrap;}
+  .scale-btn{border:2px solid var(--line);background:#fff;color:var(--green-deep);font-weight:800;font-size:16px;border-radius:999px;padding:10px 18px;cursor:pointer;font-family:inherit;min-height:48px;line-height:1.4;}
+  .scale-btn.on{background:var(--green-deep);border-color:var(--green-deep);color:#fff;}
+  .gauge{margin:26px 2px 0;}
+  .g-track{position:relative;height:16px;border-radius:999px;background:linear-gradient(90deg,#2f6fb2 0%,#79a6d2 30%,#8a9a5b 50%,#d98e4a 72%,#c1440e 100%);margin:0 14px;}
+  .g-dot{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid #2f3a2f;transform:translate(-50%,-50%);transition:left .7s ease;z-index:2;}
+  .g-dots{position:relative;height:64px;margin:0 14px;}
+  .g-lab{position:absolute;top:6px;transform:translateX(-50%);font-size:14.5px;font-weight:900;white-space:nowrap;transition:left .7s ease;}
+  .g-labels{display:flex;justify-content:space-between;font-size:15px;font-weight:900;margin-top:2px;}
+  .g-labels .l{color:var(--yin);} .g-labels .c{color:var(--chuyo);} .g-labels .r{color:var(--yo);}
+  .result{margin-top:16px;background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;font-size:16.5px;line-height:1.9;text-align:center;}
+  .result .note{display:block;font-size:14px;color:var(--sub);margin-top:6px;line-height:1.8;}
+  .endbox{text-align:center;margin-top:30px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
+  .keeper-end{display:block;width:180px;height:auto;margin:0 auto 10px;border-radius:24px;}
+  .endbox .words{font-size:16.5px;line-height:2.0;}
+  .to-links{text-align:center;margin-top:22px;}
+  .to-links a{display:inline-block;padding:10px 6px;font-size:15.5px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  .note{margin-top:30px;font-size:13.5px;color:var(--sub);text-align:center;line-height:2.0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 森へもどる</a>
+  <header>
+    <span class="brand">☯ 陰陽メガネ 👓</span>
+    <h1>比べてみようシミュレーター</h1>
+  </header>
+
+  <p class="lead">比べるものを選んで、物差しを変えてみてください。<br>同じものでも、見方で陰陽が入れ替わります。</p>
+
+  <div class="sim">
+    <p class="step">① 比べるものを選ぶ</p>
+    <div class="themes" id="themes"></div>
+
+    <div class="stage" id="stage" style="margin-top:16px;"></div>
+
+    <p class="step">② 物差しを選ぶ</p>
+    <div class="scales" id="scales"></div>
+
+    <div class="gauge">
+      <div class="g-track" id="gtrack"></div>
+      <div class="g-dots" id="gdots"></div>
+      <div class="g-labels"><span class="l">← 極陰</span><span class="c">中庸</span><span class="r">極陽 →</span></div>
+    </div>
+
+    <div class="result" id="result" aria-live="polite"></div>
+  </div>
+
+  <div class="endbox">
+    <img class="keeper-end" loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人" width="640" height="640">
+    <p class="words">物が1つだけでは、陰陽は言えません。<br>2つ比べて、物差しを変えて眺めるのが、陰陽メガネの練習ですね。</p>
+  </div>
+
+  <p class="to-links"><a href="inyo-quiz.html">クイズで練習する方は、陰陽クイズへ →</a><br><a href="inyo.html">食べ物の陰陽を引くなら、食の陰陽辞典へ →</a></p>
+
+  <p class="note">このシミュレーターは、マクロビオティックの眺め方をもとにした、練習のための目安です。<br>よい・わるいではなく、見方の練習として眺めるものです。</p>
+</div>
+<script>
+var THEMES = [
+{ id:"water", name:"水の三つの姿", chip:"sim-water.webp",
+  items:[
+    {name:"氷", img:"sim-ice.webp", alt:"キラキラした氷の塊"},
+    {name:"水", img:"sim-water.webp", alt:"ガラスのコップに入った水"},
+    {name:"蒸気", img:"sim-steam.webp", alt:"ふわっと広がって立ちのぼる蒸気"}
+  ],
+  scales:[
+    {name:"密度", pos:[4,0,-4], text:"ギュッと集まっているかで見ると、氷がいちばん陽寄りで、蒸気がいちばん陰寄り。水は、真ん中の中庸ですね。"},
+    {name:"あったかさの印象", pos:[-4,0,4], text:"あったかさの印象で見ると、蒸気がいちばん陽寄りで、氷がいちばん陰寄り。さっきと読みが、逆になりましたね。"}
+  ]},
+{ id:"egg", name:"卵", chip:"quiz-q6-kimi.webp",
+  items:[
+    {name:"黄身", img:"quiz-q6-kimi.webp", alt:"白身の真ん中にある黄身"},
+    {name:"殻", img:"quiz-q6-kara.webp", alt:"卵の殻"}
+  ],
+  scales:[
+    {name:"位置", pos:[2.5,-2.5], text:"位置で見ると、より真ん中にある黄身の方が陽寄りですね。"},
+    {name:"固さ", imgs:["quiz-q7-kimi.webp","quiz-q7-kara.webp"], pos:[-2.5,2.5], text:"固さで見ると、よりギュッと固い殻の方が陽寄りですね。位置の時と、答えが入れ替わりました。"}
+  ]},
+{ id:"planet", name:"地球と木星", chip:"quiz-p1-jupiter.webp",
+  items:[
+    {name:"地球", img:"quiz-p1-earth.webp", alt:"小さく描かれた地球"},
+    {name:"木星", img:"quiz-p1-jupiter.webp", alt:"画面いっぱいに大きく描かれた木星"}
+  ],
+  scales:[
+    {name:"大きさ", pos:[-2,4], text:"大きさで見ると、より大きな塊になれる木星の方が陽寄りですね。"},
+    {name:"状態", imgs:["quiz-p2-earth.webp","quiz-p2-jupiter.webp"], pos:[3,-3], text:"状態で見ると、よりギュッと固まった岩の地球の方が陽寄りですね。大きさの時と、答えが入れ替わりました。"}
+  ]},
+{ id:"cabbage", name:"キャベツと長ネギ", chip:"quiz-q3-cabbage.webp",
+  items:[
+    {name:"キャベツ", img:"quiz-q3-cabbage.webp", alt:"まん丸いキャベツ"},
+    {name:"長ネギ", img:"quiz-q3-negi.webp", alt:"細く長く上に伸びるネギ"}
+  ],
+  scales:[
+    {name:"形", pos:[3,-3], text:"形で見ると、より丸いキャベツの方が陽寄りですね。"},
+    {name:"密度", imgs:["quiz-q4-cabbage.webp","quiz-q3-negi.webp"], pos:[3,-3], text:"密度で見ると、よりギュッと詰まったキャベツの方が陽寄りですね。"}
+  ]},
+{ id:"root", name:"人参とじゃがいも", chip:"quiz-q5-carrot.webp",
+  items:[
+    {name:"人参", img:"quiz-q5-carrot.webp", alt:"土の中を真下へ長く伸びる人参"},
+    {name:"じゃがいも", img:"quiz-q5-potato.webp", alt:"土の中で横に並ぶじゃがいも"}
+  ],
+  scales:[
+    {name:"伸びる向き", pos:[3.5,-2], text:"伸びる向きで見ると、より真下へ伸びる人参の方が陽寄りですね。じゃがいもは、横に広がる分だけ陰寄りに見えてきます。"}
+  ]},
+{ id:"seasoning", name:"砂糖と食塩", chip:"sim-salt.webp",
+  items:[
+    {name:"砂糖", img:"sim-sugar.webp", alt:"小さな器に山盛りになった、さらさらの白い砂糖"},
+    {name:"食塩", img:"sim-salt.webp", alt:"木の器に盛られた、粗い結晶の食塩"}
+  ],
+  scales:[
+    {name:"強さの度合い", pos:[-5,5], text:"強さの度合いで見ると、砂糖は極陰、食塩は極陽。真ん中の中庸から、いちばん遠い同士ですね。"}
+  ]},
+{ id:"sunmoon", name:"太陽と月", chip:"quiz-q10-sun.webp",
+  items:[
+    {name:"太陽", img:"quiz-q10-sun.webp", alt:"温かい太陽"},
+    {name:"月", img:"quiz-q10-moon.webp", alt:"静かな夜の月"}
+  ],
+  scales:[
+    {name:"体感", pos:[4,-4], text:"体感で見ると、熱が集まって温かい太陽の方が陽寄りですね。"}
+  ]},
+{ id:"animal", name:"鶏と牛", chip:"quiz-q9-ushi.webp",
+  items:[
+    {name:"鶏", img:"quiz-q9-tori.webp", alt:"大きなニワトリ"},
+    {name:"牛", img:"quiz-q9-ushi.webp", alt:"大きな牛"}
+  ],
+  scales:[
+    {name:"塊の大きさ", pos:[-2,3.5], text:"塊の大きさで見ると、より大きな塊になれる牛の方が陽寄りですね。", note:"※「大きいほど陽」は、密度が同じくらいの時の見方です。小さくても、ギュッと密度が強ければ陽寄りになります。"}
+  ]}
+];
+var curTheme = 0, curScale = 0;
+var themesEl = document.getElementById('themes');
+var stageEl = document.getElementById('stage');
+var scalesEl = document.getElementById('scales');
+var trackEl = document.getElementById('gtrack');
+var dotsEl = document.getElementById('gdots');
+var resultEl = document.getElementById('result');
+
+themesEl.innerHTML = THEMES.map(function(t, i){
+  return '<button type="button" class="theme-btn" data-t="' + i + '"><img loading="lazy" src="' + t.chip + '" alt="" width="640" height="480"><span>' + t.name + '</span></button>';
+}).join('');
+themesEl.querySelectorAll('.theme-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    curTheme = +btn.dataset.t; curScale = 0; render();
+  });
+});
+function dotColor(v){ return v < 0 ? '#2f6fb2' : (v > 0 ? '#c1440e' : '#4a7c59'); }
+function render(){
+  var t = THEMES[curTheme], s = t.scales[curScale];
+  themesEl.querySelectorAll('.theme-btn').forEach(function(b, i){ b.classList.toggle('on', i === curTheme); });
+  stageEl.innerHTML = t.items.map(function(it, i){
+    var img = (s.imgs && s.imgs[i]) ? s.imgs[i] : it.img;
+    return '<div class="frame"><img loading="lazy" src="' + img + '" alt="' + it.alt + '" width="640" height="480"><div class="fname">' + it.name + '</div></div>';
+  }).join('');
+  scalesEl.innerHTML = t.scales.map(function(sc, i){
+    return '<button type="button" class="scale-btn' + (i === curScale ? ' on' : '') + '" data-s="' + i + '">' + sc.name + '</button>';
+  }).join('');
+  scalesEl.querySelectorAll('.scale-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){ curScale = +btn.dataset.s; render(); });
+  });
+  var dots = trackEl.querySelectorAll('.g-dot');
+  var labs = dotsEl.querySelectorAll('.g-lab');
+  if (dots.length !== t.items.length){
+    trackEl.querySelectorAll('.g-dot').forEach(function(d){ d.remove(); });
+    dotsEl.innerHTML = '';
+    t.items.forEach(function(){
+      var dot = document.createElement('div');
+      dot.className = 'g-dot';
+      trackEl.appendChild(dot);
+      var lab = document.createElement('div');
+      lab.className = 'g-lab';
+      dotsEl.appendChild(lab);
+    });
+    dots = trackEl.querySelectorAll('.g-dot');
+    labs = dotsEl.querySelectorAll('.g-lab');
+  }
+  t.items.forEach(function(it, i){
+    var pct = (s.pos[i] + 5) / 10 * 100;
+    dots[i].style.left = pct + '%';
+    dots[i].style.borderColor = dotColor(s.pos[i]);
+    labs[i].style.left = pct + '%';
+    labs[i].style.color = dotColor(s.pos[i]);
+    labs[i].textContent = it.name;
+  });
+  resultEl.innerHTML = s.text + (s.note ? '<span class="note">' + s.note + '</span>' : '');
+}
+render();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "f5def6859aa14ba795d178cbb77881e4"}'></script>
+</body>
+</html>
