@@ -152,15 +152,19 @@
       var len=Math.hypot(d[0],d[1]), ux=d[0]/len, uy=d[1]/len;
       var r1=inward?158:106, r2=inward?110:154;
       var x1=CX+ux*r1, y1=CY+uy*r1, x2=CX+ux*r2, y2=CY+uy*r2;
+      var sgn=inward?-1:1;
+      var vx=ux*sgn, vy=uy*sgn;      /* 矢印の向く単位ベクトル */
+      var hl=30, hw=16;              /* 頭（三角形）：長さ30・半幅16 */
+      var hx=x2, hy=y2;              /* 先端＝三角形の頂点 */
+      var bx=hx-vx*hl, by=hy-vy*hl;  /* 三角形の底辺の中心 */
+      /* 軸は底辺で止め、頭の中に少しだけ埋める（先端から突き出さない） */
+      var ex=bx+vx*(hl*0.35), ey=by+vy*(hl*0.35);
       var line=document.createElementNS(SVGNS,"line");
       line.setAttribute("x1",x1); line.setAttribute("y1",y1);
-      line.setAttribute("x2",x2); line.setAttribute("y2",y2);
+      line.setAttribute("x2",ex); line.setAttribute("y2",ey);
       line.setAttribute("stroke-width","9"); line.setAttribute("stroke-linecap","round");
       g.appendChild(line);
-      var sgn=inward?-1:1;
-      var hx=x2, hy=y2;
-      var px=-uy, py=ux, hl=22, hw=12;
-      var bx=hx-ux*sgn*hl, by=hy-uy*sgn*hl;
+      var px=-uy, py=ux;
       var poly=document.createElementNS(SVGNS,"polygon");
       poly.setAttribute("points", hx+","+hy+" "+(bx+px*hw)+","+(by+py*hw)+" "+(bx-px*hw)+","+(by-py*hw));
       poly.setAttribute("stroke","none");
