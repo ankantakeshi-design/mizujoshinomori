@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陰陽シミュレーター｜集まれ水女子の森</title>
+<meta name="description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。大きさ・形・密度の物差しを変えると、変わり方が変わります。">
+<link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-sim">
+<meta property="og:title" content="陰陽シミュレーター｜集まれ水女子の森">
+<meta property="og:description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-sim">
+<meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="陰陽シミュレーター｜集まれ水女子の森">
+<meta name="twitter:description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。">
+<meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<style>
+  :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
+    --yin:#2f6fb2; --yin-bg:#e3eef8; --yo:#c1440e; --yo-bg:#fbe9dd; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;font-size:16.5px;}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
+  .back{display:inline-block;padding:10px 6px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  header{text-align:center;margin:10px 0 6px;}
+  .badge{display:inline-block;background:var(--yo);color:#fff;font-weight:900;font-size:16.5px;letter-spacing:.04em;border-radius:999px;padding:8px 22px;min-height:48px;line-height:32px;}
+  h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:12px;}
+  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:10px 0 16px;line-height:2.0;}
+  .stage-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 10px 8px;}
+  #stage{display:block;width:min(430px,100%);height:auto;margin:0 auto;}
+  .arrows{opacity:0;}
+  .arrows.flash{animation:arrowFlash 1.05s ease-out;}
+  @keyframes arrowFlash{0%{opacity:0}22%{opacity:.95}100%{opacity:0}}
+  .msg{text-align:center;font-size:16.5px;font-weight:800;color:var(--green-deep);line-height:1.9;min-height:64px;padding:10px 14px 4px;display:flex;align-items:center;justify-content:center;}
+  .add-row{display:flex;gap:12px;margin-top:16px;}
+  .add-btn{flex:1;min-height:68px;border-radius:16px;border:2px solid;font-family:inherit;font-size:19px;font-weight:900;cursor:pointer;line-height:1.4;padding:10px 6px;}
+  .add-btn small{display:block;font-size:13.5px;font-weight:700;}
+  .add-yin{background:var(--yin-bg);border-color:var(--yin);color:var(--yin);}
+  .add-yo{background:var(--yo-bg);border-color:var(--yo);color:var(--yo);}
+  .add-btn:active{transform:scale(.98);}
+  .reset-row{text-align:center;margin-top:12px;}
+  .reset-btn{min-height:52px;padding:8px 26px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;}
+  .reset-btn:active{transform:scale(.98);}
+  .ruler-label{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin:28px 0 10px;}
+  .ruler-row{display:flex;gap:10px;}
+  .ruler-btn{flex:1;min-height:56px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:8px 4px;}
+  .ruler-btn[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;}
+  .gauge-box{margin-top:30px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 20px 14px;}
+  .gauge-cap{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin-bottom:12px;}
+  .gauge-bar{position:relative;height:22px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);}
+  .gauge-dot{position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--green-deep);transform:translate(-50%,-50%);}
+  .gauge-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:15px;font-weight:900;}
+  .gauge-labels .gl-yin{color:var(--yin);}
+  .gauge-labels .gl-chu{color:var(--green-deep);}
+  .gauge-labels .gl-yo{color:var(--yo);}
+  .endbox{text-align:center;margin-top:36px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
+  .keeper-end{display:block;width:180px;height:auto;margin:0 auto 10px;border-radius:24px;}
+  .endbox .words{font-size:16.5px;line-height:2.0;}
+  .to-links{text-align:center;margin-top:22px;}
+  .to-links a{display:inline-block;padding:10px 8px;font-size:15.5px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  .note{margin-top:26px;font-size:13.5px;color:var(--sub);text-align:center;line-height:2.0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 森へもどる</a>
+  <header>
+    <span class="badge">☯ 陰陽メガネ 👓</span>
+    <h1>陰陽シミュレーター</h1>
+  </header>
+
+  <p class="lead">丸いかたまりに、陽と陰を足してみましょう。<br>形がどう変わるか、目で見て感じるコーナーです。</p>
+
+  <div class="stage-card">
+    <svg id="stage" viewBox="0 0 320 320" role="img" aria-label="陰陽で形が変わる、丸いかたまり">
+      <defs>
+        <radialGradient id="blobGrad" cx="42%" cy="38%" r="78%">
+          <stop id="gs0" offset="0%" stop-color="#f7f2df"/>
+          <stop id="gs1" offset="70%" stop-color="#f3ecd6"/>
+          <stop id="gs2" offset="100%" stop-color="#b0c49e"/>
+        </radialGradient>
+        <filter id="soften" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="7"/>
+        </filter>
+      </defs>
+      <path id="halo" filter="url(#soften)" fill="#b0c49e" opacity="0"/>
+      <g id="blobG">
+        <path id="blob" fill="url(#blobGrad)" stroke="#6e8c5f" stroke-width="3" stroke-linejoin="round"/>
+      </g>
+      <g id="arrowsIn" class="arrows" stroke="#c1440e" fill="#c1440e"></g>
+      <g id="arrowsOut" class="arrows" stroke="#2f6fb2" fill="#2f6fb2"></g>
+    </svg>
+    <p class="msg" id="msg">真ん中（中庸）の状態です。<br>陽と陰を足すと、どう変わるでしょう。</p>
+  </div>
+
+  <div class="add-row">
+    <button type="button" class="add-btn add-yin" id="btnYin">陰を足す<small>ふわっと広がる</small></button>
+    <button type="button" class="add-btn add-yo" id="btnYo">陽を足す<small>ギュッと集まる</small></button>
+  </div>
+  <div class="reset-row">
+    <button type="button" class="reset-btn" id="btnReset">真ん中にもどす</button>
+  </div>
+
+  <p class="ruler-label">物差しを変えると、変わり方が変わります</p>
+  <div class="ruler-row" role="group" aria-label="物差しの切り替え">
+    <button type="button" class="ruler-btn" data-ruler="size" aria-pressed="true">大きさ</button>
+    <button type="button" class="ruler-btn" data-ruler="shape" aria-pressed="false">形</button>
+    <button type="button" class="ruler-btn" data-ruler="density" aria-pressed="false">密度</button>
+  </div>
+
+  <div class="gauge-box">
+    <p class="gauge-cap">いまの量</p>
+    <div class="gauge-bar"><div class="gauge-dot" id="gaugeDot"></div></div>
+    <div class="gauge-labels"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
+  </div>
+
+  <div class="endbox">
+    <img class="keeper-end" loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人" width="640" height="640" style="height:auto">
+    <p class="words">陽は、中心へギュッと集まる力。<br>陰は、外へふわっと広がる力です。</p>
+  </div>
+
+  <div class="to-links">
+    <a href="inyo-quiz.html">陰陽クイズで練習する →</a><br>
+    <a href="inyo.html">食の陰陽辞典へ →</a>
+  </div>
+
+  <p class="note">陰陽は、比べる物差しで見え方が変わります。<br>どちらか片方だけが良い・悪い、という見方ではありません。</p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var CX=160, CY=160, R=92, N=16;
+  var a=0, aCur=0, ruler="size";
+  var blob=document.getElementById("blob"),
+      halo=document.getElementById("halo"),
+      blobG=document.getElementById("blobG"),
+      gs0=document.getElementById("gs0"),
+      gs1=document.getElementById("gs1"),
+      gs2=document.getElementById("gs2"),
+      msg=document.getElementById("msg"),
+      dot=document.getElementById("gaugeDot"),
+      arrowsIn=document.getElementById("arrowsIn"),
+      arrowsOut=document.getElementById("arrowsOut");
+
+  /* 矢印を描く（対角4方向） */
+  var SVGNS="http://www.w3.org/2000/svg";
+  function buildArrows(g, inward){
+    var dirs=[[1,-1],[-1,-1],[-1,1],[1,1]];
+    dirs.forEach(function(d){
+      var len=Math.hypot(d[0],d[1]), ux=d[0]/len, uy=d[1]/len;
+      var r1=inward?152:112, r2=inward?116:148;
+      var x1=CX+ux*r1, y1=CY+uy*r1, x2=CX+ux*r2, y2=CY+uy*r2;
+      var line=document.createElementNS(SVGNS,"line");
+      line.setAttribute("x1",x1); line.setAttribute("y1",y1);
+      line.setAttribute("x2",x2); line.setAttribute("y2",y2);
+      line.setAttribute("stroke-width","5"); line.setAttribute("stroke-linecap","round");
+      g.appendChild(line);
+      var sgn=inward?-1:1;
+      var hx=x2, hy=y2;
+      var px=-uy, py=ux, hl=13, hw=6.5;
+      var bx=hx-ux*sgn*hl, by=hy-uy*sgn*hl;
+      var poly=document.createElementNS(SVGNS,"polygon");
+      poly.setAttribute("points", hx+","+hy+" "+(bx+px*hw)+","+(by+py*hw)+" "+(bx-px*hw)+","+(by-py*hw));
+      poly.setAttribute("stroke","none");
+      g.appendChild(poly);
+    });
+  }
+  buildArrows(arrowsIn, true);
+  buildArrows(arrowsOut, false);
+  function flash(g){
+    g.classList.remove("flash");
+    void g.getBoundingClientRect();
+    g.classList.add("flash");
+  }
+
+  /* かたまりの輪郭（有機的な丸） */
+  function blobPath(size){
+    var pts=[], i, th, w, r;
+    for(i=0;i<N;i++){
+      th=i/N*Math.PI*2;
+      w=1+0.030*Math.sin(2*th+1.3)+0.020*Math.sin(3*th+0.6)+0.012*Math.sin(5*th+2.1);
+      r=R*size*w;
+      pts.push([CX+Math.cos(th)*r, CY+Math.sin(th)*r]);
+    }
+    var d="M"+pts[0][0].toFixed(1)+","+pts[0][1].toFixed(1);
+    for(i=0;i<N;i++){
+      var p0=pts[(i-1+N)%N], p1=pts[i], p2=pts[(i+1)%N], p3=pts[(i+2)%N];
+      var c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+      var c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+      d+="C"+c1x.toFixed(1)+","+c1y.toFixed(1)+" "+c2x.toFixed(1)+","+c2y.toFixed(1)+" "+p2[0].toFixed(1)+","+p2[1].toFixed(1);
+    }
+    return d+"Z";
+  }
+
+  /* 色の補間 */
+  function mixc(c1,c2,t){ return [0,1,2].map(function(i){ return Math.round(c1[i]+(c2[i]-c1[i])*t); }); }
+  function rgb(c){ return "rgb("+c[0]+","+c[1]+","+c[2]+")"; }
+  var COL={
+    mid:  { core:[247,242,223], edge:[176,196,158], stroke:[110,140,95] },
+    yo:   { core:[250,196,120], edge:[199,72,20],   stroke:[138,47,8] },
+    yin:  { core:[219,236,251], edge:[110,164,216], stroke:[47,111,178] }
+  };
+  function colorSet(mix){
+    var t=mix>=0?mix:-mix, dst=mix>=0?COL.yo:COL.yin;
+    return {
+      core: mixc(COL.mid.core, dst.core, t),
+      edge: mixc(COL.mid.edge, dst.edge, t),
+      stroke: mixc(COL.mid.stroke, dst.stroke, t)
+    };
+  }
+
+  /* 状態 → 見た目の目標値 */
+  function targetFor(av, rl){
+    var t={ size:1, sx:1, sy:1, mix:(av/5)*0.45, soft:0, sw:3 };
+    if(rl==="size"){
+      t.size=1-0.085*av;
+    } else if(rl==="shape"){
+      if(av>0){ t.size=1-0.022*av; }
+      else { t.sx=1+(-av)*0.105; t.sy=1/Math.sqrt(t.sx); }
+    } else { /* density */
+      t.size=1-0.02*av;
+      t.mix=av/5;
+      t.soft=Math.max(0,-av)/5;
+      t.sw=3+Math.max(0,av)*0.55;
+    }
+    return t;
+  }
+  var cur=targetFor(0,"size"), tgt=targetFor(0,"size"), rafId=null;
+
+  function render(){
+    var d=blobPath(cur.size);
+    blob.setAttribute("d", d);
+    halo.setAttribute("d", d);
+    var tf="translate("+CX+" "+CY+") scale("+cur.sx.toFixed(4)+" "+cur.sy.toFixed(4)+") translate("+(-CX)+" "+(-CY)+")";
+    blobG.setAttribute("transform", tf);
+    halo.setAttribute("transform", "translate("+CX+" "+CY+") scale("+(cur.sx*1.07).toFixed(4)+" "+(cur.sy*1.07).toFixed(4)+") translate("+(-CX)+" "+(-CY)+")");
+    var cs=colorSet(cur.mix);
+    gs0.setAttribute("stop-color", rgb(mixc(cs.core,[255,255,255],0.35)));
+    gs1.setAttribute("stop-color", rgb(cs.core));
+    gs2.setAttribute("stop-color", rgb(cs.edge));
+    gs2.setAttribute("stop-opacity", (1-cur.soft*0.55).toFixed(3));
+    blob.setAttribute("stroke", rgb(cs.stroke));
+    blob.setAttribute("stroke-opacity", (1-cur.soft*0.5).toFixed(3));
+    blob.setAttribute("stroke-width", cur.sw.toFixed(2));
+    halo.setAttribute("fill", rgb(cs.edge));
+    halo.setAttribute("opacity", (cur.soft*0.4).toFixed(3));
+    dot.style.left=((aCur+5)/10*100)+"%";
+  }
+  function tick(){
+    var keys=["size","sx","sy","mix","soft","sw"], done=true, i, k;
+    for(i=0;i<keys.length;i++){
+      k=keys[i];
+      cur[k]+=(tgt[k]-cur[k])*0.075;
+      if(Math.abs(tgt[k]-cur[k])>0.0015) done=false;
+    }
+    aCur+=(a-aCur)*0.075;
+    if(Math.abs(a-aCur)>0.003) done=false;
+    render();
+    if(!done){ rafId=requestAnimationFrame(tick); }
+    else { cur=Object.assign({},tgt); aCur=a; render(); rafId=null; }
+  }
+  function animate(){
+    if(rafId===null) rafId=requestAnimationFrame(tick);
+  }
+
+  var MSG={
+    size:   { p:"陽が増えると、中心にギュッと集まって、<br>小さくなります。", n:"陰が増えると、ふわっと広がって、<br>大きくなります。" },
+    shape:  { p:"陽が増えると、ギュッとまん丸に<br>集まります。", n:"陰が増えると、ふわっと横に<br>伸びていきます。" },
+    density:{ p:"陽が増えると、色が濃く、<br>輪郭がくっきりしてきます。", n:"陰が増えると、色が薄く、<br>輪郭がふわっとやわらかくなります。" },
+    zero:   "真ん中（中庸）の状態です。<br>陽と陰を足すと、どう変わるでしょう。"
+  };
+  function updateMsg(){
+    if(a===0){ msg.innerHTML=MSG.zero; return; }
+    msg.innerHTML = a>0 ? MSG[ruler].p : MSG[ruler].n;
+  }
+  function apply(){
+    tgt=targetFor(a, ruler);
+    updateMsg();
+    animate();
+  }
+
+  document.getElementById("btnYo").addEventListener("click", function(){
+    if(a<5){ a+=1; flash(arrowsIn); }
+    apply();
+  });
+  document.getElementById("btnYin").addEventListener("click", function(){
+    if(a>-5){ a-=1; flash(arrowsOut); }
+    apply();
+  });
+  document.getElementById("btnReset").addEventListener("click", function(){
+    a=0; apply();
+  });
+  var rulerBtns=document.querySelectorAll(".ruler-btn");
+  rulerBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      ruler=btn.getAttribute("data-ruler");
+      rulerBtns.forEach(function(b){ b.setAttribute("aria-pressed", b===btn?"true":"false"); });
+      apply();
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
