@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>陰陽クイズ｜集まれ水女子の森</title>
-<meta name="description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編の3つで、陰陽メガネをかける練習をしてみましょう。">
+<meta name="description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編・惑星衛星編の4つで、陰陽メガネをかける練習をしてみましょう。">
 <link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-quiz">
 <meta property="og:title" content="陰陽クイズ｜集まれ水女子の森">
-<meta property="og:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編で、陰陽メガネの練習をしてみましょう。">
+<meta property="og:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編・惑星衛星編で、陰陽メガネの練習をしてみましょう。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-quiz">
 <meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="陰陽クイズ｜集まれ水女子の森">
-<meta name="twitter:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編で、陰陽メガネの練習をしてみましょう。">
+<meta name="twitter:description" content="2つのものを比べて、陰陽を読む練習コーナーです。食べ物編・人間の体編・顔編・惑星衛星編で、陰陽メガネの練習をしてみましょう。">
 <meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <style>
   :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
@@ -48,6 +48,8 @@
   .hen-body .hen-acc-btn{color:#7A4E10;}
   .hen-face{background:#EDEFFA;}
   .hen-face .hen-acc-btn{color:#454A8C;}
+  .hen-planet{background:#EFE9F7;}
+  .hen-planet .hen-acc-btn{color:#5B4A8A;}
   .q-card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;margin-bottom:14px;}
   .hen-acc-panel .q-card:last-child{margin-bottom:2px;}
   .q-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
@@ -57,6 +59,7 @@
   .q-opts{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;}
   .q-opt{flex:1 1 140px;min-height:56px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-weight:900;font-size:17px;border-radius:14px;padding:10px;cursor:pointer;font-family:inherit;line-height:1.5;display:flex;flex-direction:column;align-items:center;gap:8px;}
   .q-opt img{display:block;width:100%;height:auto;border-radius:10px;}
+  .q-hint{font-size:13px;font-weight:700;color:var(--sub);line-height:1.5;}
   .q-opt:disabled{cursor:default;opacity:.55;}
   .q-opt.yang{opacity:1;background:var(--yo-bg);border-color:var(--yo);color:#8a2f08;}
   .q-opt.picked{opacity:1;border-color:var(--green-deep);box-shadow:0 0 0 2px var(--line) inset;}
@@ -112,6 +115,11 @@
     <div class="hen-acc-panel" id="hen-panel-face" hidden><div id="quiz-face"></div></div>
   </div>
 
+  <div class="hen-acc hen-planet">
+    <button type="button" class="hen-acc-btn" id="hen-btn-planet" aria-expanded="false" aria-controls="hen-panel-planet">🪐 惑星・衛星編（5問）<span class="hen-acc-arrow">▾</span></button>
+    <div class="hen-acc-panel" id="hen-panel-planet" hidden><div id="quiz-planet"></div></div>
+  </div>
+
   <div class="endbox">
     <img class="keeper-end" loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人" width="640" height="640">
     <p class="words">おつかれさまでした。<br>陰陽は、見て練習するものですね。<br>おうちでも、陰陽メガネで眺めてみてくださいね。</p>
@@ -148,16 +156,24 @@ var FACE = [
 {"tag":"物差し「色の濃さ」","q":"「色の濃さ」では、どっちが陽でしょう？","opts":[{"t":"濃い顔色","img":"quiz-f4-koi.webp","alt":"色が濃くはっきりした顔"},{"t":"うすい顔色","img":"quiz-f4-usui.webp","alt":"色がうすく淡い顔"}],"ans":0,"soft":"うすい顔色と感じるのも、自然な見方ですね。","exp":"より色が濃くはっきりした顔ほど、陽寄りの姿です。昔の見方では「血が濃い・うすい」と表現しましたね。"},
 {"tag":"物差し「顔のパーツの寄り具合」","q":"「顔のパーツの寄り具合」では、どっちが陽でしょう？","opts":[{"t":"肉食動物の顔","img":"quiz-f5-marushimaru.webp","alt":"目やパーツが顔の真ん中にギュッと寄った肉食動物（猫）の顔"},{"t":"草食動物の顔（馬）","img":"quiz-f5-shimayurui.webp","alt":"細長い顔で、目が離れてついた草食動物（馬）の顔"}],"ans":0,"soft":"草食動物の顔と感じるのも、自然な見方ですね。","exp":"より顔のパーツが真ん中にギュッと寄っているものほど、陽寄りの姿です。反対に、目が離れ気味に広がるほど、陰寄りに見えてきますね。"}
 ];
+var PLANET = [
+{"tag":"物差し「大きさ」","q":"木星と地球。「大きさ」では、どっちが陽でしょう？","opts":[{"t":"木星","img":"quiz-p1-jupiter.webp","alt":"画面いっぱいに大きく描かれた木星","h":"直径は地球の約11倍"},{"t":"地球","img":"quiz-p1-earth.webp","alt":"小さく描かれた地球","h":"直径 約1万2,700km"}],"ans":0,"soft":"地球と感じるのも、自然な見方ですね。","exp":"より大きな塊になれるものほど、陽寄りと見ます。木星の方が陽寄りですね。塊が大きいというのは、たくさん中心に集まれる力がある、ということです。"},
+{"tag":"物差し「状態」","q":"地球と木星。「状態」では、どっちが陽でしょう？","opts":[{"t":"地球","img":"quiz-p2-earth.webp","alt":"岩の大陸が見える地球","h":"岩でできている"},{"t":"木星","img":"quiz-p2-jupiter.webp","alt":"ふわっとしたガスの縞が見える木星","h":"ガスでできている"}],"ans":0,"soft":"木星と感じるのも、自然な見方ですね。","exp":"同じくらいの大きさで比べると、よりギュッと固まっている固体ほど、陽寄りと見ます。岩の地球の方が陽寄りですね。さっきの大きさの問いと、答えが入れ替わりますね。"},
+{"tag":"体感で読む","q":"太陽と月。体感では、どっちが陽でしょう？","opts":[{"t":"太陽","img":"quiz-p3-sun.webp","alt":"まぶしく光る太陽","h":"自分で光って、熱を出している"},{"t":"月","img":"quiz-p3-moon.webp","alt":"静かな夜の満月","h":"太陽の光を映して光っている"}],"ans":0,"soft":"月と感じるのも、自然な見方ですね。","exp":"より明るく熱い印象のものほど、陽寄りと見ます。太陽の方が陽寄りですね。"},
+{"tag":"物差し「大きさ」","q":"地球と月。「大きさ」では、どっちが陽でしょう？","opts":[{"t":"地球","img":"quiz-p4-earth.webp","alt":"画面いっぱいに大きく描かれた地球","h":"直径 約1万2,700km"},{"t":"月","img":"quiz-p4-moon.webp","alt":"小さく描かれた月","h":"直径は地球の約4分の1"}],"ans":0,"soft":"月と感じるのも、自然な見方ですね。","exp":"より大きな塊になれるものほど、陽寄りと見ます。地球の方が陽寄りですね。塊が大きいというのは、たくさん中心に集まれる力がある、ということです。"},
+{"tag":"物差し「熱の印象」","q":"金星と海王星。「熱の印象」では、どっちが陽でしょう？","opts":[{"t":"金星","img":"quiz-p5-venus.webp","alt":"あたたかい雲に包まれた金星","h":"太陽に近い"},{"t":"海王星","img":"quiz-p5-neptune.webp","alt":"遠い宇宙に浮かぶ青い海王星","h":"太陽から一番遠い"}],"ans":0,"soft":"海王星と感じるのも、自然な見方ですね。","exp":"より熱い印象のものほど、陽寄りと見ます。太陽に近く熱い金星の方が陽寄りですね。"}
+];
 var SETS = [
   { box: 'quiz-food', data: FOOD },
   { box: 'quiz-body', data: BODY },
-  { box: 'quiz-face', data: FACE }
+  { box: 'quiz-face', data: FACE },
+  { box: 'quiz-planet', data: PLANET }
 ];
 SETS.forEach(function(set, si){
   var box = document.getElementById(set.box);
   box.innerHTML = set.data.map(function(item, i){
     var opts = item.opts.map(function(o, j){
-      return '<button type="button" class="q-opt" data-s="' + si + '" data-q="' + i + '" data-o="' + j + '"><img loading="lazy" src="' + o.img + '" alt="' + o.alt + '" width="640" height="480"><span>' + o.t + '</span></button>';
+      return '<button type="button" class="q-opt" data-s="' + si + '" data-q="' + i + '" data-o="' + j + '"><img loading="lazy" src="' + o.img + '" alt="' + o.alt + '" width="640" height="480"><span>' + o.t + '</span>' + (o.h ? '<span class="q-hint">' + o.h + '</span>' : '') + '</button>';
     }).join('');
     return '<div class="q-card"><div class="q-head"><span class="q-num">第' + (i + 1) + '問</span><span class="q-tag">' + item.tag + '</span></div>'
       + '<p class="q-text">' + item.q + '</p>'
@@ -183,7 +199,7 @@ document.querySelectorAll('.q-opt').forEach(function(btn){
     exp.classList.add('show');
   });
 });
-[['hen-btn-food', 'hen-panel-food'], ['hen-btn-body', 'hen-panel-body'], ['hen-btn-face', 'hen-panel-face']].forEach(function(pair){
+[['hen-btn-food', 'hen-panel-food'], ['hen-btn-body', 'hen-panel-body'], ['hen-btn-face', 'hen-panel-face'], ['hen-btn-planet', 'hen-panel-planet']].forEach(function(pair){
   var btn = document.getElementById(pair[0]), panel = document.getElementById(pair[1]);
   if (!btn || !panel) return;
   btn.addEventListener('click', function(){
