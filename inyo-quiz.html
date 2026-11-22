@@ -25,22 +25,24 @@
   header{text-align:center;margin:10px 0 6px;}
   h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:6px;}
   .kiso{display:block;width:min(430px,92%);height:auto;margin:14px auto 4px;border-radius:20px;}
-  .kiso-note{font-size:15px;color:var(--ink);background:#fff;border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;line-height:1.9;margin-top:18px;text-align:left;}
+  .kiso-note{font-size:15.5px;color:var(--ink);background:#fff;border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;line-height:1.9;margin-top:18px;text-align:center;}
   .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:10px 0 16px;line-height:2.0;}
   .core{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 18px 14px;text-align:center;margin-bottom:22px;}
   .core .big{font-size:19px;font-weight:900;color:var(--green-deep);line-height:1.9;}
   .core .small{font-size:14.5px;color:var(--sub);margin-top:4px;}
   h2{font-size:19px;font-weight:900;color:var(--green-deep);text-align:center;margin:30px 0 12px;}
   .wisdom{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
-  .wis{flex:1 1 180px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.8;}
-  .wis b{color:var(--green-deep);}
+  .wis{flex:1 1 180px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15.5px;line-height:1.8;text-align:center;}
+  .wis img{display:block;width:100%;height:auto;border-radius:10px;margin-bottom:8px;}
+  .wis b{color:var(--green-deep);display:block;font-size:16.5px;}
   .q-card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;margin-bottom:14px;}
   .q-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .q-num{font-size:14px;font-weight:900;color:#fff;background:var(--green);border-radius:999px;padding:3px 12px;}
   .q-tag{font-size:13.5px;font-weight:800;color:var(--green-deep);background:var(--chuyo-bg);border-radius:999px;padding:3px 12px;}
   .q-text{font-size:16.5px;line-height:1.9;margin:12px 2px 14px;}
-  .q-opts{display:flex;gap:10px;flex-wrap:wrap;}
-  .q-opt{flex:1 1 140px;min-height:56px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-weight:900;font-size:17px;border-radius:14px;padding:12px 10px;cursor:pointer;font-family:inherit;line-height:1.5;}
+  .q-opts{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;}
+  .q-opt{flex:1 1 140px;min-height:56px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-weight:900;font-size:17px;border-radius:14px;padding:10px;cursor:pointer;font-family:inherit;line-height:1.5;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .q-opt img{display:block;max-width:100%;max-height:210px;width:auto;height:auto;border-radius:10px;}
   .q-opt:disabled{cursor:default;opacity:.55;}
   .q-opt.yang{opacity:1;background:var(--yo-bg);border-color:var(--yo);color:#8a2f08;}
   .q-opt.picked{opacity:1;border-color:var(--green-deep);box-shadow:0 0 0 2px var(--line) inset;}
@@ -63,51 +65,51 @@
     <h1>陰陽クイズ</h1>
   </header>
 
-  <img class="kiso" src="inyo-katachi.jpg" alt="畑の断面の水彩イラスト。ネギの葉がふわっと広がり、土の中ではネギの根と丸いじゃがいもが並ぶ。みーちゃんとひーくんがそばで見ている" width="880" height="880" style="height:auto">
-  <p class="lead">陰陽クイズへ、ようこそ。<br>ここは「陰陽メガネ」をかける、練習の場です。<br>2つのものを比べて、「どっちが陽でしょう？」を<br>考えてみてくださいね。</p>
+  <p class="lead">2つのものを比べて、陰陽を読む練習です。<br>絵を見て、考えてみてくださいね。</p>
 
   <div class="core">
+    <img class="kiso" src="inyo-kiso.jpg" alt="植物の断面図。葉は空へ伸びて陰、根は地面の下へ伸びて陽" width="880" height="880" style="height:auto">
     <p class="big">陽は、中心へギュッと集まる力。<br>陰は、外へふわっと広がる力。</p>
-    <p class="small">覚えるのは、この定義だけ。あとは、見方の練習です。</p>
+    <p class="small">覚えるのは、この定義だけです。</p>
   </div>
 
   <h2>基本の3つの見方</h2>
   <div class="wisdom">
-    <div class="wis"><b>① 上か下か</b>：地面や中心へ向かっていくものは陽寄り、空へ向かって伸びていくものは陰寄り、と見ます。</div>
-    <div class="wis"><b>② 形</b>：ギュッと丸くまとまったものは陽寄り、細く伸びていくものは陰寄り、と見ます。</div>
-    <div class="wis"><b>③ 密度</b>：固く詰まったものは陽寄り、ふわっと薄く広がるものは陰寄り、と見ます。</div>
+    <div class="wis"><img loading="lazy" src="quiz-icon-updown.webp" alt="葉が上へ、根が下へ伸びる植物と、上下の矢印" width="640" height="640"><b>① 上か下か</b>下へ向かう根は、陽寄り。</div>
+    <div class="wis"><img loading="lazy" src="quiz-icon-shape.webp" alt="丸いかぼちゃと、細長いネギ" width="640" height="426"><b>② 形</b>丸いものは、陽寄り。</div>
+    <div class="wis"><img loading="lazy" src="quiz-icon-density.webp" alt="ギュッと詰まった石の塊と、ふわっと広がる綿" width="640" height="426"><b>③ 密度</b>ギュッと詰まったものは、陽寄り。</div>
   </div>
-  <p class="kiso-note">ひとつ、大事なことです。物が1つだけでは、陰とも陽とも言えません。右と左みたいに、2つ比べて初めて言えるものなのですね。ですから、このクイズの答えは「この見方では」という読み方です。別の物差しに変えると、答えが入れ替わることもあります。それが、陰陽の面白いところですね。</p>
+  <p class="kiso-note">物が1つだけでは、陰陽は言えません。<br>右と左みたいに、2つ比べて初めて言えます。</p>
 
   <h2>クイズ</h2>
   <div id="quiz"></div>
 
   <div class="endbox">
     <img class="keeper-end" loading="lazy" src="keeper.webp" alt="森の番人" width="640" height="640">
-    <p class="words">おつかれさまでした。<br>陰陽は、覚えるものではなく、<br>見て練習するものなのですね。<br>おうちの食卓でも、身の回りのものでも、<br>陰陽メガネで眺めてみてくださいね。</p>
+    <p class="words">おつかれさまでした。<br>陰陽は、見て練習するものですね。<br>おうちでも、陰陽メガネで眺めてみてくださいね。</p>
   </div>
 
   <p class="to-dict"><a href="inyo.html">もっと眺めたい方は、食の陰陽辞典へ →</a></p>
 
-  <p class="note">このクイズの読み方は、マクロビオティックの眺め方を<br>もとにした、練習のための目安です。</p>
+  <p class="note">このクイズは、マクロビオティックの眺め方をもとにした、練習のための目安です。</p>
 </div>
 <script>
 var QUESTIONS = [
-{"tag":"全体の眺め","q":"野菜と、お肉。全体を大きく眺めたとき、どっちが陽でしょう？","opts":["野菜","お肉"],"ans":1,"soft":"野菜と感じるのも、自然な見方ですね。","exp":"お肉は動物の体そのもので、中心へギュッと集まった力の姿です。野菜全体と比べると、お肉の方が陽寄り、野菜は全体では陰側、と置くのがマクロビオティックの眺め方ですね。"},
-{"tag":"見方① 上か下か","q":"キャベツと、人参。キャベツは地面の上で葉を広げ、人参は地面の下へ伸びていきます。「上か下か」の見方では、どっちが陽でしょう？","opts":["キャベツ","人参"],"ans":1,"soft":"キャベツと感じるのも、自然な見方ですね。","exp":"地面の下、地球の中心へ向かって伸びていく根は、「陽」の姿と見ます。上へ広がっていく葉は陰寄りですね。根菜が陽寄りと言われるのは、この見方から来ています。"},
-{"tag":"見方② 形","q":"ネギと、キャベツ。地面の上の姿だけを見てみます。ネギは細く上に伸びて、キャベツは丸くまとまっています。「形」の見方では、どっちが陽でしょう？","opts":["ネギ","キャベツ"],"ans":1,"soft":"ネギと感じるのも、自然な見方ですね。","exp":"ギュッと丸くまとまった形は、中心へ集まる「陽」の姿です。細く伸びていくネギは、この見方では陰寄りになりますね。"},
-{"tag":"見方③ 密度","q":"キャベツと、レタス。キャベツは葉がギュッと詰まって固く、レタスはふわっと薄くて軽い。「密度」の見方では、どっちが陽でしょう？","opts":["キャベツ","レタス"],"ans":0,"soft":"レタスと感じるのも、自然な見方ですね。","exp":"密度が高くギュッとしているものは陽寄り、ふわっと薄く広がるものは陰寄り、と見ます。さっきの問題と同じキャベツでも、比べる相手が変わると、読み方が変わってきますね。"},
-{"tag":"見方① 上か下か","q":"じゃがいもと、人参。どちらも土の中のものですが、じゃがいもは横に広がるように育ち、人参は真下へ伸びていきます。「下へ行く力」の見方では、どっちが陽でしょう？","opts":["じゃがいも","人参"],"ans":1,"soft":"じゃがいもと感じるのも、自然な見方ですね。","exp":"真下へ、中心へ向かって伸びていく人参の方が陽寄りです。じゃがいもは、キャベツと比べれば陽寄りの根菜ですが、人参と比べると陰寄りに見えてきます。比べる相手で変わるのですね。"},
-{"tag":"物差しを変える・位置","q":"ここからは、卵ひとつで練習です。卵の「黄身」と「殻」。黄身は真ん中の方にあります。「位置」の見方では、どっちが陽でしょう？","opts":["黄身","殻"],"ans":0,"soft":"殻と感じるのも、自然な見方ですね。","exp":"真ん中にあるものは、中心へ集まる力＝「陽」の姿と見ます。位置の物差しでは、黄身が陽寄りですね。"},
-{"tag":"物差しを変える・密度","q":"同じ卵のまま、今度は物差しを「固さ」に変えてみます。黄身と殻では、どっちが陽でしょう？","opts":["黄身","殻"],"ans":1,"soft":"黄身と感じるのも、自然な見方ですね。","exp":"一番ギュッと固いのは殻。密度・固さの物差しでは、殻が陽寄りになります。さっきの問題と、答えが入れ替わりましたね。物差しが変われば、陰陽も変わる。それが相対の見方です。"},
-{"tag":"理由で読む","q":"白米と、玄米。白米は、玄米の硬い皮の部分を取り除いたお米です。どっちが陽でしょう？","opts":["白米","玄米"],"ans":1,"soft":"白米と感じるのも、自然な見方ですね。","exp":"硬い皮は「陽」の部分です。その部分を捨てている分、白米は玄米より陰寄りになります。皮ごと残した玄米の方が、比べれば陽寄りですね。"},
-{"tag":"大きさの見方","q":"鶏肉と、牛肉。お肉どうしを、「塊の大きさ」で比べてみます。どっちが陽でしょう？","opts":["鶏肉","牛肉"],"ans":1,"soft":"鶏肉と感じるのも、自然な見方ですね。","exp":"大きな塊になれるものほど、陽が強いと見ます。鶏より豚、豚より牛、という順番は、この見方から来ています。"},
-{"tag":"体感で読む","q":"最後は、太陽と月。太陽は熱がギュウギュウに詰まっていて、体もポカポカしてきます。月は涼しくて、気持ちが落ち着きます。体感の見方では、どっちが陽でしょう？","opts":["太陽","月"],"ans":0,"soft":"月と感じるのも、自然な見方ですね。","exp":"熱が集まって、温めてくれる太陽が陽寄り。涼しく落ち着く月は陰寄り、と読めますね。数字や性質だけでなく、感じる面からも、陰陽は読めるのです。"}
+{"tag":"全体の眺め","q":"野菜とお肉。全体で見ると、どっちが陽でしょう？","opts":[{"t":"野菜","img":"quiz-q1-yasai.webp","alt":"野菜がたくさん入ったかご","w":640,"h":426},{"t":"お肉","img":"quiz-q1-niku.webp","alt":"まな板の上のお肉","w":640,"h":426}],"ans":1,"soft":"野菜と感じるのも、自然な見方ですね。","exp":"お肉は、中心へギュッと集まった力の姿です。野菜全体と比べると、お肉が陽寄りですね。"},
+{"tag":"見方① 上か下か","q":"キャベツと人参。「上か下か」では、どっちが陽でしょう？","opts":[{"t":"キャベツ","img":"quiz-q2-cabbage.webp","alt":"地面の上で葉を広げるキャベツ","w":640,"h":426},{"t":"人参","img":"quiz-q2-carrot.webp","alt":"土の中をまっすぐ下へ伸びる人参","w":640,"h":853}],"ans":1,"soft":"キャベツと感じるのも、自然な見方ですね。","exp":"地面の下へ、中心へ向かって伸びる根は陽の姿です。人参が陽寄りですね。"},
+{"tag":"見方② 形","q":"ネギとキャベツ。「形」では、どっちが陽でしょう？","opts":[{"t":"ネギ","img":"quiz-q3-negi.webp","alt":"細く長く上に伸びるネギ","w":640,"h":853},{"t":"キャベツ","img":"quiz-q3-cabbage.webp","alt":"まん丸いキャベツ","w":640,"h":640}],"ans":1,"soft":"ネギと感じるのも、自然な見方ですね。","exp":"ギュッと丸くまとまった形が陽の姿です。キャベツが陽寄りですね。"},
+{"tag":"見方③ 密度","q":"キャベツとレタス。「密度」では、どっちが陽でしょう？","opts":[{"t":"キャベツ","img":"quiz-q4-cabbage.webp","alt":"葉がギュッと詰まったキャベツの断面","w":640,"h":426},{"t":"レタス","img":"quiz-q4-lettuce.webp","alt":"葉がふわっと広がるレタス","w":640,"h":640}],"ans":0,"soft":"レタスと感じるのも、自然な見方ですね。","exp":"ギュッと詰まって固いものが陽寄りです。キャベツが陽寄りですね。"},
+{"tag":"見方① 上か下か","q":"じゃがいもと人参。「下へ行く力」では、どっちが陽でしょう？","opts":[{"t":"じゃがいも","img":"quiz-q5-potato.webp","alt":"土の中で横に並ぶじゃがいも","w":640,"h":426},{"t":"人参","img":"quiz-q5-carrot.webp","alt":"土の中を真下へ長く伸びる人参","w":640,"h":1280}],"ans":1,"soft":"じゃがいもと感じるのも、自然な見方ですね。","exp":"真下へ伸びる人参が陽寄りです。じゃがいもは、人参と比べると陰寄りに見えてきますね。"},
+{"tag":"物差しを変える・位置","q":"卵の黄身と殻。「位置」では、どっちが陽でしょう？","opts":[{"t":"黄身","img":"quiz-q6-kimi.webp","alt":"白身の真ん中にある黄身","w":640,"h":426},{"t":"殻","img":"quiz-q6-kara.webp","alt":"卵の殻","w":640,"h":426}],"ans":0,"soft":"殻と感じるのも、自然な見方ですね。","exp":"真ん中にあるものは陽の姿と見ます。位置では、黄身が陽寄りですね。"},
+{"tag":"物差しを変える・固さ","q":"同じ卵のまま、「固さ」では、どっちが陽でしょう？","opts":[{"t":"黄身","img":"quiz-q7-kimi.webp","alt":"やわらかくとろける黄身","w":640,"h":426},{"t":"殻","img":"quiz-q7-kara.webp","alt":"固い卵の殻のかけら","w":640,"h":426}],"ans":1,"soft":"黄身と感じるのも、自然な見方ですね。","exp":"一番ギュッと固いのは殻です。固さでは殻が陽寄りで、さっきと答えが入れ替わりますね。"},
+{"tag":"理由で読む","q":"白米と玄米。どっちが陽でしょう？","opts":[{"t":"白米","img":"quiz-q8-hakumai.webp","alt":"白いごはん","w":640,"h":426},{"t":"玄米","img":"quiz-q8-genmai.webp","alt":"皮のついた玄米のごはん","w":640,"h":426}],"ans":1,"soft":"白米と感じるのも、自然な見方ですね。","exp":"硬い皮は陽の部分です。その皮を除いた白米は、玄米より陰寄りになりますね。"},
+{"tag":"大きさの見方","q":"鶏肉と牛肉。「塊の大きさ」では、どっちが陽でしょう？","opts":[{"t":"鶏肉","img":"quiz-q9-tori.webp","alt":"小さな鶏","w":640,"h":426},{"t":"牛肉","img":"quiz-q9-ushi.webp","alt":"大きな牛","w":640,"h":640}],"ans":1,"soft":"鶏肉と感じるのも、自然な見方ですね。","exp":"大きな塊になれるものほど陽が強いと見ます。牛肉が陽寄りですね。ただし「大きいほど陽」は密度が同じくらいの時の話で、小さくてもギュッと密度が強ければ、陽になることもありますね。"},
+{"tag":"体感で読む","q":"太陽と月。体感では、どっちが陽でしょう？","opts":[{"t":"太陽","img":"quiz-q10-sun.webp","alt":"温かい太陽","w":640,"h":426},{"t":"月","img":"quiz-q10-moon.webp","alt":"静かな夜の月","w":640,"h":426}],"ans":0,"soft":"月と感じるのも、自然な見方ですね。","exp":"熱が集まって温めてくれる太陽が陽寄り、涼しく落ち着く月は陰寄りですね。"}
 ];
 var box = document.getElementById('quiz');
 box.innerHTML = QUESTIONS.map(function(item, i){
   var opts = item.opts.map(function(o, j){
-    return '<button type="button" class="q-opt" data-q="' + i + '" data-o="' + j + '">' + o + '</button>';
+    return '<button type="button" class="q-opt" data-q="' + i + '" data-o="' + j + '"><img loading="lazy" src="' + o.img + '" alt="' + o.alt + '" width="' + o.w + '" height="' + o.h + '"><span>' + o.t + '</span></button>';
   }).join('');
   return '<div class="q-card"><div class="q-head"><span class="q-num">第' + (i + 1) + '問</span><span class="q-tag">' + item.tag + '</span></div>'
     + '<p class="q-text">' + item.q + '</p>'
