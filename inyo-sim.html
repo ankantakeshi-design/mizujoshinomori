@@ -32,12 +32,12 @@
   .arrows.flash{animation:arrowFlash 1.05s ease-out;}
   @keyframes arrowFlash{0%{opacity:0}22%{opacity:.95}100%{opacity:0}}
   .msg{text-align:center;font-size:16px;font-weight:800;color:var(--green-deep);line-height:1.75;min-height:56px;padding:5px 10px 2px;display:flex;align-items:center;justify-content:center;}
-  .gauge-box{margin-top:9px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px 12px 9px;}
+  .gauge-box{margin-top:9px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:6px 12px 7px;}
   .gauge-scale{display:flex;justify-content:space-between;margin:0 8px 2px calc(3.2em + 18px);font-size:14px;font-weight:900;line-height:1.5;}
   .gauge-scale .gl-yin{color:var(--yin);}
   .gauge-scale .gl-chu{color:var(--green-deep);}
   .gauge-scale .gl-yo{color:var(--yo);}
-  .gauge-row{display:flex;align-items:center;gap:10px;padding:3px 8px;border:2px solid transparent;border-radius:12px;margin-top:2px;}
+  .gauge-row{display:flex;align-items:center;gap:10px;padding:3px 8px;border:2px solid transparent;border-radius:12px;margin-top:2px;min-height:48px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .gauge-row.active{border-color:var(--green);background:#eef5e9;}
   .gauge-name{flex:0 0 3.2em;font-size:16px;font-weight:900;color:var(--sub);line-height:1.6;}
   .gauge-row.active .gauge-name{color:var(--green-deep);}
@@ -98,9 +98,9 @@
 
   <div class="gauge-box">
     <div class="gauge-scale"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
-    <div class="gauge-row active" data-axis="size"><span class="gauge-name">大きさ</span><div class="gauge-bar"><div class="gauge-dot" id="dotSize"></div></div></div>
-    <div class="gauge-row" data-axis="shape"><span class="gauge-name">形</span><div class="gauge-bar"><div class="gauge-dot" id="dotShape"></div></div></div>
-    <div class="gauge-row" data-axis="density"><span class="gauge-name">密度</span><div class="gauge-bar"><div class="gauge-dot" id="dotDensity"></div></div></div>
+    <div class="gauge-row active" data-axis="size" role="button" tabindex="0" aria-pressed="true" aria-label="物差しを「大きさ」にする"><span class="gauge-name">大きさ</span><div class="gauge-bar"><div class="gauge-dot" id="dotSize"></div></div></div>
+    <div class="gauge-row" data-axis="shape" role="button" tabindex="0" aria-pressed="false" aria-label="物差しを「形」にする"><span class="gauge-name">形</span><div class="gauge-bar"><div class="gauge-dot" id="dotShape"></div></div></div>
+    <div class="gauge-row" data-axis="density" role="button" tabindex="0" aria-pressed="false" aria-label="物差しを「密度」にする"><span class="gauge-name">密度</span><div class="gauge-bar"><div class="gauge-dot" id="dotDensity"></div></div></div>
   </div>
 
   <div class="add-row">
@@ -315,13 +315,28 @@
   var rulerBtns=document.querySelectorAll(".ruler-btn");
   function syncRulerUI(){
     rulerBtns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-ruler")===ruler?"true":"false"); });
-    gaugeRows.forEach(function(row){ row.classList.toggle("active", row.getAttribute("data-axis")===ruler); });
+    gaugeRows.forEach(function(row){
+      var on=row.getAttribute("data-axis")===ruler;
+      row.classList.toggle("active", on);
+      row.setAttribute("aria-pressed", on?"true":"false");
+    });
+  }
+  function setRuler(axis){
+    ruler=axis;
+    syncRulerUI();
+    updateMsg();
   }
   rulerBtns.forEach(function(btn){
     btn.addEventListener("click", function(){
-      ruler=btn.getAttribute("data-ruler");
-      syncRulerUI();
-      updateMsg();
+      setRuler(btn.getAttribute("data-ruler"));
+    });
+  });
+  gaugeRows.forEach(function(row){
+    row.addEventListener("click", function(){
+      setRuler(row.getAttribute("data-axis"));
+    });
+    row.addEventListener("keydown", function(e){
+      if(e.key==="Enter" || e.key===" "){ e.preventDefault(); setRuler(row.getAttribute("data-axis")); }
     });
   });
 
