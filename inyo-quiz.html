@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陰陽クイズ｜集まれ水女子の森</title>
+<meta name="description" content="2つのものを比べて、陰陽を読む練習コーナーです。上か下か、形、密度の3つの見方で、陰陽メガネをかける練習をしてみましょう。">
+<link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-quiz">
+<meta property="og:title" content="陰陽クイズ｜集まれ水女子の森">
+<meta property="og:description" content="2つのものを比べて、陰陽を読む練習コーナーです。3つの見方で、陰陽メガネの練習をしてみましょう。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-quiz">
+<meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="陰陽クイズ｜集まれ水女子の森">
+<meta name="twitter:description" content="2つのものを比べて、陰陽を読む練習コーナーです。3つの見方で、陰陽メガネの練習をしてみましょう。">
+<meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
+<style>
+  :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
+    --yin:#2f6fb2; --yin-bg:#e3eef8; --chuyo:#4a7c59; --chuyo-bg:#e7f0e2; --yo:#c1440e; --yo-bg:#fbe9dd; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;font-size:16.5px;}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
+  .back{display:inline-block;padding:10px 6px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  header{text-align:center;margin:10px 0 6px;}
+  h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:6px;}
+  .kiso{display:block;width:min(430px,92%);height:auto;margin:14px auto 4px;border-radius:20px;}
+  .kiso-note{font-size:15px;color:var(--ink);background:#fff;border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;line-height:1.9;margin-top:18px;text-align:left;}
+  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:10px 0 16px;line-height:2.0;}
+  .core{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 18px 14px;text-align:center;margin-bottom:22px;}
+  .core .big{font-size:19px;font-weight:900;color:var(--green-deep);line-height:1.9;}
+  .core .small{font-size:14.5px;color:var(--sub);margin-top:4px;}
+  h2{font-size:19px;font-weight:900;color:var(--green-deep);text-align:center;margin:30px 0 12px;}
+  .wisdom{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+  .wis{flex:1 1 180px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.8;}
+  .wis b{color:var(--green-deep);}
+  .q-card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;margin-bottom:14px;}
+  .q-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .q-num{font-size:14px;font-weight:900;color:#fff;background:var(--green);border-radius:999px;padding:3px 12px;}
+  .q-tag{font-size:13.5px;font-weight:800;color:var(--green-deep);background:var(--chuyo-bg);border-radius:999px;padding:3px 12px;}
+  .q-text{font-size:16.5px;line-height:1.9;margin:12px 2px 14px;}
+  .q-opts{display:flex;gap:10px;flex-wrap:wrap;}
+  .q-opt{flex:1 1 140px;min-height:56px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-weight:900;font-size:17px;border-radius:14px;padding:12px 10px;cursor:pointer;font-family:inherit;line-height:1.5;}
+  .q-opt:disabled{cursor:default;opacity:.55;}
+  .q-opt.yang{opacity:1;background:var(--yo-bg);border-color:var(--yo);color:#8a2f08;}
+  .q-opt.picked{opacity:1;border-color:var(--green-deep);box-shadow:0 0 0 2px var(--line) inset;}
+  .q-opt.picked.yang{border-color:var(--yo);box-shadow:none;}
+  .q-exp{display:none;margin-top:14px;background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:15.5px;line-height:1.9;}
+  .q-exp.show{display:block;}
+  .q-exp .soft{font-weight:800;color:var(--green-deep);}
+  .endbox{text-align:center;margin-top:36px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
+  .keeper-end{display:block;width:180px;height:auto;margin:0 auto 10px;border-radius:24px;}
+  .endbox .words{font-size:16.5px;line-height:2.0;}
+  .to-dict{text-align:center;margin-top:22px;}
+  .to-dict a{display:inline-block;padding:10px 6px;font-size:15.5px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
+  .note{margin-top:30px;font-size:13.5px;color:var(--sub);text-align:center;line-height:2.0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 森へもどる</a>
+  <header>
+    <h1>陰陽クイズ</h1>
+  </header>
+
+  <img class="kiso" src="inyo-katachi.jpg" alt="畑の断面の水彩イラスト。ネギの葉がふわっと広がり、土の中ではネギの根と丸いじゃがいもが並ぶ。みーちゃんとひーくんがそばで見ている" width="880" height="880" style="height:auto">
+  <p class="lead">陰陽クイズへ、ようこそ。<br>ここは「陰陽メガネ」をかける、練習の場です。<br>2つのものを比べて、「どっちが陽でしょう？」を<br>考えてみてくださいね。</p>
+
+  <div class="core">
+    <p class="big">陽は、中心へギュッと集まる力。<br>陰は、外へふわっと広がる力。</p>
+    <p class="small">覚えるのは、この定義だけ。あとは、見方の練習です。</p>
+  </div>
+
+  <h2>基本の3つの見方</h2>
+  <div class="wisdom">
+    <div class="wis"><b>① 上か下か</b>：地面や中心へ向かっていくものは陽寄り、空へ向かって伸びていくものは陰寄り、と見ます。</div>
+    <div class="wis"><b>② 形</b>：ギュッと丸くまとまったものは陽寄り、細く伸びていくものは陰寄り、と見ます。</div>
+    <div class="wis"><b>③ 密度</b>：固く詰まったものは陽寄り、ふわっと薄く広がるものは陰寄り、と見ます。</div>
+  </div>
+  <p class="kiso-note">ひとつ、大事なことです。物が1つだけでは、陰とも陽とも言えません。右と左みたいに、2つ比べて初めて言えるものなのですね。ですから、このクイズの答えは「この見方では」という読み方です。別の物差しに変えると、答えが入れ替わることもあります。それが、陰陽の面白いところですね。</p>
+
+  <h2>クイズ</h2>
+  <div id="quiz"></div>
+
+  <div class="endbox">
+    <img class="keeper-end" loading="lazy" src="keeper.webp" alt="森の番人" width="640" height="640">
+    <p class="words">おつかれさまでした。<br>陰陽は、覚えるものではなく、<br>見て練習するものなのですね。<br>おうちの食卓でも、身の回りのものでも、<br>陰陽メガネで眺めてみてくださいね。</p>
+  </div>
+
+  <p class="to-dict"><a href="inyo.html">もっと眺めたい方は、食の陰陽辞典へ →</a></p>
+
+  <p class="note">このクイズの読み方は、マクロビオティックの眺め方を<br>もとにした、練習のための目安です。</p>
+</div>
+<script>
+var QUESTIONS = [
+{"tag":"全体の眺め","q":"野菜と、お肉。全体を大きく眺めたとき、どっちが陽でしょう？","opts":["野菜","お肉"],"ans":1,"soft":"野菜と感じるのも、自然な見方ですね。","exp":"お肉は動物の体そのもので、中心へギュッと集まった力の姿です。野菜全体と比べると、お肉の方が陽寄り、野菜は全体では陰側、と置くのがマクロビオティックの眺め方ですね。"},
+{"tag":"見方① 上か下か","q":"キャベツと、人参。キャベツは地面の上で葉を広げ、人参は地面の下へ伸びていきます。「上か下か」の見方では、どっちが陽でしょう？","opts":["キャベツ","人参"],"ans":1,"soft":"キャベツと感じるのも、自然な見方ですね。","exp":"地面の下、地球の中心へ向かって伸びていく根は、「陽」の姿と見ます。上へ広がっていく葉は陰寄りですね。根菜が陽寄りと言われるのは、この見方から来ています。"},
+{"tag":"見方② 形","q":"ネギと、キャベツ。地面の上の姿だけを見てみます。ネギは細く上に伸びて、キャベツは丸くまとまっています。「形」の見方では、どっちが陽でしょう？","opts":["ネギ","キャベツ"],"ans":1,"soft":"ネギと感じるのも、自然な見方ですね。","exp":"ギュッと丸くまとまった形は、中心へ集まる「陽」の姿です。細く伸びていくネギは、この見方では陰寄りになりますね。"},
+{"tag":"見方③ 密度","q":"キャベツと、レタス。キャベツは葉がギュッと詰まって固く、レタスはふわっと薄くて軽い。「密度」の見方では、どっちが陽でしょう？","opts":["キャベツ","レタス"],"ans":0,"soft":"レタスと感じるのも、自然な見方ですね。","exp":"密度が高くギュッとしているものは陽寄り、ふわっと薄く広がるものは陰寄り、と見ます。さっきの問題と同じキャベツでも、比べる相手が変わると、読み方が変わってきますね。"},
+{"tag":"見方① 上か下か","q":"じゃがいもと、人参。どちらも土の中のものですが、じゃがいもは横に広がるように育ち、人参は真下へ伸びていきます。「下へ行く力」の見方では、どっちが陽でしょう？","opts":["じゃがいも","人参"],"ans":1,"soft":"じゃがいもと感じるのも、自然な見方ですね。","exp":"真下へ、中心へ向かって伸びていく人参の方が陽寄りです。じゃがいもは、キャベツと比べれば陽寄りの根菜ですが、人参と比べると陰寄りに見えてきます。比べる相手で変わるのですね。"},
+{"tag":"物差しを変える・位置","q":"ここからは、卵ひとつで練習です。卵の「黄身」と「殻」。黄身は真ん中の方にあります。「位置」の見方では、どっちが陽でしょう？","opts":["黄身","殻"],"ans":0,"soft":"殻と感じるのも、自然な見方ですね。","exp":"真ん中にあるものは、中心へ集まる力＝「陽」の姿と見ます。位置の物差しでは、黄身が陽寄りですね。"},
+{"tag":"物差しを変える・密度","q":"同じ卵のまま、今度は物差しを「固さ」に変えてみます。黄身と殻では、どっちが陽でしょう？","opts":["黄身","殻"],"ans":1,"soft":"黄身と感じるのも、自然な見方ですね。","exp":"一番ギュッと固いのは殻。密度・固さの物差しでは、殻が陽寄りになります。さっきの問題と、答えが入れ替わりましたね。物差しが変われば、陰陽も変わる。それが相対の見方です。"},
+{"tag":"理由で読む","q":"白米と、玄米。白米は、玄米の硬い皮の部分を取り除いたお米です。どっちが陽でしょう？","opts":["白米","玄米"],"ans":1,"soft":"白米と感じるのも、自然な見方ですね。","exp":"硬い皮は「陽」の部分です。その部分を捨てている分、白米は玄米より陰寄りになります。皮ごと残した玄米の方が、比べれば陽寄りですね。"},
+{"tag":"大きさの見方","q":"鶏肉と、牛肉。お肉どうしを、「塊の大きさ」で比べてみます。どっちが陽でしょう？","opts":["鶏肉","牛肉"],"ans":1,"soft":"鶏肉と感じるのも、自然な見方ですね。","exp":"大きな塊になれるものほど、陽が強いと見ます。鶏より豚、豚より牛、という順番は、この見方から来ています。"},
+{"tag":"体感で読む","q":"最後は、太陽と月。太陽は熱がギュウギュウに詰まっていて、体もポカポカしてきます。月は涼しくて、気持ちが落ち着きます。体感の見方では、どっちが陽でしょう？","opts":["太陽","月"],"ans":0,"soft":"月と感じるのも、自然な見方ですね。","exp":"熱が集まって、温めてくれる太陽が陽寄り。涼しく落ち着く月は陰寄り、と読めますね。数字や性質だけでなく、感じる面からも、陰陽は読めるのです。"}
+];
+var box = document.getElementById('quiz');
+box.innerHTML = QUESTIONS.map(function(item, i){
+  var opts = item.opts.map(function(o, j){
+    return '<button type="button" class="q-opt" data-q="' + i + '" data-o="' + j + '">' + o + '</button>';
+  }).join('');
+  return '<div class="q-card"><div class="q-head"><span class="q-num">第' + (i + 1) + '問</span><span class="q-tag">' + item.tag + '</span></div>'
+    + '<p class="q-text">' + item.q + '</p>'
+    + '<div class="q-opts">' + opts + '</div>'
+    + '<div class="q-exp" id="exp-' + i + '" aria-live="polite"></div></div>';
+}).join('');
+box.querySelectorAll('.q-opt').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var qi = +btn.dataset.q, oi = +btn.dataset.o;
+    var item = QUESTIONS[qi];
+    var card = btn.closest('.q-card');
+    card.querySelectorAll('.q-opt').forEach(function(b){
+      b.disabled = true;
+      if (+b.dataset.o === item.ans) b.classList.add('yang');
+      if (b === btn) b.classList.add('picked');
+    });
+    var exp = document.getElementById('exp-' + qi);
+    var head = (oi === item.ans)
+      ? '<span class="soft">その見方ですね。</span> '
+      : '<span class="soft">' + item.soft + '</span> ';
+    exp.innerHTML = head + item.exp;
+    exp.classList.add('show');
+  });
+});
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "f5def6859aa14ba795d178cbb77881e4"}'></script>
+</body>
+</html>
