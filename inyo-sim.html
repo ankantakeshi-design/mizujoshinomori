@@ -4,56 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>陰陽シミュレーター｜集まれ水女子の森</title>
-<meta name="description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。大きさ・形・密度の物差しを変えると、変わり方が変わります。">
+<meta name="description" content="丸いかたまりに陽と陰を足して、見え方の変わり方を目で感じる体験コーナーです。大きさ・形・密度の量は、それぞれ混ざり合います。">
 <link rel="canonical" href="https://mizujoshinomori.pages.dev/inyo-sim">
 <meta property="og:title" content="陰陽シミュレーター｜集まれ水女子の森">
-<meta property="og:description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。">
+<meta property="og:description" content="丸いかたまりに陽と陰を足して、見え方の変わり方を目で感じる体験コーナーです。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mizujoshinomori.pages.dev/inyo-sim">
 <meta property="og:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="陰陽シミュレーター｜集まれ水女子の森">
-<meta name="twitter:description" content="丸いかたまりに陽と陰を足して、形の変わり方を目で見て感じる体験コーナーです。">
+<meta name="twitter:description" content="丸いかたまりに陽と陰を足して、見え方の変わり方を目で感じる体験コーナーです。">
 <meta name="twitter:image" content="https://mizujoshinomori.pages.dev/ogp.jpg">
 <style>
   :root{ --ink:#2f3a2f; --sub:#4d5c4d; --green:#4a7c59; --green-deep:#33513c; --line:#dce8d8; --card:#ffffff; --bg:#f4f8f1;
     --yin:#2f6fb2; --yin-bg:#e3eef8; --yo:#c1440e; --yo-bg:#fbe9dd; }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;font-size:16.5px;}
-  .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
-  .back{display:inline-block;padding:10px 6px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
-  header{text-align:center;margin:6px 0 4px;}
-  .badge{display:inline-block;background:var(--yo);color:#fff;font-weight:900;font-size:16.5px;letter-spacing:.04em;border-radius:999px;padding:8px 22px;min-height:48px;line-height:32px;}
-  h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:12px;}
-  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:8px 0 10px;line-height:2.0;}
-  .stage-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 10px 8px;}
-  #stage{display:block;width:min(430px,100%);height:auto;margin:0 auto;}
+  .wrap{max-width:680px;margin:0 auto;padding:10px 14px 40px;}
+  .back{display:inline-block;padding:6px 4px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;line-height:36px;}
+  header{text-align:center;margin:0;}
+  .badge{display:inline-block;background:var(--yo);color:#fff;font-weight:900;font-size:16px;letter-spacing:.04em;border-radius:999px;padding:5px 20px;line-height:1.6;}
+  h1{font-size:22px;font-weight:900;color:var(--green-deep);margin-top:5px;line-height:1.4;}
+  .lead{text-align:center;font-size:16px;color:var(--ink);margin:3px 0 6px;line-height:1.7;}
+  .stage-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px 8px 4px;}
+  #stage{display:block;width:min(198px,58%);height:auto;margin:0 auto;}
   .arrows{opacity:0;}
   .arrows.flash{animation:arrowFlash 1.05s ease-out;}
   @keyframes arrowFlash{0%{opacity:0}22%{opacity:.95}100%{opacity:0}}
-  .msg{text-align:center;font-size:16.5px;font-weight:800;color:var(--green-deep);line-height:1.9;min-height:64px;padding:10px 14px 4px;display:flex;align-items:center;justify-content:center;}
-  .add-row{display:flex;gap:12px;margin-top:16px;}
-  .add-btn{flex:1;min-height:68px;border-radius:16px;border:2px solid;font-family:inherit;font-size:19px;font-weight:900;cursor:pointer;line-height:1.4;padding:10px 6px;}
+  .msg{text-align:center;font-size:16px;font-weight:800;color:var(--green-deep);line-height:1.75;min-height:56px;padding:5px 10px 2px;display:flex;align-items:center;justify-content:center;}
+  .gauge-box{margin-top:9px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:8px 12px 9px;}
+  .gauge-scale{display:flex;justify-content:space-between;margin:0 8px 2px calc(3.2em + 18px);font-size:14px;font-weight:900;line-height:1.5;}
+  .gauge-scale .gl-yin{color:var(--yin);}
+  .gauge-scale .gl-chu{color:var(--green-deep);}
+  .gauge-scale .gl-yo{color:var(--yo);}
+  .gauge-row{display:flex;align-items:center;gap:10px;padding:3px 8px;border:2px solid transparent;border-radius:12px;margin-top:2px;}
+  .gauge-row.active{border-color:var(--green);background:#eef5e9;}
+  .gauge-name{flex:0 0 3.2em;font-size:16px;font-weight:900;color:var(--sub);line-height:1.6;}
+  .gauge-row.active .gauge-name{color:var(--green-deep);}
+  .gauge-bar{position:relative;flex:1;height:14px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);}
+  .gauge-dot{position:absolute;top:50%;left:50%;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--green-deep);transform:translate(-50%,-50%);}
+  .add-row{display:flex;gap:12px;margin-top:10px;}
+  .add-btn{flex:1;min-height:60px;border-radius:16px;border:2px solid;font-family:inherit;font-size:19px;font-weight:900;cursor:pointer;line-height:1.4;padding:8px 6px;}
   .add-btn small{display:block;font-size:13.5px;font-weight:700;}
   .add-yin{background:var(--yin-bg);border-color:var(--yin);color:var(--yin);}
   .add-yo{background:var(--yo-bg);border-color:var(--yo);color:var(--yo);}
   .add-btn:active{transform:scale(.98);}
-  .reset-row{text-align:center;margin-top:12px;}
-  .reset-btn{min-height:52px;padding:8px 26px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;}
+  .reset-row{text-align:center;margin-top:8px;}
+  .reset-btn{min-height:48px;padding:6px 26px;border-radius:999px;border:2px solid var(--green);background:#fff;color:var(--green-deep);font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;}
   .reset-btn:active{transform:scale(.98);}
-  .ruler-label{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin:28px 0 10px;}
+  .ruler-label{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin:12px 0 6px;line-height:1.6;}
   .ruler-row{display:flex;gap:10px;}
-  .ruler-btn{flex:1;min-height:56px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:8px 4px;}
+  .ruler-btn{flex:1;min-height:52px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:6px 4px;}
   .ruler-btn[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;}
-  .gauge-box{margin-top:16px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px 20px 12px;}
-  .gauge-cap{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin-bottom:12px;}
-  .gauge-bar{position:relative;height:22px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);}
-  .gauge-dot{position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--green-deep);transform:translate(-50%,-50%);}
-  .gauge-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:15px;font-weight:900;}
-  .gauge-labels .gl-yin{color:var(--yin);}
-  .gauge-labels .gl-chu{color:var(--green-deep);}
-  .gauge-labels .gl-yo{color:var(--yo);}
-  .endbox{text-align:center;margin-top:36px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
+  .endbox{text-align:center;margin-top:26px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 18px 18px;}
   .keeper-end{display:block;width:180px;height:auto;margin:0 auto 10px;border-radius:24px;}
   .endbox .words{font-size:16.5px;line-height:2.0;}
   .to-links{text-align:center;margin-top:22px;}
@@ -69,7 +72,7 @@
     <h1>陰陽シミュレーター</h1>
   </header>
 
-  <p class="lead">丸いかたまりに、陽と陰を足してみましょう。<br>形がどう変わるか、目で見て感じるコーナーです。</p>
+  <p class="lead">丸いかたまりに、陽と陰を足してみましょう。</p>
 
   <div class="stage-card">
     <svg id="stage" viewBox="0 0 320 320" role="img" aria-label="陰陽で形が変わる、丸いかたまり">
@@ -94,9 +97,10 @@
   </div>
 
   <div class="gauge-box">
-    <p class="gauge-cap">いまの量</p>
-    <div class="gauge-bar"><div class="gauge-dot" id="gaugeDot"></div></div>
-    <div class="gauge-labels"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
+    <div class="gauge-scale"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
+    <div class="gauge-row active" data-axis="size"><span class="gauge-name">大きさ</span><div class="gauge-bar"><div class="gauge-dot" id="dotSize"></div></div></div>
+    <div class="gauge-row" data-axis="shape"><span class="gauge-name">形</span><div class="gauge-bar"><div class="gauge-dot" id="dotShape"></div></div></div>
+    <div class="gauge-row" data-axis="density"><span class="gauge-name">密度</span><div class="gauge-bar"><div class="gauge-dot" id="dotDensity"></div></div></div>
   </div>
 
   <div class="add-row">
@@ -107,7 +111,7 @@
     <button type="button" class="reset-btn" id="btnReset">真ん中にもどす</button>
   </div>
 
-  <p class="ruler-label">物差しを変えると、変わり方が変わります</p>
+  <p class="ruler-label">物差しを変えると、足す量が変わります（量は混ざります）</p>
   <div class="ruler-row" role="group" aria-label="物差しの切り替え">
     <button type="button" class="ruler-btn" data-ruler="size" aria-pressed="true">大きさ</button>
     <button type="button" class="ruler-btn" data-ruler="shape" aria-pressed="false">形</button>
@@ -131,7 +135,11 @@
 (function(){
   "use strict";
   var CX=160, CY=160, R=92, N=16;
-  var a=0, aCur=0, ruler="size";
+  /* 物差しごとに独立した量（-5〜+5）。切り替えても消えず、見た目は3つの合成 */
+  var amt={ size:0, shape:0, density:0 };
+  var amtCur={ size:0, shape:0, density:0 };
+  var ruler="size";
+  var AXES=["size","shape","density"];
   var blob=document.getElementById("blob"),
       halo=document.getElementById("halo"),
       blobG=document.getElementById("blobG"),
@@ -139,9 +147,12 @@
       gs1=document.getElementById("gs1"),
       gs2=document.getElementById("gs2"),
       msg=document.getElementById("msg"),
-      dot=document.getElementById("gaugeDot"),
+      dots={ size:document.getElementById("dotSize"),
+             shape:document.getElementById("dotShape"),
+             density:document.getElementById("dotDensity") },
       arrowsIn=document.getElementById("arrowsIn"),
       arrowsOut=document.getElementById("arrowsOut");
+  var gaugeRows=document.querySelectorAll(".gauge-row");
 
   /* 矢印を描く（対角4方向） */
   var SVGNS="http://www.w3.org/2000/svg";
@@ -210,34 +221,33 @@
     };
   }
 
-  /* 状態 → 見た目の目標値（物差しごとに、変わる要素を1つだけに分ける） */
-  function targetFor(av, rl){
+  /* 3つの量 → 見た目の合成（軸ごとに担当する要素が1つずつ） */
+  function visualFor(v){
     var t={ size:1, sx:1, sy:1, wob:1, mix:0, soft:0, sw:3 };
-    if(rl==="size"){
-      /* 大きさだけ：色・輪郭・形は一切変えない。変化幅は大きめ。
-         向きは「大きいほど陽」（陽→大きく、陰→小さく） */
-      t.size=1+0.105*av;
-    } else if(rl==="shape"){
-      /* 形だけ：大きさ（面積の印象）と色は変えない */
-      if(av>0){ t.wob=1-av/5; }
-      else { t.sy=1+(-av)*0.105; t.sx=1/Math.sqrt(t.sy); }
-    } else { /* density */
-      /* 密度だけ：色の濃さと輪郭のくっきり／ふわっと感のみ。大きさ・形は変えない */
-      t.mix=av/5;
-      t.soft=Math.max(0,-av)/5;
-      t.sw=3+Math.max(0,av)*0.55;
-    }
+    /* 大きさ：サイズだけ（大きいほど陽） */
+    t.size=1+0.105*v.size;
+    /* 形：陽でまん丸、陰で縦長。面積の印象は変えない */
+    if(v.shape>0){ t.wob=1-v.shape/5; }
+    else if(v.shape<0){ t.sy=1+(-v.shape)*0.105; t.sx=1/Math.sqrt(t.sy); }
+    /* 密度：色の濃さと輪郭だけ */
+    t.mix=v.density/5;
+    t.soft=Math.max(0,-v.density)/5;
+    t.sw=3+Math.max(0,v.density)*0.55;
     return t;
   }
-  var cur=targetFor(0,"size"), tgt=targetFor(0,"size"), rafId=null;
+  var rafId=null;
 
   function render(){
+    var cur=visualFor(amtCur);
     var d=blobPath(cur.size, cur.wob);
     blob.setAttribute("d", d);
     halo.setAttribute("d", d);
-    var tf="translate("+CX+" "+CY+") scale("+cur.sx.toFixed(4)+" "+cur.sy.toFixed(4)+") translate("+(-CX)+" "+(-CY)+")";
+    /* 大きさ×形が重なっても画面からはみ出さないよう、全体を少し縮める保険 */
+    var ext=R*cur.size*Math.max(cur.sx, cur.sy);
+    var f=Math.min(1, 148/Math.max(ext,1));
+    var tf="translate("+CX+" "+CY+") scale("+(cur.sx*f).toFixed(4)+" "+(cur.sy*f).toFixed(4)+") translate("+(-CX)+" "+(-CY)+")";
     blobG.setAttribute("transform", tf);
-    halo.setAttribute("transform", "translate("+CX+" "+CY+") scale("+(cur.sx*1.07).toFixed(4)+" "+(cur.sy*1.07).toFixed(4)+") translate("+(-CX)+" "+(-CY)+")");
+    halo.setAttribute("transform", "translate("+CX+" "+CY+") scale("+(cur.sx*1.07*f).toFixed(4)+" "+(cur.sy*1.07*f).toFixed(4)+") translate("+(-CX)+" "+(-CY)+")");
     var cs=colorSet(cur.mix);
     gs0.setAttribute("stop-color", rgb(mixc(cs.core,[255,255,255],0.35)));
     gs1.setAttribute("stop-color", rgb(cs.core));
@@ -248,20 +258,23 @@
     blob.setAttribute("stroke-width", cur.sw.toFixed(2));
     halo.setAttribute("fill", rgb(cs.edge));
     halo.setAttribute("opacity", (cur.soft*0.4).toFixed(3));
-    dot.style.left=((aCur+5)/10*100)+"%";
+    AXES.forEach(function(ax){
+      dots[ax].style.left=((amtCur[ax]+5)/10*100)+"%";
+    });
   }
   function tick(){
-    var keys=["size","sx","sy","wob","mix","soft","sw"], done=true, i, k;
-    for(i=0;i<keys.length;i++){
-      k=keys[i];
-      cur[k]+=(tgt[k]-cur[k])*0.075;
-      if(Math.abs(tgt[k]-cur[k])>0.0015) done=false;
+    var done=true, i, ax;
+    for(i=0;i<AXES.length;i++){
+      ax=AXES[i];
+      amtCur[ax]+=(amt[ax]-amtCur[ax])*0.075;
+      if(Math.abs(amt[ax]-amtCur[ax])>0.003) done=false;
     }
-    aCur+=(a-aCur)*0.075;
-    if(Math.abs(a-aCur)>0.003) done=false;
     render();
     if(!done){ rafId=requestAnimationFrame(tick); }
-    else { cur=Object.assign({},tgt); aCur=a; render(); rafId=null; }
+    else {
+      AXES.forEach(function(a2){ amtCur[a2]=amt[a2]; });
+      render(); rafId=null;
+    }
   }
   function animate(){
     if(rafId===null) rafId=requestAnimationFrame(tick);
@@ -273,36 +286,46 @@
     density:{ p:"陽が増えると、色が濃く、<br>輪郭がくっきりしてきます。", n:"陰が増えると、色が薄く、<br>輪郭がふわっとやわらかくなります。" },
     zero:   "真ん中（中庸）の状態です。<br>陽と陰を足すと、どう変わるでしょう。"
   };
+  var NAMES={ size:"大きさ", shape:"形", density:"密度" };
   function updateMsg(){
-    if(a===0){ msg.innerHTML=MSG.zero; return; }
-    msg.innerHTML = a>0 ? MSG[ruler].p : MSG[ruler].n;
+    var v=amt[ruler];
+    if(v===0){
+      if(amt.size===0 && amt.shape===0 && amt.density===0){ msg.innerHTML=MSG.zero; }
+      else { msg.innerHTML=NAMES[ruler]+"は、真ん中（中庸）です。<br>他の物差しの量と、混ざっています。"; }
+      return;
+    }
+    msg.innerHTML = v>0 ? MSG[ruler].p : MSG[ruler].n;
   }
   function apply(){
-    tgt=targetFor(a, ruler);
     updateMsg();
     animate();
   }
 
   document.getElementById("btnYo").addEventListener("click", function(){
-    if(a<5){ a+=1; flash(arrowsIn); }
+    if(amt[ruler]<5){ amt[ruler]+=1; flash(arrowsIn); }
     apply();
   });
   document.getElementById("btnYin").addEventListener("click", function(){
-    if(a>-5){ a-=1; flash(arrowsOut); }
+    if(amt[ruler]>-5){ amt[ruler]-=1; flash(arrowsOut); }
     apply();
   });
   document.getElementById("btnReset").addEventListener("click", function(){
-    a=0; apply();
+    amt.size=0; amt.shape=0; amt.density=0; apply();
   });
   var rulerBtns=document.querySelectorAll(".ruler-btn");
+  function syncRulerUI(){
+    rulerBtns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-ruler")===ruler?"true":"false"); });
+    gaugeRows.forEach(function(row){ row.classList.toggle("active", row.getAttribute("data-axis")===ruler); });
+  }
   rulerBtns.forEach(function(btn){
     btn.addEventListener("click", function(){
       ruler=btn.getAttribute("data-ruler");
-      rulerBtns.forEach(function(b){ b.setAttribute("aria-pressed", b===btn?"true":"false"); });
-      apply();
+      syncRulerUI();
+      updateMsg();
     });
   });
 
+  syncRulerUI();
   render();
 })();
 </script>
