@@ -22,10 +22,10 @@
   body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;-webkit-text-size-adjust:100%;font-size:16.5px;}
   .wrap{max-width:680px;margin:0 auto;padding:20px 18px 56px;}
   .back{display:inline-block;padding:10px 6px;font-size:15px;font-weight:700;color:var(--green);text-decoration:none;min-height:48px;}
-  header{text-align:center;margin:10px 0 6px;}
+  header{text-align:center;margin:6px 0 4px;}
   .badge{display:inline-block;background:var(--yo);color:#fff;font-weight:900;font-size:16.5px;letter-spacing:.04em;border-radius:999px;padding:8px 22px;min-height:48px;line-height:32px;}
   h1{font-size:25px;font-weight:900;color:var(--green-deep);margin-top:12px;}
-  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:10px 0 16px;line-height:2.0;}
+  .lead{text-align:center;font-size:16.5px;color:var(--ink);margin:8px 0 10px;line-height:2.0;}
   .stage-card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 10px 8px;}
   #stage{display:block;width:min(430px,100%);height:auto;margin:0 auto;}
   .arrows{opacity:0;}
@@ -45,7 +45,7 @@
   .ruler-row{display:flex;gap:10px;}
   .ruler-btn{flex:1;min-height:56px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink);font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:8px 4px;}
   .ruler-btn[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;}
-  .gauge-box{margin-top:30px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 20px 14px;}
+  .gauge-box{margin-top:16px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px 20px 12px;}
   .gauge-cap{text-align:center;font-size:15.5px;font-weight:800;color:var(--sub);margin-bottom:12px;}
   .gauge-bar{position:relative;height:22px;border-radius:999px;background:linear-gradient(90deg,#5b9bd5 0%,#cfe2f2 28%,#e9efd9 50%,#f6c48a 74%,#c1440e 100%);}
   .gauge-dot{position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:#fff;border:4px solid var(--green-deep);transform:translate(-50%,-50%);}
@@ -93,6 +93,12 @@
     <p class="msg" id="msg">真ん中（中庸）の状態です。<br>陽と陰を足すと、どう変わるでしょう。</p>
   </div>
 
+  <div class="gauge-box">
+    <p class="gauge-cap">いまの量</p>
+    <div class="gauge-bar"><div class="gauge-dot" id="gaugeDot"></div></div>
+    <div class="gauge-labels"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
+  </div>
+
   <div class="add-row">
     <button type="button" class="add-btn add-yin" id="btnYin">陰を足す<small>ふわっと広がる</small></button>
     <button type="button" class="add-btn add-yo" id="btnYo">陽を足す<small>ギュッと集まる</small></button>
@@ -106,12 +112,6 @@
     <button type="button" class="ruler-btn" data-ruler="size" aria-pressed="true">大きさ</button>
     <button type="button" class="ruler-btn" data-ruler="shape" aria-pressed="false">形</button>
     <button type="button" class="ruler-btn" data-ruler="density" aria-pressed="false">密度</button>
-  </div>
-
-  <div class="gauge-box">
-    <p class="gauge-cap">いまの量</p>
-    <div class="gauge-bar"><div class="gauge-dot" id="gaugeDot"></div></div>
-    <div class="gauge-labels"><span class="gl-yin">極陰</span><span class="gl-chu">中庸</span><span class="gl-yo">極陽</span></div>
   </div>
 
   <div class="endbox">
