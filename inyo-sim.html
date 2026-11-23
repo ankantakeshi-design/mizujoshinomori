@@ -178,6 +178,14 @@
     void g.getBoundingClientRect();
     g.classList.add("flash");
   }
+  /* ゲージ操作用の矢印表示：向きが変わった時か、前回から少し間が空いた時だけ出す（スライド中の点滅防止） */
+  var lastFlashT=0, lastFlashDir=0;
+  function flashGauge(dir){
+    var now=(window.performance&&performance.now)?performance.now():Date.now();
+    if(dir===lastFlashDir && now-lastFlashT<700) return;
+    lastFlashDir=dir; lastFlashT=now;
+    flash(dir>0?arrowsIn:arrowsOut);
+  }
 
   /* かたまりの輪郭（有機的な丸。wob=うねりの強さ：0でまん丸） */
   function blobPath(size, wob){
@@ -336,8 +344,13 @@
       var frac=(e.clientX-rect.left)/rect.width;
       if(frac<0) frac=0;
       if(frac>1) frac=1;
-      amt[axis]=Math.round(frac*10-5);
+      var nv=Math.round(frac*10-5);
+      var ov=amt[axis];
+      amt[axis]=nv;
       amtCur[axis]=amt[axis];
+      /* 値が変わった時だけ、増えた向きの矢印を出す（ボタン操作と同じ見せ方） */
+      if(nv>ov) flashGauge(1);
+      else if(nv<ov) flashGauge(-1);
       updateMsg();
       render();
       animate();
