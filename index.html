@@ -132,6 +132,8 @@
   .visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0; }
   .cal-box { background:#FDFEFB; border:2px solid #E4EFE6; border-radius:22px; padding:20px 16px 22px; margin-top:14px; }
   .cal-note { margin-top:12px; text-align:center; font-size:12.5px; font-weight:700; color:#697561; }
+  .cal-next { margin-top:12px; text-align:center; font-size:16.5px; font-weight:700; color:#454A8C; line-height:1.6; }
+  .cal-next:empty { display:none; }
   .cal-push-btn { display:block; margin:12px auto 0; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:14px; font-weight:700; border-radius:999px; padding:12px 22px; min-height:48px; cursor:pointer; }
   .cal-negai-btn { display:block; width:100%; margin:14px auto 0; background:linear-gradient(135deg,#2B4470,#47679C); border:none; color:#FBF6E3; font-family:inherit; font-size:15px; font-weight:900; letter-spacing:.03em; border-radius:999px; padding:14px 22px; min-height:52px; cursor:pointer; box-shadow:0 3px 10px rgba(38,58,96,.25); }
   .cal-negai-btn:active { transform:scale(.98); }
@@ -603,6 +605,7 @@
       <div class="moon-head"><img src="moon-mii.jpg" alt=""><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
+      <p class="cal-next" id="cal-next-event"></p>
       <div class="cal-acc cal-acc-moon">
         <button type="button" class="cal-acc-btn" id="cal-btn-moon" aria-expanded="false" aria-controls="cal-panel-moon">🌙 月のメッセージ<span class="cal-acc-arrow">▾</span></button>
         <div class="cal-acc-panel" id="cal-panel-moon" hidden>
@@ -1049,6 +1052,38 @@ window.MOON_EVENTS = (function(){
     var m = s.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+) ([nf])/);
     return { t: Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) - 9 * 3600 * 1000, kind: m[6] };
   }).sort(function(a, b){ return a.t - b.t; });
+})();
+</script>
+
+<script>
+// カレンダーの下に、次に来る新月・満月のうち近い方を一行で常時表示する（MOON_EVENTS から自動計算）。
+(function(){
+  var el = document.getElementById('cal-next-event');
+  if (!el || !window.MOON_EVENTS) return;
+  var SIGNS = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座','天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
+  function moonLon(t){
+    var rad = Math.PI / 180;
+    var dd = (t - Date.UTC(2000, 0, 1, 12, 0)) / 86400000;
+    var Lp = 218.316 + 13.176396 * dd;
+    var M = (134.963 + 13.064993 * dd) * rad;
+    var F = (93.272 + 13.350350 * dd) * rad;
+    var D = (297.850 + 12.190749 * dd) * rad;
+    var Ms = (357.529 + 0.98560028 * dd) * rad;
+    var mlon = Lp + 6.289 * Math.sin(M) + 1.274 * Math.sin(2 * D - M) + 0.658 * Math.sin(2 * D) + 0.214 * Math.sin(2 * M) - 0.186 * Math.sin(Ms) - 0.114 * Math.sin(2 * F);
+    return ((mlon % 360) + 360) % 360;
+  }
+  var nowD = new Date();
+  var startJ = Date.UTC(nowD.getFullYear(), nowD.getMonth(), nowD.getDate()) - 9 * 3600 * 1000;
+  for (var i = 0; i < window.MOON_EVENTS.length; i++) {
+    var e = window.MOON_EVENTS[i];
+    var jp = new Date(e.t + 9 * 3600 * 1000);
+    var evDay = Date.UTC(jp.getUTCFullYear(), jp.getUTCMonth(), jp.getUTCDate()) - 9 * 3600 * 1000;
+    if (evDay >= startJ) {
+      var sign = SIGNS[Math.floor(moonLon(e.t) / 30) % 12];
+      el.textContent = (e.kind === 'f' ? '🌕 次の満月は ' : '🌑 次の新月は ') + (jp.getUTCMonth() + 1) + '月' + jp.getUTCDate() + '日（' + sign + '）';
+      return;
+    }
+  }
 })();
 </script>
 
