@@ -270,6 +270,13 @@
   .link-card.mini { padding:7px 12px; gap:8px; border-radius:12px; border-width:1px; }
   .link-card.mini img { width:30px; height:30px; border-radius:8px; }
   .link-card.mini .t { font-size:13.5px; font-weight:700; }
+  .inyo-acc { background:#fff; border:2px solid #F3E9DE; border-radius:14px; overflow:hidden; }
+  .inyo-acc-btn { display:flex; align-items:center; gap:10px; width:100%; min-height:48px; padding:10px 12px; background:none; border:none; font-family:inherit; cursor:pointer; }
+  .inyo-acc-band { display:inline-block; background:#C1440E; color:#fff; font-size:17px; font-weight:900; letter-spacing:.03em; border-radius:999px; padding:8px 18px; }
+  .inyo-acc-arrow { flex:none; margin-left:auto; font-size:13px; color:#8a7a63; transition:transform .25s ease; }
+  .inyo-acc.open .inyo-acc-arrow { transform:rotate(180deg); }
+  .inyo-acc-panel { display:flex; flex-direction:column; gap:10px; padding:2px 10px 10px; }
+  .inyo-acc-panel[hidden] { display:none; }
   .small-links { margin-top:20px; text-align:center; font-size:13px; font-weight:700; }
   .small-links a { color:#41729E; text-decoration:none; margin:0 8px; }
   footer { margin-top:56px; text-align:center; font-size:12px; color:#796f62; font-weight:500; }
@@ -642,27 +649,44 @@
           <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
         </div>
       </a>
-      <a class="link-card slim" href="inyo.html">
-        <img loading="lazy" src="guide-inyo.jpg" alt="玄米ごはんをよそうみーちゃんの水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">食の陰陽辞典</div>
-          <div class="d">食べ物の陰と陽を、絵と図で引ける辞典です。</div>
+      <div class="inyo-acc" id="inyo-acc">
+        <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><span class="inyo-acc-band">☯ 陰陽メガネ 👓</span><span class="inyo-acc-arrow">▾</span></button>
+        <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
+          <a class="link-card slim" href="inyo.html">
+            <img loading="lazy" src="guide-inyo.jpg" alt="玄米ごはんをよそうみーちゃんの水彩イラスト" width="256" height="256" style="height:auto">
+            <div>
+              <div class="t">食の陰陽辞典</div>
+              <div class="d">食べ物の陰と陽を、絵と図で引ける辞典です。</div>
+            </div>
+          </a>
+          <a class="link-card slim" href="inyo-quiz.html">
+            <img loading="lazy" src="inyo-katachi.jpg" alt="畑の断面と野菜の水彩イラスト" width="256" height="256" style="height:auto">
+            <div>
+              <div class="t">陰陽クイズ</div>
+              <div class="d">2つのものを比べて、陰陽を読む練習コーナーです。</div>
+            </div>
+          </a>
+          <a class="link-card slim" href="inyo-sim.html">
+            <img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto">
+            <div>
+              <div class="t">陰陽シミュレーター</div>
+              <div class="d">陽と陰を足すと、丸いかたまりがどう変わるか。触って感じる体験コーナーです。</div>
+            </div>
+          </a>
         </div>
-      </a>
-      <a class="link-card slim" href="inyo-quiz.html">
-        <img loading="lazy" src="inyo-katachi.jpg" alt="畑の断面と野菜の水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">陰陽クイズ</div>
-          <div class="d">2つのものを比べて、陰陽を読む練習コーナーです。</div>
-        </div>
-      </a>
-      <a class="link-card slim" href="inyo-sim.html">
-        <img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">陰陽シミュレーター</div>
-          <div class="d">陽と陰を足すと、丸いかたまりがどう変わるか。触って感じる体験コーナーです。</div>
-        </div>
-      </a>
+      </div>
+      <script>
+      (function(){
+        var btn = document.getElementById('inyo-acc-btn'), panel = document.getElementById('inyo-acc-panel');
+        if (!btn || !panel) return;
+        btn.addEventListener('click', function(){
+          var open = panel.hidden;
+          panel.hidden = !open;
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.parentElement.classList.toggle('open', open);
+        });
+      })();
+      </script>
       <a class="link-card slim" href="shun.html">
         <img loading="lazy" src="guide-shun.jpg" alt="野菜と果物のかごの水彩イラスト">
         <div>
