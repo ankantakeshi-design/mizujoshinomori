@@ -271,9 +271,13 @@
   .link-card.mini img { width:30px; height:30px; border-radius:8px; }
   .link-card.mini .t { font-size:13.5px; font-weight:700; }
   .inyo-acc { background:#fff; border:2px solid #F3E9DE; border-radius:14px; overflow:hidden; }
-  .inyo-acc-btn { display:flex; align-items:center; gap:10px; width:100%; min-height:48px; padding:10px 12px; background:none; border:none; font-family:inherit; cursor:pointer; }
-  .inyo-acc-band { display:inline-block; background:#C1440E; color:#fff; font-size:17px; font-weight:900; letter-spacing:.03em; border-radius:999px; padding:8px 18px; }
-  .inyo-acc-arrow { flex:none; margin-left:auto; font-size:13px; color:#8a7a63; transition:transform .25s ease; }
+  .inyo-acc-btn { display:flex; align-items:center; gap:10px; width:100%; min-height:48px; padding:10px 12px; background:none; border:none; font-family:inherit; cursor:pointer; text-align:left; color:#2B2B2B; }
+  .inyo-acc-btn img { width:44px; border-radius:10px; flex:none; }
+  .inyo-acc-btn .inyo-acc-txt { flex:1; min-width:0; }
+  .inyo-acc-btn .t { display:block; font-size:15px; font-weight:900; }
+  .inyo-acc-btn .t .om { color:#C1440E; }
+  .inyo-acc-btn .d { display:block; margin-top:2px; font-size:12px; font-weight:500; color:#6b5f4f; line-height:1.6; }
+  .inyo-acc-arrow { flex:none; margin-left:auto; font-size:13px; color:#C1440E; transition:transform .25s ease; }
   .inyo-acc.open .inyo-acc-arrow { transform:rotate(180deg); }
   .inyo-acc-panel { display:flex; flex-direction:column; gap:10px; padding:2px 10px 10px; }
   .inyo-acc-panel[hidden] { display:none; }
@@ -650,7 +654,7 @@
         </div>
       </a>
       <div class="inyo-acc" id="inyo-acc">
-        <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><span class="inyo-acc-band">☯ 陰陽メガネ 👓</span><span class="inyo-acc-arrow">▾</span></button>
+        <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
           <a class="link-card slim" href="inyo.html">
             <img loading="lazy" src="guide-inyo.jpg" alt="玄米ごはんをよそうみーちゃんの水彩イラスト" width="256" height="256" style="height:auto">
