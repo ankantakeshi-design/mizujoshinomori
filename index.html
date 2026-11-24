@@ -376,6 +376,12 @@
   .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:24px 22px; text-align:center; }
   .home-note .hn-title { font-size:15px; font-weight:900; color:#33513c; }
   .home-note p { margin-top:10px; font-size:13px; font-weight:500; color:#6b7d6b; line-height:2.0; }
+  .os-row{ display:flex; gap:10px; align-items:flex-start; text-align:left; border-radius:14px; padding:10px 12px; margin:10px 0 0; }
+  .home-note .os-row p, .intro-card .os-row p{ margin:0; padding:0; font-size:14px; line-height:1.7; color:#3d4a3d; }
+  .os-emoji{ font-size:26px; line-height:1.2; flex:none; }
+  .os-ios{ background:#e9f1fc; }
+  .os-android{ background:#e9f6df; }
+  .os-pc{ background:#f1eafa; }
   .home-done-btn { margin-top:16px; background:#5E9C63; color:#fff; border:none; border-radius:999px; padding:14px 30px; min-height:48px; font-size:14px; font-weight:900; font-family:inherit; cursor:pointer; }
   .home-done-btn:active { transform:scale(.97); }
   .home-howto { text-align:center; margin-top:30px; }
@@ -915,10 +921,10 @@
 
   <div class="home-note" id="home-note">
     <div class="hn-title">森を、ホーム画面に置けます</div>
-    <p>iPhoneの方：Safariで開いて、共有のボタンから「ホーム画面に追加」。<br>
-    Androidの方：Chromeで開いて、右上のメニューから「ホーム画面に追加」。<br>
-    パソコンの方：Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。<br>
-    アイコンから、いつでも森に来られますよ。</p>
+    <div class="os-row os-ios"><span class="os-emoji" aria-hidden="true">🍎</span><p><strong>iPhoneの方</strong><br>Safariで開いて、共有のボタンから「ホーム画面に追加」。</p></div>
+    <div class="os-row os-android"><span class="os-emoji" aria-hidden="true">🤖</span><p><strong>Androidの方</strong><br>Chromeで開いて、右上のメニューから「ホーム画面に追加」。</p></div>
+    <div class="os-row os-pc"><span class="os-emoji" aria-hidden="true">💻</span><p><strong>パソコンの方</strong><br>Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。</p></div>
+    <p>アイコンから、いつでも森に来られますよ。</p>
     <button type="button" class="home-done-btn" id="home-done-btn">ホーム画面に置けました</button>
   </div>
 
@@ -3073,10 +3079,10 @@ var shiftMoon = function(delta){
     <div class="intro-card">
       <button type="button" class="intro-close" id="home-close" aria-label="とじる">×</button>
       <div class="c-title">森を、ホーム画面に置けます</div>
-      <p class="c-lead">iPhoneの方：Safariで開いて、共有のボタンから「ホーム画面に追加」。<br>
-      Androidの方：Chromeで開いて、右上のメニューから「ホーム画面に追加」。<br>
-      パソコンの方：Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。<br>
-      アイコンから、いつでも森に来られますよ。</p>
+      <div class="os-row os-ios"><span class="os-emoji" aria-hidden="true">🍎</span><p><strong>iPhoneの方</strong><br>Safariで開いて、共有のボタンから「ホーム画面に追加」。</p></div>
+      <div class="os-row os-android"><span class="os-emoji" aria-hidden="true">🤖</span><p><strong>Androidの方</strong><br>Chromeで開いて、右上のメニューから「ホーム画面に追加」。</p></div>
+      <div class="os-row os-pc"><span class="os-emoji" aria-hidden="true">💻</span><p><strong>パソコンの方</strong><br>Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。</p></div>
+      <p class="c-lead">アイコンから、いつでも森に来られますよ。</p>
       <button type="button" class="modal-close-bottom" id="home-close-b">閉じる</button>
     </div>
   </div>
