@@ -373,8 +373,13 @@
   .pc-name { display:block; font-size:14px; font-weight:800; }
   .pc-desc { display:block; font-size:12px; font-weight:500; color:#6b7d6b; }
   .phone-corner .pc-note { margin-top:14px; font-size:11.5px; font-weight:500; color:#697561; line-height:1.8; }
-  .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:24px 22px; text-align:center; }
+  .home-note { margin-top:44px; background:#F2F8F1; border-radius:20px; padding:6px 16px 24px; text-align:center; }
   .home-note .hn-title { font-size:15px; font-weight:900; color:#33513c; }
+  .home-note>summary { cursor:pointer; list-style:none; min-height:56px; display:flex; align-items:center; justify-content:center; padding:12px 4px; font-size:16px; font-weight:900; color:#33513c; white-space:nowrap; }
+  .home-note>summary::-webkit-details-marker { display:none; }
+  .home-note>summary::after { content:"▽"; margin-left:10px; font-size:14px; color:#4a7a52; }
+  .home-note[open ]>summary::after { content:"△"; }
+  .home-note-body { padding-bottom:2px; }
   .home-note p { margin-top:10px; font-size:13px; font-weight:500; color:#6b7d6b; line-height:2.0; }
   .os-row{ display:flex; gap:10px; align-items:flex-start; text-align:left; border-radius:14px; padding:10px 12px; margin:10px 0 0; }
   .home-note .os-row p, .intro-card .os-row p{ margin:0; padding:0; font-size:14px; line-height:1.7; color:#3d4a3d; }
@@ -919,14 +924,16 @@
   <img class="keeper-closing" src="keeper-4.webp" alt="森の番人" loading="lazy" width="640" height="640">
   <p class="closing">今日の森は、ここまで。<br>また、会いましょうね。</p>
 
-  <div class="home-note" id="home-note">
-    <div class="hn-title">森を、ホーム画面に置けます</div>
+  <details class="home-note" id="home-note">
+    <summary>📱 森を、ホーム画面に置けます</summary>
+    <div class="home-note-body">
     <div class="os-row os-ios"><span class="os-emoji" aria-hidden="true">🍎</span><p><strong>iPhoneの方</strong><br>Safariで開いて、共有のボタンから「ホーム画面に追加」。</p></div>
     <div class="os-row os-android"><span class="os-emoji" aria-hidden="true">🤖</span><p><strong>Androidの方</strong><br>Chromeで開いて、右上のメニューから「ホーム画面に追加」。</p></div>
     <div class="os-row os-pc"><span class="os-emoji" aria-hidden="true">💻</span><p><strong>パソコンの方</strong><br>Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。</p></div>
     <p>アイコンから、いつでも森に来られますよ。</p>
     <button type="button" class="home-done-btn" id="home-done-btn">ホーム画面に置けました</button>
-  </div>
+    </div>
+  </details>
 
   <div class="links" style="max-width:560px;margin:26px auto 0">
     <a class="link-card mini" href="https://takechanlink.pages.dev/">
