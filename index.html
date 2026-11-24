@@ -526,6 +526,12 @@
 .faq-item summary::after{content:"＋";position:absolute;right:6px;top:15px;font-size:13px;color:#7c7165;font-weight:400;}
 .faq-item[open ] summary::after{content:"−";}
 .faq-a{padding:2px 4px 18px;font-size:15px;line-height:1.9;color:#3d4a3a;}
+.faq-outer{border:2px solid #dfe7da;border-radius:14px;background:#fbfdf8;overflow:hidden;}
+.faq-outer>summary{cursor:pointer;list-style:none;min-height:56px;display:flex;align-items:center;justify-content:center;padding:12px 16px;font-size:17px;font-weight:800;color:#3d4a3a;}
+.faq-outer>summary::-webkit-details-marker{display:none;}
+.faq-outer>summary::after{content:"▽";margin-left:10px;font-size:14px;color:#7c7165;}
+.faq-outer[open ]>summary::after{content:"△";}
+.faq-inner{padding:2px 14px 14px;}
 </style>
 <script type="application/ld+json">
 {
@@ -936,7 +942,9 @@
   </div>
 
     <section class="faq-sec" aria-label="よくある質問">
-  <h2>よくある質問</h2>
+  <details class="faq-outer">
+  <summary>よくある質問</summary>
+  <div class="faq-inner">
   <details class="faq-item"><summary>集まれ水女子の森（新月・満月カレンダー）は、どんな場所ですか？</summary><div class="faq-a">森のいちばん上にある、月のカレンダーが中心の場所です。新月・満月や惑星のリズムを眺めながら、感じているのに言葉にできない、水の性質が強い女性が、静かに休んでいけます。森の番人が迎えてくれて、気持ちの葉っぱを置いたり、みーちゃんの日記を読んだり、うらないを楽しんだりできます。何かを頑張る場所ではなく、ただ一息つくための場所として作りました。読むだけでも、立派な参加ですよ。</div></details>
   <details class="faq-item"><summary>次の新月・満月は、いつですか？</summary><div class="faq-a">森のいちばん上にある、月のカレンダーで分かります。新月と満月の日には印がついています。カレンダーの下の「月のメッセージ」を開くと、次の新月・満月が何日で、どの星座で起きるかも読めますよ。日付は、国立天文台の暦をもとにしています。</div></details>
   <details class="faq-item"><summary>新月の願いごとは、どうやって作るのですか？</summary><div class="faq-a">新月の3日前から当日に、月のカレンダーの下に「新月の願いごとカードを作る」ボタンが出ます。願いを書くと、森のデザインのカード画像になって、自分の端末に保存できます。書いた願いがサイトに残ることはありません。カレンダーの新月のマスを押しても、同じ画面が開きますよ。</div></details>
@@ -948,6 +956,8 @@
   <details class="faq-item"><summary>気持ちの葉っぱは、誰かに見られますか？</summary><div class="faq-a">選んだ葉っぱは、この端末の中に残るもので、誰が置いたか分かる形で見られることはありません。「昨日の森」では、昨日いちばん多かった気持ちだけが、3枚以上集まったときに、みんなの様子として静かに表示されます。気持ちは、置いていくだけで大丈夫ですよ。</div></details>
   <details class="faq-item"><summary>通知は、どんなものが届きますか？</summary><div class="faq-a">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。カレンダーの下にある「新月・満月のお知らせが欲しい人は、こちら」のボタンから、欲しいものだけ選べます。通知を受け取るには、このサイトをホーム画面に追加していただくのがおすすめです。</div></details>
   <details class="faq-item"><summary>森を作ったのは、誰ですか？</summary><div class="faq-a">心体調整塾の、たけちゃんです。感じているのに言葉にできなかった妻の姿を、そばで見てきました。言葉にならなくても居ていい場所がほしくて、この森を作りました。無理に話さなくて、大丈夫ですよ。</div></details>
+  </div>
+  </details>
   </section>
 <footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
