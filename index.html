@@ -532,6 +532,13 @@
   .guide-fold>summary::after{ content:"\25BD"; margin-left:10px; font-size:14px; color:#7c7165; }
   .guide-fold[open ]>summary::after{ content:"\25B3"; }
   .guide-fold .links{ padding:2px 12px 12px; }
+
+  .mnav-fold{ margin-top:8px; }
+  .mnav-fold>summary{ list-style:none; cursor:pointer; min-height:52px; display:flex; align-items:center; justify-content:center; gap:8px; border:2px solid #dfe7da; border-radius:14px; background:#fbfdf8; font-size:15.5px; font-weight:800; color:#3d4a3a; padding:10px 14px; }
+  .mnav-fold>summary::-webkit-details-marker{ display:none; }
+  .mnav-fold>summary .chev{ font-size:13px; color:#7c7165; margin-left:auto; }
+  .mnav-fold>summary .gimg{ width:44px; height:44px; object-fit:cover; border-radius:10px; flex:none; }
+  .mnav-fold .mnav-grid{ margin-top:8px; }
 </style>
 <style>
 /* FAQ（よくある質問） */
@@ -667,16 +674,7 @@
 
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
-    <div class="mnav-grid">
-      <button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button>
-      <button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button>
-      <button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button>
-      <button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button>
-      <button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button>
-      <button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button>
-      <button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button>
-      <button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button>
-    </div>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button><button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-hisodate.jpg" alt="" loading="lazy" width="96" height="96">気持ちを置く<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button><button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">毎日をととのえる<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button><button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button><button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button></div></details></div></div>
       <a class="link-card slim" href="seiza.html">
         <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
@@ -4240,5 +4238,31 @@ var shiftMoon = function(delta){
 }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "f5def6859aa14ba795d178cbb77881e4"}'></script>
+
+<script>
+(function(){
+  function mirror(srcId, dstId){
+    var src = document.getElementById(srcId), dst = document.getElementById(dstId);
+    if (!src || !dst) return;
+    function sync(){ dst.style.display = (src.style.display !== 'none') ? '' : 'none'; }
+    new MutationObserver(sync).observe(src, {attributes:true, attributeFilter:['style']});
+    sync();
+  }
+  mirror('nb-sky', 'nb-g-sky');
+  var read = document.getElementById('nb-g-read');
+  function syncRead(){
+    var show = ['nb-diary','nb-letter'].some(function(id){
+      var el = document.getElementById(id);
+      return el && el.style.display !== 'none';
+    });
+    if (read) read.style.display = show ? '' : 'none';
+  }
+  ['nb-diary','nb-letter'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) new MutationObserver(syncRead).observe(el, {attributes:true, attributeFilter:['style']});
+  });
+  syncRead();
+})();
+</script>
 </body>
 </html>
