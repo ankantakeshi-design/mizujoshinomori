@@ -633,12 +633,8 @@
   .sky-btn img{ width:56px; height:56px; border-radius:12px; flex:none; }
 
   /* カレンダーの印の重なり対策（2026-11-25） */
-  .koyomi-cell{ min-height:64px; }
-  .koyomi-cell .lucky-dot{ top:auto; bottom:4px; right:4px; width:7px; height:7px; background:#8B6FD8; border:1.5px solid #fff; box-shadow:0 1px 3px rgba(90,70,140,.35); }
-
-  /* 惑星アコーディオンの色（2026-11-25、開運日から移設） */
-  .cal-acc-lucky{ background:#EFF0FA; }
-  .cal-acc-lucky .cal-acc-btn{ color:#3D4E7A; }
+  .koyomi-cell{ aspect-ratio:auto; min-height:64px; }
+  .koyomi-cell .lucky-dot{ top:5px; bottom:auto; right:5px; width:8px; height:8px; background:#7C5CD6; border:1.5px solid #fff; box-shadow:0 1px 3px rgba(90,70,140,.35); }
 
   /* 月のメッセージ：新月・満月を別カードに（2026-11-25） */
   .moon-ev{ border-radius:14px; padding:10px 12px; }
@@ -736,8 +732,7 @@
       <div class="cal-acc cal-acc-lucky">
         <button type="button" class="cal-acc-btn" id="cal-btn-lucky" aria-expanded="false" aria-controls="cal-panel-lucky">🪐 惑星の順行・逆行<span class="cal-acc-arrow">▾</span></button>
         <div class="cal-acc-panel" id="cal-panel-lucky" hidden>
-          <div id="planet-list"></div>
-          <p class="moon-lucky" style="text-align:center">逆行の時期は、見直しや確認に向く<br>と言われています。</p>
+          <button type="button" class="cal-planet-link" id="cal-planet-open">🪐 惑星のようすを見る</button>
           <p id="moon-lucky" hidden></p>
         </div>
       </div>
@@ -2704,9 +2699,10 @@ window.MOON_EVENTS = (function(){
     { name: '海王星', img: 'planet-neptune.jpg', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。', dmsg: 'ひらめきを、大事にできる時期です。' },
     { name: '冥王星', img: 'planet-pluto.jpg', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。', dmsg: '深いところから、前に進める時期です。' }
   ];
-  function buildPlanets(){
+  function openPlanets(){
     var modal = document.getElementById('planet-modal');
-    if (!modal || modal.getAttribute('data-built')) return;
+    if (!modal) return;
+    if (!modal.getAttribute('data-built')) {
     modal.setAttribute('data-built', '1');
       var now2 = new Date();
       function p2(n){ return (n < 10 ? '0' : '') + n; }
@@ -2735,16 +2731,13 @@ window.MOON_EVENTS = (function(){
         html += '</div></div>';
       });
       document.getElementById('planet-list').innerHTML = html;
+      function hideP(){ modal.style.display = 'none'; }
+      document.getElementById('planet-close').addEventListener('click', hideP);
+      document.getElementById('planet-close-b').addEventListener('click', hideP);
+      modal.addEventListener('click', function(e){ if (e.target === modal) hideP(); });
+    }
+    modal.style.display = 'flex';
   }
-  function openPlanets(){
-    buildPlanets();
-    var panel = document.getElementById('cal-panel-lucky');
-    var btn = document.getElementById('cal-btn-lucky');
-    if (panel && panel.hidden && btn) { btn.click(); }
-    var acc = document.querySelector('.cal-acc-lucky');
-    if (acc && acc.scrollIntoView) { acc.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-  }
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', buildPlanets); } else { buildPlanets(); }
   // next full moon (for the hero line)
   var nextFull = null;
   (function(){
@@ -2772,6 +2765,8 @@ window.MOON_EVENTS = (function(){
     if (pob) pob.addEventListener('click', openPlanets);
     var cpl = document.getElementById('cal-planet-link');
     if (cpl) cpl.addEventListener('click', openPlanets);
+    var cpo = document.getElementById('cal-planet-open');
+    if (cpo) cpo.addEventListener('click', openPlanets);
     kel.addEventListener('click', function(){
       var sec = document.getElementById('koyomi-cal');
       if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -3038,6 +3033,7 @@ var shiftMoon = function(delta){
     <div class="intro-card">
       <button type="button" class="intro-close" id="planet-close" aria-label="とじる">×</button>
       <div class="moon-head"><img class="planet-img" src="planet-mii.jpg" alt=""><div class="koyomi-title">惑星のようす</div></div>
+      <div id="planet-list"></div>
       <p class="moon-lucky" style="text-align:center">逆行の時期は、見直しや確認に向く<br>と言われています。</p>
       <button type="button" class="modal-close-bottom" id="planet-close-b">閉じる</button>
     </div>
