@@ -3771,5 +3771,29 @@ var shiftMoon = function(delta){
   });
 })();
 </script>
+<script>
+(function(){
+  var overlays = Array.prototype.slice.call(document.querySelectorAll('.intro-overlay'));
+  if (!overlays.length || !window.history || !history.pushState) return;
+  var armed = false;
+  var suppress = false;
+  function anyOpen(){ return overlays.some(function(o){ return o.style.display === 'flex' || getComputedStyle(o).display === 'flex'; }); }
+  function hideAll(){ overlays.forEach(function(o){ o.style.display = 'none'; }); }
+  var mo = new MutationObserver(function(){
+    if (anyOpen() && !armed) { armed = true; try { history.pushState({ moriModal: 1 }, ''); } catch(e){} }
+  });
+  overlays.forEach(function(o){ mo.observe(o, { attributes: true, attributeFilter: ['style', 'class'] }); });
+  window.addEventListener('popstate', function(){
+    if (suppress) { suppress = false; armed = false; return; }
+    if (anyOpen()) hideAll();
+    armed = false;
+  });
+  document.addEventListener('click', function(){
+    setTimeout(function(){
+      if (armed && !anyOpen()) { suppress = true; try { history.back(); } catch(e){} }
+    }, 60);
+  }, true);
+})();
+</script>
 </body>
 </html>
