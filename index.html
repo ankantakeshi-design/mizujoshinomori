@@ -736,6 +736,7 @@
     <button type="button" class="cal-negai-btn" id="negai-open">🌙 新月の願いごとカードを作る</button>
     <button type="button" class="cal-push-btn" id="cal-push-open">🔔 新月・満月のお知らせが欲しい人は、こちら</button>
     <button type="button" class="cal-planet-link" id="cal-planet-link">🪐 惑星の順行・逆行はこちら</button>
+<p id="sky-today-top" style="display:none;text-align:center;font-weight:700;color:#b3541e;margin:10px 0 0"></p>
   </section>
 
   
@@ -3022,10 +3023,10 @@ var shiftMoon = function(delta){
       <button type="button" class="intro-close" id="sky-close" aria-label="とじる">×</button>
       <img class="keeper-mini" src="keeper-5.webp" alt="森の番人" loading="lazy" width="640" height="640">
       <div class="c-title">月と惑星</div>
-      <p class="c-lead">月と惑星のようすが、見られます。</p>
+      <p class="c-lead">月と惑星のようすが、見られます。</p> <p class="c-p" id="sky-today-line" style="display:none;font-weight:700;color:#b3541e"></p>
       <p class="c-p">トップの、月の行と惑星の行からも、直接開けます。</p>
-      <button type="button" class="sky-btn" id="sky-to-moon"><img src="guide-mooncal.jpg" alt="満月の水彩イラスト" width="256" height="256"><span>月のカレンダー</span></button>
-      <button type="button" class="sky-btn" id="sky-to-planet"><img src="planet-saturn.jpg" alt="土星の水彩イラスト" width="240" height="240"><span>惑星の順行・逆行</span></button>
+      <button type="button" class="sky-btn" id="sky-to-moon"><img src="guide-mooncal.jpg" alt="満月の水彩イラスト" width="256" height="256"><span>月のカレンダー</span><span class="new-badge" id="nb-btn-moon" style="display:none">NEW</span></button>
+      <button type="button" class="sky-btn" id="sky-to-planet"><img src="planet-saturn.jpg" alt="土星の水彩イラスト" width="240" height="240"><span>惑星の順行・逆行</span><span class="new-badge" id="nb-btn-planet" style="display:none">NEW</span></button>
       <div class="c-h">お知らせの通知</div>
       <p class="c-p">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。欲しいものだけ、選べます。</p>
       <div id="push-ui"></div>
@@ -3832,6 +3833,67 @@ var shiftMoon = function(delta){
       if (armed && !anyOpen()) { suppress = true; try { history.back(); } catch(e){} }
     }, 60);
   }, true);
+})();
+</script>
+
+<script>
+(function(){
+  function pad2(n){ return ('0' + n).slice(-2); }
+  function sAgeAt(t){
+    var rad = Math.PI / 180;
+    var dd = (t - Date.UTC(2000, 0, 1, 12, 0)) / 86400000;
+    var Lp = 218.316 + 13.176396 * dd;
+    var M = (134.963 + 13.064993 * dd) * rad;
+    var F = (93.272 + 13.350350 * dd) * rad;
+    var D = (297.850 + 12.190749 * dd) * rad;
+    var Ms = (357.529 + 0.98560028 * dd) * rad;
+    var mlon = Lp + 6.289 * Math.sin(M) + 1.274 * Math.sin(2 * D - M) + 0.658 * Math.sin(2 * D) + 0.214 * Math.sin(2 * M) - 0.186 * Math.sin(Ms) - 0.114 * Math.sin(2 * F);
+    var Ls = 280.460 + 0.9856474 * dd;
+    var slon = Ls + 1.915 * Math.sin(Ms) + 0.020 * Math.sin(2 * Ms);
+    return (((mlon - slon) % 360) + 360) % 360 / 360 * 29.530588853;
+  }
+  function moonEventOn(y, m, d){
+    var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
+    var a0 = sAgeAt(t0), a1 = sAgeAt(t0 + 86400000);
+    if (a1 < a0 - 20) return '新月';
+    if (a0 < 14.7653 && a1 >= 14.7653) return '満月';
+    return null;
+  }
+  function gSunLon(y, m, d){
+    var t = Date.UTC(y, m, d, 14, 59, 0);
+    var n = t / 86400000 - 10957.5;
+    var L = (280.460 + 0.9856474 * n) % 360;
+    if (L < 0) L += 360;
+    var M = (357.528 + 0.9856003 * n) * Math.PI / 180;
+    var lon = L + 1.915 * Math.sin(M) + 0.020 * Math.sin(2 * M);
+    lon %= 360;
+    if (lon < 0) lon += 360;
+    return lon;
+  }
+  var STATIONS = [['水星','2026-02-26','2026-03-21'],['金星','2026-10-03','2026-11-14'],['火星','2027-01-10','2027-04-01'],['木星','2025-11-12','2026-03-11'],['木星','2026-12-13','2027-04-13'],['土星','2026-07-27','2026-12-11'],['土星','2027-08-10','2027-12-24'],['天王星','2025-09-06','2026-02-04'],['天王星','2026-09-11','2027-02-08'],['天王星','2027-09-15','2028-02-13'],['海王星','2026-07-07','2026-12-13'],['海王星','2027-07-10','2027-12-15'],['冥王星','2026-05-07','2026-10-16'],['冥王星','2027-05-08','2027-10-18'],['水星','2026-06-30','2026-07-24'],['水星','2026-10-24','2026-11-14'],['水星','2027-02-10','2027-03-03'],['水星','2027-06-11','2027-07-05'],['水星','2027-10-07','2027-10-28']];
+  var SGN = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座','天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
+  var parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date()).split('-');
+  var ty = +parts[0], tm = +parts[1] - 1, td = +parts[2];
+  var lines = [], moonToday = false, planetToday = false;
+  var mev = moonEventOn(ty, tm, td);
+  if (mev) {
+    moonToday = true;
+    var sIdx = Math.floor((((gSunLon(ty, tm, td) % 360) + 360) % 360) / 30) % 12;
+    lines.push(mev === '新月' ? '今日は、' + SGN[sIdx] + 'の新月だよ' : '今日は、' + SGN[(sIdx + 6) % 12] + 'の満月だよ');
+  }
+  var tkey = ty + '-' + pad2(tm + 1) + '-' + pad2(td);
+  STATIONS.forEach(function(r){
+    if (tkey === r[1]) { planetToday = true; lines.push(r[0] + 'が、今日から逆行に入ったよ'); }
+    if (tkey === r[2]) { planetToday = true; lines.push(r[0] + 'が、今日から順行にもどったよ'); }
+  });
+  function setBadge(id, show){ var e = document.getElementById(id); if (e) e.style.display = show ? '' : 'none'; }
+  setBadge('nb-sky', moonToday || planetToday);
+  setBadge('nb-btn-moon', moonToday);
+  setBadge('nb-btn-planet', planetToday);
+  ['sky-today-line', 'sky-today-top'].forEach(function(id){
+    var e = document.getElementById(id);
+    if (e) { if (lines.length) { e.innerHTML = lines.join('<br>'); e.style.display = ''; } else e.style.display = 'none'; }
+  });
 })();
 </script>
 </body>
