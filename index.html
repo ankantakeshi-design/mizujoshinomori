@@ -674,7 +674,7 @@
     <button type="button" class="intro-btn-head" id="intro-open">はじめましての方へ</button>
   </header>
 
-  <section id="koyomi-cal" class="cal-sec">
+  <button type="button" id="kou-line" hidden></button><button type="button" id="planet-open-hero" hidden></button><section id="koyomi-cal" class="cal-sec">
     <h2 class="visually-hidden">月のカレンダー</h2>
     <div class="cal-box">
       <div class="moon-head"><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
@@ -705,35 +705,19 @@
     <button type="button" class="cal-planet-link" id="cal-planet-link">🪐 惑星の順行・逆行はこちら</button>
   </section>
 
-  <div class="home-top-link" id="home-top-link">
-    <button type="button" class="home-top-open" id="home-top-open">📱 ホーム画面に置けます（アプリみたいに使えます）</button>
-    <button type="button" class="home-top-close" id="home-top-close" aria-label="この案内を消す">×</button>
-  </div>
+  
 
-    <a class="link-card slim hotto-hero" href="https://hotto-news.pages.dev/"><img loading="lazy" src="guide-hotto-keeper3.jpg" alt="森の番人"><div><div class="t hotto-hero-title">森のほっとニュース</div><div class="d">今日のいいニュースと、四コマ漫画のコーナーは、こちら<span class="hotto-new">NEW</span></div></div></a>
-    <a class="link-card slim omoro-hero" href="https://omoro-good.pages.dev/"><img loading="lazy" src="guide-omoro.jpg" alt="おもろグ〜"><div><div class="t">おもろグ〜</div><div class="d">くすっと笑える投稿、あつめました。笑いたい日は、こちらへどうぞ</div></div></a>
+    
+    
 
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
-    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button></div></details></div></div>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button></div></details></div></div>
       
     
   </nav>
 
-  <div class="hero">
-    <div class="keeper-hero">
-      <img id="keeper-img" class="keeper-img" src="keeper-1.webp" alt="森の番人" width="640" height="640">
-      <div class="keeper-bubble" id="keeper-msg"></div>
-    </div>
-    <p><span class="special" id="special-line"></span></p>
-    <p class="yesterday" id="yesterday-line"></p>
-    
-    
-    <div class="sky-box"><h2 class="sky-h2">天体暦</h2>
-    <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
-    <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="惑星の水彩イラスト" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
-    <button type="button" class="push-hero-note" data-open="sky-modal">🔔 お知らせ通知も、選べます</button></div>
-  </div>
+  
 
   
 
@@ -813,23 +797,8 @@
         </div>
       </a>
       </div></details>
-<a id="today-diary" class="today-diary" href="#nikki" style="display:none"><span class="new-badge" id="nb-diary2" style="display:none">NEW</span>
-      <img id="today-diary-img" alt="今日のみーちゃん">
-      <span class="td-body">
-        <span class="td-label">今日のみーちゃん <span id="today-diary-date"></span></span>
-        <span class="td-text" id="today-diary-text"></span>
-      </span>
-    </a>
-<section><div class="std-box">
-    <h2>森の休憩所</h2>
-    <div class="rest">
-      <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
-      <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てくださいね。</p>
-    </div>
-    <img src="keeper.webp" alt="森の番人" style="display:block; width:150px; margin:16px auto 2px;" loading="lazy" width="640" height="640">
-    
-    
-  </div></section>
+
+
 
 
 
@@ -850,58 +819,16 @@
 
   
 
-  <img class="keeper-closing" src="keeper-4.webp" alt="森の番人" loading="lazy" width="640" height="640">
-  <p class="closing">今日の森は、ここまで。<br>また、会いましょうね。</p>
+  
+  
 
-  <details class="home-note" id="home-note">
-    <summary>📱 森を、ホーム画面に置けます</summary>
-    <div class="home-note-body">
-    <div class="os-row os-ios"><span class="os-emoji" aria-hidden="true">🍎</span><p><strong>iPhoneの方</strong><br>Safariで開いて、共有のボタンから「ホーム画面に追加」。</p></div>
-    <div class="os-row os-android"><span class="os-emoji" aria-hidden="true">🤖</span><p><strong>Androidの方</strong><br>Chromeで開いて、右上のメニューから「ホーム画面に追加」。</p></div>
-    <div class="os-row os-pc"><span class="os-emoji" aria-hidden="true">💻</span><p><strong>パソコンの方</strong><br>Chromeの右上のメニューから「保存と共有」→「ショートカットを作成」で、デスクトップに置けます。ブックマーク（お気に入り）でも大丈夫です。</p></div>
-    <p>アイコンから、いつでも森に来られますよ。</p>
-    <button type="button" class="home-done-btn" id="home-done-btn">ホーム画面に置けました</button>
-    </div>
-  </details>
+  
 
-  <div class="links" style="max-width:560px;margin:26px auto 0">
-    <a class="link-card mini" href="https://takechanlink.pages.dev/">
-      <img src="take-icon.png" alt="たけちゃんのイラスト">
-      <div>
-        <div class="t">たけちゃんリンク</div>
-      </div>
-    </a>
-    <a class="link-card mini line-stamp" href="https://store.line.me/stickershop/author/1408627/ja">
-      <img src="stamp-icon.png" alt="森の番人のLINEスタンプ">
-      <div>
-        <div class="t">LINEスタンプ</div>
-        <div class="d">森の仲間たちがたくさんいるよ。</div>
-      </div>
-    </a>
-  </div>
+  
 
-  <div class="home-howto">
-    <button type="button" class="home-howto-link" id="home-howto-open">ホーム画面への置き方を見る</button>
-  </div>
+  
 
-    <section class="faq-sec" aria-label="よくある質問">
-  <details class="faq-outer">
-  <summary>よくある質問</summary>
-  <div class="faq-inner">
-  <details class="faq-item"><summary>集まれ水女子の森（新月・満月カレンダー）は、どんな場所ですか？</summary><div class="faq-a">森のいちばん上にある、月のカレンダーが中心の場所です。新月・満月や惑星のリズムを眺めながら、感じているのに言葉にできない、水の性質が強い女性が、静かに休んでいけます。森の番人が迎えてくれて、気持ちの葉っぱを置いたり、みーちゃんの日記を読んだり、うらないを楽しんだりできます。何かを頑張る場所ではなく、ただ一息つくための場所として作りました。読むだけでも、立派な参加ですよ。</div></details>
-  <details class="faq-item"><summary>次の新月・満月は、いつですか？</summary><div class="faq-a">森のいちばん上にある、月のカレンダーで分かります。新月と満月の日には印がついています。カレンダーの下の「月のメッセージ」を開くと、次の新月・満月が何日で、どの星座で起きるかも読めますよ。日付は、国立天文台の暦をもとにしています。</div></details>
-  <details class="faq-item"><summary>新月の願いごとは、どうやって作るのですか？</summary><div class="faq-a">新月の3日前から当日に、月のカレンダーの下に「新月の願いごとカードを作る」ボタンが出ます。願いを書くと、森のデザインのカード画像になって、自分の端末に保存できます。書いた願いがサイトに残ることはありません。カレンダーの新月のマスを押しても、同じ画面が開きますよ。</div></details>
-  <details class="faq-item"><summary>満月の日は、どう過ごすといいですか？</summary><div class="faq-a">満月は、実りを受け取って、ほっとひと息つく日です。カレンダーの下の「月のメッセージ」に、その満月がどの星座で起きるかと、星座に合わせたメッセージが載っています。がんばって何かをする日ではなく、ここまで来た自分をねぎらって、静かに過ごしてみてくださいね。</div></details>
-  <details class="faq-item"><summary>月のリズムで暮らすとは、どういうことですか？</summary><div class="faq-a">新月から満月へ、満月から新月へと移り変わる月の流れを、暮らしの目安にすることです。満ちていく時期は少しずつ動き出し、満月は受け取って休み、欠けていく時期は手放して整える。森では、そんな月の満ち欠けに合わせた過ごし方のヒントを、カレンダーと月のメッセージでお届けしています。天気予報のように、先に知って、穏やかに備えるためのものですよ。</div></details>
-  <details class="faq-item"><summary>惑星の逆行・順行は、どこで見られますか？</summary><div class="faq-a">月のカレンダーの下にある「惑星の順行・逆行はこちら」から見られます。水星や金星などが、いつ逆行して、いつ順行に戻るかと、その時期の過ごし方のメッセージが載っています。逆行は、見直しや振り返りに向いた時期です。怖がるものではなく、ペースを落とす合図として受け取ってもらえたらと思います。</div></details>
-  <details class="faq-item"><summary>利用は無料ですか？登録はいりますか？</summary><div class="faq-a">無料で、登録もいりません。開いて、そのまま使えます。うらないを引いた日や集めた色などの記録は、この端末の中にだけ残る仕組みです。外に送られることはありませんので、安心してくださいね。</div></details>
-  <details class="faq-item"><summary>「水女子」ではないのですが、入ってもいいですか？</summary><div class="faq-a">大丈夫ですよ。水の性質が強い方を思い浮かべて作った場所ですが、どなたでも静かに過ごしていただけます。水男子の方も、火の性質が強い方も、どうぞ。</div></details>
-  <details class="faq-item"><summary>気持ちの葉っぱは、誰かに見られますか？</summary><div class="faq-a">選んだ葉っぱは、この端末の中に残るもので、誰が置いたか分かる形で見られることはありません。「昨日の森」では、昨日いちばん多かった気持ちだけが、3枚以上集まったときに、みんなの様子として静かに表示されます。気持ちは、置いていくだけで大丈夫ですよ。</div></details>
-  <details class="faq-item"><summary>通知は、どんなものが届きますか？</summary><div class="faq-a">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。カレンダーの下にある「新月・満月のお知らせが欲しい人は、こちら」のボタンから、欲しいものだけ選べます。通知を受け取るには、このサイトをホーム画面に追加していただくのがおすすめです。</div></details>
-  <details class="faq-item"><summary>森を作ったのは、誰ですか？</summary><div class="faq-a">心体調整塾の、たけちゃんです。感じているのに言葉にできなかった妻の姿を、そばで見てきました。言葉にならなくても居ていい場所がほしくて、この森を作りました。無理に話さなくて、大丈夫ですよ。</div></details>
-  </div>
-  </details>
-  </section>
+    
 <footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
 </div>
