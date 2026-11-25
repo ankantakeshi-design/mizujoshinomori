@@ -2780,7 +2780,7 @@ window.MOON_EVENTS = (function(){
       var viewIdx = baseIdx;
 function renderMoon(vy, vm){
           var jp = { y: vy, m: vm, d: (vy === todayJ.y && vm === todayJ.m) ? todayJ.d : 0 };
-        document.getElementById('moon-title').textContent = jp.y + '年' + (jp.m + 1) + '月の月';
+        document.getElementById('moon-title').textContent = jp.y + '年' + (jp.m + 1) + '月';
         var ev = findEvents(jp.y, jp.m);
         var grid = document.getElementById('moon-grid');
         var html = '';
