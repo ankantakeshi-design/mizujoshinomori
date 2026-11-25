@@ -3836,6 +3836,7 @@ var shiftMoon = function(delta){
 })();
 </script>
 
+
 <script>
 (function(){
   function pad2(n){ return ('0' + n).slice(-2); }
@@ -3887,13 +3888,30 @@ var shiftMoon = function(delta){
     if (tkey === r[2]) { planetToday = true; lines.push(r[0] + 'が、今日から順行にもどったよ'); }
   });
   function setBadge(id, show){ var e = document.getElementById(id); if (e) e.style.display = show ? '' : 'none'; }
-  setBadge('nb-sky', moonToday || planetToday);
-  setBadge('nb-btn-moon', moonToday);
-  setBadge('nb-btn-planet', planetToday);
+  var seen = '';
+  try { seen = localStorage.getItem('mori-sky-seen') || ''; } catch(e) {}
+  var moonKey = tkey + '-moon', planetKey = tkey + '-planet';
+  var moonShow = moonToday && seen.indexOf(moonKey) < 0;
+  var planetShow = planetToday && seen.indexOf(planetKey) < 0;
+  setBadge('nb-sky', moonShow || planetShow);
+  setBadge('nb-btn-moon', moonShow);
+  setBadge('nb-btn-planet', planetShow);
   ['sky-today-line', 'sky-today-top'].forEach(function(id){
     var e = document.getElementById(id);
     if (e) { if (lines.length) { e.innerHTML = lines.join('<br>'); e.style.display = ''; } else e.style.display = 'none'; }
   });
+  var skyModal = document.getElementById('sky-modal');
+  if (skyModal) {
+    var markSeen = function(){
+      if (skyModal.style.display === 'flex') {
+        try { localStorage.setItem('mori-sky-seen', seen + '|' + moonKey + '|' + planetKey); } catch(e) {}
+        setBadge('nb-sky', false);
+        setBadge('nb-btn-moon', false);
+        setBadge('nb-btn-planet', false);
+      }
+    };
+    new MutationObserver(markSeen).observe(skyModal, { attributes: true, attributeFilter: ['style'] });
+  }
 })();
 </script>
 </body>
