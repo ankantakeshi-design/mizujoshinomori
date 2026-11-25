@@ -685,14 +685,99 @@
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
     <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button><button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-hisodate.jpg" alt="" loading="lazy" width="96" height="96">気持ちを置く<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button><button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">毎日をととのえる<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button><button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button><button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button></div></details></div></div>
-      <details class="mnav-fold"><summary><img class="gimg" src="guide-seiza.jpg" alt="" loading="lazy" width="96" height="96">空のメモ<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="seiza.html">
+      
+    <p class="mnav-annai"><a href="#annai">森の奥のご案内はこちら<span class="new-badge inline" id="nb-annai" style="display:none">NEW</span></a></p>
+  </nav>
+
+  <div class="hero">
+    <div class="keeper-hero">
+      <img id="keeper-img" class="keeper-img" src="keeper-1.webp" alt="森の番人" width="640" height="640">
+      <div class="keeper-bubble" id="keeper-msg"></div>
+    </div>
+    <p><span class="special" id="special-line"></span></p>
+    <p class="yesterday" id="yesterday-line"></p>
+    
+    <div class="komorebi">
+      <img id="komorebi-img" alt="今日の木漏れ日のイラスト">
+      <div class="k-body">
+        <div class="k-title">今日の木漏れ日</div>
+        <p id="komorebi-line"></p>
+        <div class="k-note">毎日、少しずつ変わります</div>
+      </div>
+    </div>
+    <h2 class="sky-h2">天体暦</h2>
+    <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
+    <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="惑星の水彩イラスト" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
+    <button type="button" class="push-hero-note" data-open="sky-modal">🔔 お知らせ通知も、選べます</button>
+  </div>
+
+  
+
+  
+
+  
+
+  <section id="leaves"><details class="sec-fold"><summary><img class="gimg" src="keeper-6.webp" alt="" loading="lazy" width="96" height="96">気持ちの葉っぱ<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
+    <img class="keeper-mini" src="keeper-6.webp" alt="森の番人" loading="lazy" width="640" height="640">
+    <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
+    <div class="leaves">
+      <button type="button" class="leaf-btn" data-leaf="1">つかれた</button>
+      <button type="button" class="leaf-btn" data-leaf="9">うれしい</button>
+      <button type="button" class="leaf-btn" data-leaf="2">モヤモヤする</button>
+      <button type="button" class="leaf-btn" data-leaf="10">たのしい</button>
+      <button type="button" class="leaf-btn" data-leaf="3">ほっとしたい</button>
+      <button type="button" class="leaf-btn" data-leaf="11">ほっとした</button>
+      <button type="button" class="leaf-btn" data-leaf="4">さみしい</button>
+      <button type="button" class="leaf-btn" data-leaf="12">すっきりした</button>
+      <button type="button" class="leaf-btn" data-leaf="5">イライラする</button>
+      <button type="button" class="leaf-btn" data-leaf="8">がんばった</button>
+      <button type="button" class="leaf-btn" data-leaf="6">かなしい</button>
+      <button type="button" class="leaf-btn" data-leaf="7">なんとなく不安</button>
+    </div>
+    <p class="leaf-msg" id="leaf-msg"></p>
+    <div class="leaf-pile-wrap">
+      <div class="leaf-pile-label">森に集まった葉っぱ</div>
+      <div class="leaf-pile" id="leaf-pile"></div>
+    </div>
+  </div></details></section>
+<section id="corners"><details class="sec-fold"><summary><img class="gimg" src="keeper-4.webp" alt="" loading="lazy" width="96" height="96">彩り生活<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
+    <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>食事、色と気持ち、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
+    <div class="all-counter-wrap" style="display:none; margin-top:14px">
+      <p class="gs-msg" style="font-weight:700; color:#7a7264">今週の彩り</p>
+      <div class="counter-box" data-counter="all" data-mode="week" style="border-top:none; margin-top:4px; padding-top:0"></div>
+      <p class="gs-msg" style="font-size:11.5px; color:#797161">全部のコーナーを合わせた色です。1週間でリセットされます。</p>
+    </div>
+    <div class="corner-grid">
+      <button type="button" class="corner-card corner-wide" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span><span class="cc-counter" data-ccounter="eat"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色と気持ち</span><span class="cc-sub">色の組み合わせと、配色表</span><span class="cc-counter" data-ccounter="color"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span><span class="cc-counter" data-ccounter="ex"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span><span class="cc-counter" data-ccounter="body"></span></button>
+      <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span><span class="cc-counter" data-ccounter="clean"></span></button>
+    </div>
+  </div></details></section>
+<section id="uranai"><details class="sec-fold"><summary><img class="gimg" src="keeper-5.webp" alt="" loading="lazy" width="96" height="96">水女子うらない<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
+    <img class="keeper-mini" src="keeper-5.webp" alt="森の番人" loading="lazy" width="640" height="640">
+    <p class="sec-lead">今日の気持ちを、そっと占います。</p>
+    <div class="uranai">
+      <img loading="lazy" id="uranai-img" src="uranai-mii.png" alt="うらないをする みーちゃん">
+      <p class="uranai-msg" id="uranai-msg">ボタンを押すと、今日のうらないが出ますよ。</p>
+      <button type="button" class="uranai-btn" id="uranai-btn">うらないをひく</button>
+      <p class="uranai-note" id="uranai-note"></p>
+      <button type="button" class="uranai-card-btn" id="uranai-card-btn" style="display:none">この言葉を、カードにする</button>
+    </div>
+  </div></details></section>
+<details class="mnav-fold"><summary><img class="gimg" src="guide-seiza.jpg" alt="" loading="lazy" width="96" height="96">空のメモ<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="seiza.html">
         <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
           <div class="t">星座メモ</div>
           <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
         </div>
       </a>
-      </div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
+      </div></details>
+<details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
           <a class="link-card slim" href="https://inyo-megane.pages.dev/inyo">
@@ -752,100 +837,15 @@
           <div class="d">二十四節気ごとに、今の季節の過ごし方をまとめました。</div>
         </div>
       </a>
-      </div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-denwa2.jpg" alt="" loading="lazy" width="96" height="96">もしもの時に<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="denwa.html">
-        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト">
-        <div>
-          <div class="t">もしもの電話番号</div>
-          <div class="d">いざという時の番号をまとめました。押すと、そのまま電話がかけられます。</div>
-        </div>
-      </a></div></details>
-    <p class="mnav-annai"><a href="#annai">森の奥のご案内はこちら<span class="new-badge inline" id="nb-annai" style="display:none">NEW</span></a></p>
-  </nav>
-
-  <div class="hero">
-    <div class="keeper-hero">
-      <img id="keeper-img" class="keeper-img" src="keeper-1.webp" alt="森の番人" width="640" height="640">
-      <div class="keeper-bubble" id="keeper-msg"></div>
-    </div>
-    <p><span class="special" id="special-line"></span></p>
-    <p class="yesterday" id="yesterday-line"></p>
-    <a id="today-diary" class="today-diary" href="#nikki" style="display:none"><span class="new-badge" id="nb-diary2" style="display:none">NEW</span>
+      </div></details>
+<a id="today-diary" class="today-diary" href="#nikki" style="display:none"><span class="new-badge" id="nb-diary2" style="display:none">NEW</span>
       <img id="today-diary-img" alt="今日のみーちゃん">
       <span class="td-body">
         <span class="td-label">今日のみーちゃん <span id="today-diary-date"></span></span>
         <span class="td-text" id="today-diary-text"></span>
       </span>
     </a>
-    <div class="komorebi">
-      <img id="komorebi-img" alt="今日の木漏れ日のイラスト">
-      <div class="k-body">
-        <div class="k-title">今日の木漏れ日</div>
-        <p id="komorebi-line"></p>
-        <div class="k-note">毎日、少しずつ変わります</div>
-      </div>
-    </div>
-    <h2 class="sky-h2">天体暦</h2>
-    <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
-    <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="惑星の水彩イラスト" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
-    <button type="button" class="push-hero-note" data-open="sky-modal">🔔 お知らせ通知も、選べます</button>
-  </div>
-
-  <section id="corners"><details class="sec-fold"><summary><img class="gimg" src="keeper-4.webp" alt="" loading="lazy" width="96" height="96">彩り生活<span class="chev">▽</span></summary><div class="sec-fold-body">
-    
-    <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>食事、色と気持ち、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
-    <div class="all-counter-wrap" style="display:none; margin-top:14px">
-      <p class="gs-msg" style="font-weight:700; color:#7a7264">今週の彩り</p>
-      <div class="counter-box" data-counter="all" data-mode="week" style="border-top:none; margin-top:4px; padding-top:0"></div>
-      <p class="gs-msg" style="font-size:11.5px; color:#797161">全部のコーナーを合わせた色です。1週間でリセットされます。</p>
-    </div>
-    <div class="corner-grid">
-      <button type="button" class="corner-card corner-wide" id="corner-food"><span class="cc-dot" style="background:#D97757"></span><span class="cc-title">食事</span><span class="cc-sub">食は、色です。五色と五味</span><span class="cc-counter" data-ccounter="eat"></span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-color"><span class="cc-dot" style="background:#6FA287"></span><span class="cc-title">色と気持ち</span><span class="cc-sub">色の組み合わせと、配色表</span><span class="cc-counter" data-ccounter="color"></span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-ex"><span class="cc-dot" style="background:#7FB3D5"></span><span class="cc-title">運動</span><span class="cc-sub">今日のおすすめ。軽い運動</span><span class="cc-counter" data-ccounter="ex"></span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span><span class="cc-counter" data-ccounter="body"></span></button>
-      <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span><span class="cc-counter" data-ccounter="clean"></span></button>
-    </div>
-  </div></details></section>
-
-  <section id="leaves"><details class="sec-fold"><summary><img class="gimg" src="keeper-6.webp" alt="" loading="lazy" width="96" height="96">気持ちの葉っぱ<span class="chev">▽</span></summary><div class="sec-fold-body">
-    
-    <img class="keeper-mini" src="keeper-6.webp" alt="森の番人" loading="lazy" width="640" height="640">
-    <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
-    <div class="leaves">
-      <button type="button" class="leaf-btn" data-leaf="1">つかれた</button>
-      <button type="button" class="leaf-btn" data-leaf="9">うれしい</button>
-      <button type="button" class="leaf-btn" data-leaf="2">モヤモヤする</button>
-      <button type="button" class="leaf-btn" data-leaf="10">たのしい</button>
-      <button type="button" class="leaf-btn" data-leaf="3">ほっとしたい</button>
-      <button type="button" class="leaf-btn" data-leaf="11">ほっとした</button>
-      <button type="button" class="leaf-btn" data-leaf="4">さみしい</button>
-      <button type="button" class="leaf-btn" data-leaf="12">すっきりした</button>
-      <button type="button" class="leaf-btn" data-leaf="5">イライラする</button>
-      <button type="button" class="leaf-btn" data-leaf="8">がんばった</button>
-      <button type="button" class="leaf-btn" data-leaf="6">かなしい</button>
-      <button type="button" class="leaf-btn" data-leaf="7">なんとなく不安</button>
-    </div>
-    <p class="leaf-msg" id="leaf-msg"></p>
-    <div class="leaf-pile-wrap">
-      <div class="leaf-pile-label">森に集まった葉っぱ</div>
-      <div class="leaf-pile" id="leaf-pile"></div>
-    </div>
-  </div></details></section>
-
-  <section id="uranai"><details class="sec-fold"><summary><img class="gimg" src="keeper-5.webp" alt="" loading="lazy" width="96" height="96">水女子うらない<span class="chev">▽</span></summary><div class="sec-fold-body">
-    
-    <img class="keeper-mini" src="keeper-5.webp" alt="森の番人" loading="lazy" width="640" height="640">
-    <p class="sec-lead">今日の気持ちを、そっと占います。</p>
-    <div class="uranai">
-      <img loading="lazy" id="uranai-img" src="uranai-mii.png" alt="うらないをする みーちゃん">
-      <p class="uranai-msg" id="uranai-msg">ボタンを押すと、今日のうらないが出ますよ。</p>
-      <button type="button" class="uranai-btn" id="uranai-btn">うらないをひく</button>
-      <p class="uranai-note" id="uranai-note"></p>
-      <button type="button" class="uranai-card-btn" id="uranai-card-btn" style="display:none">この言葉を、カードにする</button>
-    </div>
-  </div></details></section>
-
-  <section>
+<section>
     <h2>森の休憩所</h2>
     <div class="rest">
       <p>ここでは、何もしなくて大丈夫。<br>言葉にならなくても、大丈夫。<br>その場で言えなくても、大丈夫。</p>
@@ -863,7 +863,17 @@
 
 
 
-  <section id="annai">
+  <section id="yakusoku">
+    <h2>森の約束</h2>
+    <div class="yakusoku-box">
+      <p>毎日、来なくて大丈夫です。来たいときに、どうぞ。</p>
+      <p>読むだけでも、立派な参加です。</p>
+      <p>ここでは、数字で比べません。</p>
+      <p>気持ちは、置いていくだけで大丈夫です。返事は、急ぎません。</p>
+      <p>静かな森でいることを、いちばん大事にします。</p>
+    </div>
+  </section>
+<section id="annai">
     <h2>森の奥のご案内</h2>
     <img class="keeper-mini" src="keeper-1.webp" alt="森の番人" loading="lazy" width="640" height="640">
     <p class="sec-lead">もう少し進んでみたい方へ。</p>
@@ -930,17 +940,15 @@
       <a href="https://takechanlink.pages.dev/">たけちゃんリンク</a>
     </div>
   </section>
+<details class="mnav-fold"><summary><img class="gimg" src="guide-denwa2.jpg" alt="" loading="lazy" width="96" height="96">もしもの時に<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="denwa.html">
+        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト">
+        <div>
+          <div class="t">もしもの電話番号</div>
+          <div class="d">いざという時の番号をまとめました。押すと、そのまま電話がかけられます。</div>
+        </div>
+      </a></div></details>
 
-  <section id="yakusoku">
-    <h2>森の約束</h2>
-    <div class="yakusoku-box">
-      <p>毎日、来なくて大丈夫です。来たいときに、どうぞ。</p>
-      <p>読むだけでも、立派な参加です。</p>
-      <p>ここでは、数字で比べません。</p>
-      <p>気持ちは、置いていくだけで大丈夫です。返事は、急ぎません。</p>
-      <p>静かな森でいることを、いちばん大事にします。</p>
-    </div>
-  </section>
+  
 
   <img class="keeper-closing" src="keeper-4.webp" alt="森の番人" loading="lazy" width="640" height="640">
   <p class="closing">今日の森は、ここまで。<br>また、会いましょうね。</p>
