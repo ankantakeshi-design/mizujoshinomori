@@ -734,7 +734,7 @@
         </div>
       </div>
       <div class="cal-acc cal-acc-lucky">
-        <button type="button" class="cal-acc-btn" id="cal-btn-lucky" aria-expanded="false" aria-controls="cal-panel-lucky">🪐 惑星の順行・逆行<span class="cal-acc-arrow">▾</span></button>
+        <button type="button" class="cal-acc-btn" id="cal-btn-lucky">🪐 惑星の順行・逆行<span class="cal-acc-arrow">›</span></button>
         <div class="cal-acc-panel" id="cal-panel-lucky" hidden>
           <button type="button" class="cal-planet-link" id="cal-planet-open">🪐 惑星のようすを見る</button>
           <p id="moon-lucky" hidden></p>
@@ -2872,7 +2872,7 @@ var shiftMoon = function(delta){
         };
       document.getElementById('moon-prev').addEventListener('click', function(){ shiftMoon(-1); });
       document.getElementById('moon-next-btn').addEventListener('click', function(){ shiftMoon(1); });
-      [['cal-btn-moon', 'cal-panel-moon'], ['cal-btn-lucky', 'cal-panel-lucky'], ['cal-btn-shun', 'cal-panel-shun']].forEach(function(pair){
+      [['cal-btn-moon', 'cal-panel-moon'], ['cal-btn-shun', 'cal-panel-shun']].forEach(function(pair){
         var btn = document.getElementById(pair[0]), panel = document.getElementById(pair[1]);
         if (!btn || !panel) return;
         btn.addEventListener('click', function(){
@@ -2882,6 +2882,8 @@ var shiftMoon = function(delta){
           btn.parentElement.classList.toggle('open', open);
         });
       });
+      var lb = document.getElementById('cal-btn-lucky');
+      if (lb) lb.addEventListener('click', function(){ var o = document.getElementById('cal-planet-open'); if (o) o.click(); });
       var card = sec.querySelector('.cal-box');
       if (card) {
         var tx = 0, ty = 0;
