@@ -588,6 +588,13 @@
 
   /* 隙間つぶし＋おすすめのサイト（2026-11-25） */
   .wrap{ padding-bottom:12px; }
+
+  /* 空の統合＋カード間隔の統一＋BGMバー（2026-11-25） */
+  .mori-nav .mnav-grid{ gap:10px; }
+  .mori-nav .mnav-grid .link-card{ margin:0; }
+  .bgm-bar-wrap{ margin:10px 18px 0; }
+  .bgm-btn{ position:static; width:100%; height:68px; border-radius:16px; background:#FDFEFB; border:2px solid #DCE8DC; color:#33513B; font-size:16px; font-weight:700; box-shadow:none; display:flex; align-items:center; justify-content:center; }
+  .bgm-btn.on{ background:#5E9C63; border-color:#5E9C63; color:#fff; }
 </style>
 <style>
 /* FAQ（よくある質問） */
@@ -720,7 +727,14 @@
 
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
-    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button></div></details></div></div>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button>
+<a class="link-card slim" href="seiza.html">
+        <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
+        <div>
+          <div class="t">星座メモ</div>
+          <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
+        </div>
+      </a></div></details></div></div>
       
     
   </nav>
@@ -736,14 +750,7 @@
   
 
 
-<details class="mnav-fold"><summary><img class="gimg" src="guide-seiza.jpg" alt="" loading="lazy" width="96" height="96">空のメモ<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="seiza.html">
-        <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">星座メモ</div>
-          <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
-        </div>
-      </a>
-      </div></details>
+
 <details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
@@ -829,6 +836,8 @@
 <a class="link-card slim" href="https://inyo-megane.pages.dev/"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="メガネ番人"><div><div class="t">陰陽メガネ</div><div class="d">陰陽の見方を、練習できます</div></div></a>
 <a class="link-card slim" href="https://takechanlink.pages.dev/"><img loading="lazy" src="take-icon.png" alt="たけちゃんのイラスト"><div><div class="t">たけちゃんリンク</div><div class="d">全部の窓口は、こちらです</div></div></a>
 </div></details>
+<div class="bgm-bar-wrap"><button type="button" class="bgm-btn" id="bgm-btn" aria-pressed="false" aria-label="音楽をながす・とめる">♪ 音楽</button></div>
+
 
 
   
@@ -1540,7 +1549,7 @@ window.MOON_EVENTS = (function(){
 })();
 </script>
 
-<button type="button" class="bgm-btn" id="bgm-btn" aria-pressed="false" aria-label="音楽をながす・とめる">♪</button>
+
 <button type="button" class="top-btn" id="top-btn" aria-label="上へもどる"><span class="tb-arrow">↑</span><span class="tb-label">上へ</span></button>
 <audio id="bgm-player" loop preload="none" style="display:none"></audio>
 <script>
