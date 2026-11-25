@@ -635,6 +635,16 @@
   /* カレンダーの印の重なり対策（2026-11-25） */
   .koyomi-cell{ min-height:64px; }
   .koyomi-cell .lucky-dot{ top:auto; bottom:4px; right:4px; width:7px; height:7px; background:#8B6FD8; border:1.5px solid #fff; box-shadow:0 1px 3px rgba(90,70,140,.35); }
+
+  /* 惑星アコーディオンの色（2026-11-25、開運日から移設） */
+  .cal-acc-lucky{ background:#EFF0FA; }
+  .cal-acc-lucky .cal-acc-btn{ color:#3D4E7A; }
+
+  /* 月のメッセージ：新月・満月を別カードに（2026-11-25） */
+  .moon-ev{ border-radius:14px; padding:10px 12px; }
+  .moon-ev + .moon-ev{ margin-top:10px; }
+  .moon-ev.new-ev{ background:#EDF2FA; }
+  .moon-ev.full-ev{ background:#FFF3D6; }
 </style>
 <script type="application/ld+json">
 {
@@ -725,9 +735,11 @@
         </div>
       </div>
       <div class="cal-acc cal-acc-lucky">
-        <button type="button" class="cal-acc-btn" id="cal-btn-lucky" aria-expanded="false" aria-controls="cal-panel-lucky">🍀 開運日<span class="cal-acc-arrow">▾</span></button>
+        <button type="button" class="cal-acc-btn" id="cal-btn-lucky" aria-expanded="false" aria-controls="cal-panel-lucky">🪐 惑星の順行・逆行<span class="cal-acc-arrow">▾</span></button>
         <div class="cal-acc-panel" id="cal-panel-lucky" hidden>
-          <p class="moon-lucky" id="moon-lucky"></p>
+          <div id="planet-list"></div>
+          <p class="moon-lucky" style="text-align:center">逆行の時期は、見直しや確認に向く<br>と言われています。</p>
+          <p id="moon-lucky" hidden></p>
         </div>
       </div>
       <div class="cal-acc cal-acc-shun">
@@ -739,7 +751,6 @@
     </div>
     <button type="button" class="cal-negai-btn" id="negai-open">🌙 新月の願いごとカードを作る</button>
     <button type="button" class="cal-push-btn" id="cal-push-open">🔔 新月・満月のお知らせが欲しい人は、こちら</button>
-    <button type="button" class="cal-planet-link" id="cal-planet-link">🪐 惑星の順行・逆行はこちら</button>
 <p id="sky-today-top" style="display:none;text-align:center;font-weight:700;color:#b3541e;margin:10px 0 0"></p>
   </section>
 
@@ -2685,11 +2696,10 @@ window.MOON_EVENTS = (function(){
     { name: '海王星', img: 'planet-neptune.jpg', ranges: [['2026-07-07','2026-12-13'],['2027-07-10','2027-12-15']], msg: '夢と現実の境目を、やさしく見つめる時期です。', dmsg: 'ひらめきを、大事にできる時期です。' },
     { name: '冥王星', img: 'planet-pluto.jpg', ranges: [['2026-05-07','2026-10-16'],['2027-05-08','2027-10-18']], msg: '深いところで、静かに変わっていく時期です。', dmsg: '深いところから、前に進める時期です。' }
   ];
-  function openPlanets(){
+  function buildPlanets(){
     var modal = document.getElementById('planet-modal');
-    if (!modal) return;
-    if (!modal.getAttribute('data-built')) {
-      modal.setAttribute('data-built', '1');
+    if (!modal || modal.getAttribute('data-built')) return;
+    modal.setAttribute('data-built', '1');
       var now2 = new Date();
       function p2(n){ return (n < 10 ? '0' : '') + n; }
       var today = now2.getFullYear() + '-' + p2(now2.getMonth() + 1) + '-' + p2(now2.getDate());
@@ -2717,13 +2727,16 @@ window.MOON_EVENTS = (function(){
         html += '</div></div>';
       });
       document.getElementById('planet-list').innerHTML = html;
-      function hideP(){ modal.style.display = 'none'; }
-      document.getElementById('planet-close').addEventListener('click', hideP);
-      document.getElementById('planet-close-b').addEventListener('click', hideP);
-      modal.addEventListener('click', function(e){ if (e.target === modal) hideP(); });
-    }
-    modal.style.display = 'flex';
   }
+  function openPlanets(){
+    buildPlanets();
+    var panel = document.getElementById('cal-panel-lucky');
+    var btn = document.getElementById('cal-btn-lucky');
+    if (panel && panel.hidden && btn) { btn.click(); }
+    var acc = document.querySelector('.cal-acc-lucky');
+    if (acc && acc.scrollIntoView) { acc.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', buildPlanets); } else { buildPlanets(); }
   // next full moon (for the hero line)
   var nextFull = null;
   (function(){
@@ -2828,9 +2841,9 @@ function renderMoon(vy, vm){
           });
         });
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + kasuiText(ns, false) + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'の星座メモはこちら →</a>'); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true) + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'の星座メモはこちら →</a></span>'); }
-        document.getElementById('moon-events').innerHTML = lines.join('<br>');
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<div class="moon-ev new-ev"><span class="moon-star">✦</span>' + nd.d + '日' + jstHM(ev.newT) + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + kasuiText(ns, false).replace(/（火\d+%・水\d+%）/, '') + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'の星座メモはこちら →</a></div>'); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<div class="moon-ev full-ev"><span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + fd.d + '日' + jstHM(ev.fullT) + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true).replace(/（火\d+%・水\d+%）/, '') + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'の星座メモはこちら →</a></span></div>'); }
+        document.getElementById('moon-events').innerHTML = lines.join('');
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
         if (ichiryuDays.length) llines.push('一粒万倍日は、' + ichiryuDays.join('日・') + '日です。<br>小さな一歩が、大きく実る日とされています。');
@@ -3017,7 +3030,6 @@ var shiftMoon = function(delta){
     <div class="intro-card">
       <button type="button" class="intro-close" id="planet-close" aria-label="とじる">×</button>
       <div class="moon-head"><img class="planet-img" src="planet-mii.jpg" alt=""><div class="koyomi-title">惑星のようす</div></div>
-      <div id="planet-list"></div>
       <p class="moon-lucky" style="text-align:center">逆行の時期は、見直しや確認に向く<br>と言われています。</p>
       <button type="button" class="modal-close-bottom" id="planet-close-b">閉じる</button>
     </div>
