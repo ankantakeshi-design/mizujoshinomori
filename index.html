@@ -580,6 +580,11 @@
   .sky-box .sky-h2{ text-align:center; }
   .std-box img[src="keeper.webp"]{ width:128px !important; }
   .keeper-closing{ width:128px; }
+
+  /* 入口ボタン配線の復旧＋バーの幅そろえ（2026-11-25） */
+  details.mnav-fold{ margin-left:18px; margin-right:18px; }
+  .mori-nav details.mnav-fold{ margin-left:0; margin-right:0; }
+  .mnav-grid{ grid-template-columns:1fr; }
 </style>
 <style>
 /* FAQ（よくある質問） */
@@ -3750,6 +3755,20 @@ var shiftMoon = function(delta){
     if (el) new MutationObserver(syncRead).observe(el, {attributes:true, attributeFilter:['style']});
   });
   syncRead();
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('.mnav-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var open = b.getAttribute('data-open');
+      var click = b.getAttribute('data-click');
+      var anchor = b.getAttribute('data-anchor');
+      if (open) { var m = document.getElementById(open); if (m) m.style.display = 'flex'; }
+      else if (click) { var t = document.getElementById(click); if (t) t.click(); }
+      else if (anchor) { var s = document.getElementById(anchor); if (s) s.scrollIntoView({ behavior:'auto', block:'start' }); }
+    });
+  });
 })();
 </script>
 </body>
