@@ -525,6 +525,13 @@
   .keeper-bubble::before { content:''; position:absolute; left:-7px; top:50%; margin-top:-6px; width:12px; height:12px; background:#FFFDF6; border-left:1.5px solid #DCE8D2; border-bottom:1.5px solid #DCE8D2; transform:rotate(45deg); }
   .keeper-mini { display:block; width:80px; margin:0 auto 4px; }
   .keeper-closing { display:block; width:110px; margin:10px auto 2px; }
+
+  .guide-fold{ border:2px solid #dfe7da; border-radius:14px; background:#fbfdf8; overflow:hidden; margin-top:12px; }
+  .guide-fold>summary{ cursor:pointer; list-style:none; min-height:56px; display:flex; align-items:center; justify-content:center; padding:12px 16px; font-size:17px; font-weight:800; color:#3d4a3a; }
+  .guide-fold>summary::-webkit-details-marker{ display:none; }
+  .guide-fold>summary::after{ content:"\25BD"; margin-left:10px; font-size:14px; color:#7c7165; }
+  .guide-fold[open ]>summary::after{ content:"\25B3"; }
+  .guide-fold .links{ padding:2px 12px 12px; }
 </style>
 <style>
 /* FAQ（よくある質問） */
@@ -852,58 +859,64 @@
     <h2>森の奥のご案内</h2>
     <img class="keeper-mini" src="keeper-1.webp" alt="森の番人" loading="lazy" width="640" height="640">
     <p class="sec-lead">もう少し進んでみたい方へ。</p>
-    <div class="links">
-      <a class="link-card" href="https://kasuiehon.pages.dev/">
+    <div class="annai-folds">
+<details class="guide-fold"><summary>読む・学ぶ</summary><div class="links">
+<a class="link-card" href="https://kasuiehon.pages.dev/">
         <img loading="lazy" src="guide-ehon.jpg" alt="ひーくんとみーちゃん">
         <div>
           <div class="t">火水の絵本『ひーくんと みーちゃん』</div>
           <div class="d">物語で読みたい方へ。言葉がとくいな子と、感じすぎる子の物語です（無料）。</div>
         </div>
       </a>
-      <a class="link-card" href="https://note.com/takekasui/m/mca7ae9c34dd7">
+<a class="link-card" href="https://note.com/takekasui/m/mca7ae9c34dd7">
         <img loading="lazy" src="guide-aruaru.jpg" alt="本を読むキャラクターと芽">
         <div>
           <div class="t">水女子あるある相談（note）</div>
           <div class="d">「じゃあ、どうしたらいいの？」への答えを、1つずつ書いています。</div>
         </div>
       </a>
-      <a class="link-card" href="https://hisodate.pages.dev/">
+<a class="link-card" href="https://hisodate.pages.dev/">
         <img loading="lazy" src="guide-hisodate.jpg" alt="胸に火を宿した水のキャラクター">
         <div>
           <div class="t">水女子のための<span class="f">火育て塾</span>🔥</div>
           <div class="d">感じたことを、言葉にする力を育てる塾です。気持ちを言葉にする記事を届けています。</div>
         </div>
       </a>
-      <a class="link-card" href="https://hotto-news.pages.dev/">
+</div></details>
+<details class="guide-fold"><summary>毎日の生活に</summary><div class="links">
+<a class="link-card" href="https://hotto-news.pages.dev/">
         <img loading="lazy" src="guide-hotto.jpg" alt="森の番人">
         <div>
           <div class="t">森のほっとニュース<span class="hotto-new">NEW</span></div>
           <div class="d">毎日の生活に、ご機嫌を。心が温まる、今日のいいニュースを集めています。</div>
         </div>
       </a>
-      <a class="link-card" href="https://openhearttraining.pages.dev/">
-        <img loading="lazy" src="guide-sunao.jpg" alt="素直力トレーニング">
-        <div>
-          <div class="t">素直力トレーニング</div>
-          <div class="d">つい言ってしまう言葉を、素直な言葉に言い換える練習ができます。感じたことを言葉にしたい時に、どうぞ。</div>
-        </div>
-      </a>
-      <a class="link-card" href="https://zangeforgive.pages.dev/">
-        <img loading="lazy" src="guide-zange.jpg" alt="ZANGE">
-        <div>
-          <div class="t">ZANGE — 心の放流</div>
-          <div class="d">心の中の思いを書いて、静かに手放す場所です。書いた言葉は、どこにも送られません。</div>
-        </div>
-      </a>
-      <a class="link-card" href="https://omusubi-panda.pages.dev/">
+<a class="link-card" href="https://omusubi-panda.pages.dev/">
         <img loading="lazy" src="guide-omupan.jpg" alt="おむすびパンダ">
         <div>
           <div class="t">今日のごはんに迷ったら</div>
           <div class="d">おむすびパンダの「今日の試食」です。旬の食材と、簡単なレシピが引けます。</div>
         </div>
       </a>
-    </div>
-    <div class="small-links">
+</div></details>
+<details class="guide-fold"><summary>心をととのえる</summary><div class="links">
+<a class="link-card" href="https://openhearttraining.pages.dev/">
+        <img loading="lazy" src="guide-sunao.jpg" alt="素直力トレーニング">
+        <div>
+          <div class="t">素直力トレーニング</div>
+          <div class="d">つい言ってしまう言葉を、素直な言葉に言い換える練習ができます。感じたことを言葉にしたい時に、どうぞ。</div>
+        </div>
+      </a>
+<a class="link-card" href="https://zangeforgive.pages.dev/">
+        <img loading="lazy" src="guide-zange.jpg" alt="ZANGE">
+        <div>
+          <div class="t">ZANGE — 心の放流</div>
+          <div class="d">心の中の思いを書いて、静かに手放す場所です。書いた言葉は、どこにも送られません。</div>
+        </div>
+      </a>
+</div></details>
+</div>
+<div class="small-links">
       <a href="https://kamisindan.pages.dev/">火水性質診断</a>・
       <a href="https://kamimikuji.pages.dev/">火水おみくじ</a>・
       <a href="https://takechanlink.pages.dev/">たけちゃんリンク</a>
