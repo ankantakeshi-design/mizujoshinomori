@@ -645,6 +645,9 @@
   /* 惑星パネルの余白調整（2026-11-25） */
   #cal-panel-lucky{ padding:0 16px 10px; text-align:center; }
   #cal-planet-open{ display:inline-block; margin:2px auto 0; padding:11px 22px; background:#EFF4FA; border:1.5px solid #C9D9EC; border-radius:999px; font-size:14px; font-weight:700; color:#33517A; text-decoration:none; }
+
+  /* 天赦日は星マークだけ（2026-11-26） */
+  .moon-tag.tensha-tag{ background:transparent; color:#8B6FD8; font-size:16px; box-shadow:none; border:none; }
 </style>
 <script type="application/ld+json">
 {
@@ -2805,7 +2808,7 @@ function renderMoon(vy, vm){
           if (brd === 2) toraDays.push(d);
           if (brd === 5) miDays.push(d);
           if (isI) ichiryuDays.push(d);
-          if (isT) { tenshaDays.push(d); if (!tag) { tag = '天赦日'; tagCls = ' tensha-tag'; } }
+          if (isT) { tenshaDays.push(d); if (!tag) { tag = '✦'; tagCls = ' tensha-tag'; } }
           var showNegai = false;
           if (tag === '新月' && ev.newT) {
             var ndp2 = jstParts(ev.newT);
