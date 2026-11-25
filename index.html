@@ -746,7 +746,7 @@
 
   <nav class="mori-nav" aria-label="森の案内板">
     <div class="mnav-title">森の案内板</div>
-    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="link-card slim" data-open="sky-modal" style="text-align:left;font:inherit;cursor:pointer;width:100%"><img loading="lazy" src="guide-tentai.jpg" alt="三日月と星空の水彩イラスト" width="256" height="256" style="height:auto"><div><div class="t">月と惑星<span class="new-badge" id="nb-sky" style="display:none">NEW</span></div><div class="d">新月・満月と、惑星の動きが見られる暦です。</div></div></button>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge inline" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="link-card slim" data-open="sky-modal" style="text-align:left;font:inherit;cursor:pointer;width:100%"><img loading="lazy" src="guide-tentai.jpg" alt="三日月と星空の水彩イラスト" width="256" height="256" style="height:auto"><div><div class="t">月と惑星<span class="new-badge inline" id="nb-sky" style="display:none">NEW</span></div><div class="d">新月・満月と、惑星の動きが見られる暦です。</div></div></button>
 <a class="link-card slim" href="seiza.html">
         <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
@@ -3025,8 +3025,8 @@ var shiftMoon = function(delta){
       <div class="c-title">月と惑星</div>
       <p class="c-lead">月と惑星のようすが、見られます。</p> <p class="c-p" id="sky-today-line" style="display:none;font-weight:700;color:#b3541e"></p>
       <p class="c-p">トップの、月の行と惑星の行からも、直接開けます。</p>
-      <button type="button" class="sky-btn" id="sky-to-moon"><img src="guide-mooncal.jpg" alt="満月の水彩イラスト" width="256" height="256"><span>月のカレンダー</span><span class="new-badge" id="nb-btn-moon" style="display:none">NEW</span></button>
-      <button type="button" class="sky-btn" id="sky-to-planet"><img src="planet-saturn.jpg" alt="土星の水彩イラスト" width="240" height="240"><span>惑星の順行・逆行</span><span class="new-badge" id="nb-btn-planet" style="display:none">NEW</span></button>
+      <button type="button" class="sky-btn" id="sky-to-moon"><img src="guide-mooncal.jpg" alt="満月の水彩イラスト" width="256" height="256"><span>月のカレンダー</span><span class="new-badge inline" id="nb-btn-moon" style="display:none">NEW</span></button>
+      <button type="button" class="sky-btn" id="sky-to-planet"><img src="planet-saturn.jpg" alt="土星の水彩イラスト" width="240" height="240"><span>惑星の順行・逆行</span><span class="new-badge inline" id="nb-btn-planet" style="display:none">NEW</span></button>
       <div class="c-h">お知らせの通知</div>
       <p class="c-p">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。欲しいものだけ、選べます。</p>
       <div id="push-ui"></div>
