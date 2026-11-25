@@ -648,6 +648,10 @@
 
   /* 天赦日は星マークだけ（2026-11-26） */
   .moon-tag.tensha-tag{ background:transparent; color:#8B6FD8; font-size:16px; box-shadow:none; border:none; }
+
+  /* 凡例の天赦日は星マーク（2026-11-26） */
+  .legend-star{ color:#8B6FD8; font-size:12px; margin-right:4px; }
+  .legend-dot{ background:#7C5CD6; }
 </style>
 <script type="application/ld+json">
 {
@@ -729,7 +733,7 @@
     <div class="cal-box">
       <div class="moon-head"><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
-      <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
+      <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-star">✦</span>天赦日</span></div>
       <div class="cal-acc cal-acc-moon">
         <button type="button" class="cal-acc-btn" id="cal-btn-moon" aria-expanded="false" aria-controls="cal-panel-moon">🌙 月のメッセージ<span class="cal-acc-arrow">▾</span></button>
         <div class="cal-acc-panel" id="cal-panel-moon" hidden>
