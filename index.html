@@ -715,9 +715,9 @@
 
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
-    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button><button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-hisodate.jpg" alt="" loading="lazy" width="96" height="96">気持ちを置く<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button><button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">毎日をととのえる<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button><button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button></div></details></div></div>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button></div></details></div></div>
       
-    <p class="mnav-annai"><a href="#annai">森の奥のご案内はこちら<span class="new-badge inline" id="nb-annai" style="display:none">NEW</span></a></p>
+    
   </nav>
 
   <div class="hero">
@@ -728,14 +728,7 @@
     <p><span class="special" id="special-line"></span></p>
     <p class="yesterday" id="yesterday-line"></p>
     
-    <div class="komorebi">
-      <img id="komorebi-img" alt="今日の木漏れ日のイラスト">
-      <div class="k-body">
-        <div class="k-title">今日の木漏れ日</div>
-        <p id="komorebi-line"></p>
-        <div class="k-note">毎日、少しずつ変わります</div>
-      </div>
-    </div>
+    
     <div class="sky-box"><h2 class="sky-h2">天体暦</h2>
     <button type="button" class="kou kou-flex" id="kou-line" aria-label="月のカレンダーを見る"></button>
     <button type="button" class="kou kou-flex" id="planet-open-hero"><img class="kou-img" src="planets-icon.jpg" alt="惑星の水彩イラスト" style="object-position:50% 50%"><span class="kou-text">惑星は、いま順行？ 逆行？ <span class="kou-more">惑星のようすを見る</span></span></button>
@@ -748,43 +741,9 @@
 
   
 
-  <section id="leaves"><details class="sec-fold"><summary><img class="gimg" src="keeper-6.webp" alt="" loading="lazy" width="96" height="96">気持ちの葉っぱ<span class="chev">▽</span></summary><div class="sec-fold-body">
-    
-    
-    <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
-    <div class="leaves">
-      <button type="button" class="leaf-btn" data-leaf="1">つかれた</button>
-      <button type="button" class="leaf-btn" data-leaf="9">うれしい</button>
-      <button type="button" class="leaf-btn" data-leaf="2">モヤモヤする</button>
-      <button type="button" class="leaf-btn" data-leaf="10">たのしい</button>
-      <button type="button" class="leaf-btn" data-leaf="3">ほっとしたい</button>
-      <button type="button" class="leaf-btn" data-leaf="11">ほっとした</button>
-      <button type="button" class="leaf-btn" data-leaf="4">さみしい</button>
-      <button type="button" class="leaf-btn" data-leaf="12">すっきりした</button>
-      <button type="button" class="leaf-btn" data-leaf="5">イライラする</button>
-      <button type="button" class="leaf-btn" data-leaf="8">がんばった</button>
-      <button type="button" class="leaf-btn" data-leaf="6">かなしい</button>
-      <button type="button" class="leaf-btn" data-leaf="7">なんとなく不安</button>
-    </div>
-    <p class="leaf-msg" id="leaf-msg"></p>
-    <div class="leaf-pile-wrap">
-      <div class="leaf-pile-label">森に集まった葉っぱ</div>
-      <div class="leaf-pile" id="leaf-pile"></div>
-    </div>
-  </div></details></section>
+  
 
-<section id="uranai"><details class="sec-fold"><summary><img class="gimg" src="keeper-5.webp" alt="" loading="lazy" width="96" height="96">水女子うらない<span class="chev">▽</span></summary><div class="sec-fold-body">
-    
-    
-    <p class="sec-lead">今日の気持ちを、そっと占います。</p>
-    <div class="uranai">
-      <img loading="lazy" id="uranai-img" src="uranai-mii.png" alt="うらないをする みーちゃん">
-      <p class="uranai-msg" id="uranai-msg">ボタンを押すと、今日のうらないが出ますよ。</p>
-      <button type="button" class="uranai-btn" id="uranai-btn">うらないをひく</button>
-      <p class="uranai-note" id="uranai-note"></p>
-      <button type="button" class="uranai-card-btn" id="uranai-card-btn" style="display:none">この言葉を、カードにする</button>
-    </div>
-  </div></details></section>
+
 <details class="mnav-fold"><summary><img class="gimg" src="guide-seiza.jpg" alt="" loading="lazy" width="96" height="96">空のメモ<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="seiza.html">
         <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
@@ -868,94 +827,19 @@
       <p class="small">この森は、ただ休むための場所です。気が向いたときに、また来てくださいね。</p>
     </div>
     <img src="keeper.webp" alt="森の番人" style="display:block; width:150px; margin:16px auto 2px;" loading="lazy" width="640" height="640">
-    <p class="letter-new" id="letter-new" style="display:none"><span>新しい手紙が、届いています</span></p>
-    <button type="button" class="aruaru-btn" id="letter-open">森の番人からの手紙を読む</button>
-  </div></section>
-
-
-
-
-
-
-
-
-  <section id="yakusoku"><div class="std-box">
-    <h2>森の約束</h2>
-    <div class="yakusoku-box">
-      <p>毎日、来なくて大丈夫です。来たいときに、どうぞ。</p>
-      <p>読むだけでも、立派な参加です。</p>
-      <p>ここでは、数字で比べません。</p>
-      <p>気持ちは、置いていくだけで大丈夫です。返事は、急ぎません。</p>
-      <p>静かな森でいることを、いちばん大事にします。</p>
-    </div>
-  </div></section>
-<section id="annai"><div class="std-box">
-    <h2>森の奥のご案内</h2>
     
-    <p class="sec-lead">もう少し進んでみたい方へ。</p>
-    <div class="annai-folds">
-<details class="guide-fold"><summary>読む・学ぶ</summary><div class="links">
-<a class="link-card" href="https://kasuiehon.pages.dev/">
-        <img loading="lazy" src="guide-ehon.jpg" alt="ひーくんとみーちゃん">
-        <div>
-          <div class="t">火水の絵本『ひーくんと みーちゃん』</div>
-          <div class="d">物語で読みたい方へ。言葉がとくいな子と、感じすぎる子の物語です（無料）。</div>
-        </div>
-      </a>
-<a class="link-card" href="https://note.com/takekasui/m/mca7ae9c34dd7">
-        <img loading="lazy" src="guide-aruaru.jpg" alt="本を読むキャラクターと芽">
-        <div>
-          <div class="t">水女子あるある相談（note）</div>
-          <div class="d">「じゃあ、どうしたらいいの？」への答えを、1つずつ書いています。</div>
-        </div>
-      </a>
-<a class="link-card" href="https://hisodate.pages.dev/">
-        <img loading="lazy" src="guide-hisodate.jpg" alt="胸に火を宿した水のキャラクター">
-        <div>
-          <div class="t">水女子のための<span class="f">火育て塾</span>🔥</div>
-          <div class="d">感じたことを、言葉にする力を育てる塾です。気持ちを言葉にする記事を届けています。</div>
-        </div>
-      </a>
-</div></details>
-<details class="guide-fold"><summary>毎日の生活に</summary><div class="links">
-<a class="link-card" href="https://hotto-news.pages.dev/">
-        <img loading="lazy" src="guide-hotto.jpg" alt="森の番人">
-        <div>
-          <div class="t">森のほっとニュース<span class="hotto-new">NEW</span></div>
-          <div class="d">毎日の生活に、ご機嫌を。心が温まる、今日のいいニュースを集めています。</div>
-        </div>
-      </a>
-<a class="link-card" href="https://omusubi-panda.pages.dev/">
-        <img loading="lazy" src="guide-omupan.jpg" alt="おむすびパンダ">
-        <div>
-          <div class="t">今日のごはんに迷ったら</div>
-          <div class="d">おむすびパンダの「今日の試食」です。旬の食材と、簡単なレシピが引けます。</div>
-        </div>
-      </a>
-</div></details>
-<details class="guide-fold"><summary>心をととのえる</summary><div class="links">
-<a class="link-card" href="https://openhearttraining.pages.dev/">
-        <img loading="lazy" src="guide-sunao.jpg" alt="素直力トレーニング">
-        <div>
-          <div class="t">素直力トレーニング</div>
-          <div class="d">つい言ってしまう言葉を、素直な言葉に言い換える練習ができます。感じたことを言葉にしたい時に、どうぞ。</div>
-        </div>
-      </a>
-<a class="link-card" href="https://zangeforgive.pages.dev/">
-        <img loading="lazy" src="guide-zange.jpg" alt="ZANGE">
-        <div>
-          <div class="t">ZANGE — 心の放流</div>
-          <div class="d">心の中の思いを書いて、静かに手放す場所です。書いた言葉は、どこにも送られません。</div>
-        </div>
-      </a>
-</div></details>
-</div>
-<div class="small-links">
-      <a href="https://kamisindan.pages.dev/">火水性質診断</a>・
-      <a href="https://kamimikuji.pages.dev/">火水おみくじ</a>・
-      <a href="https://takechanlink.pages.dev/">たけちゃんリンク</a>
-    </div>
+    
   </div></section>
+
+
+
+
+
+
+
+
+  
+
 <details class="mnav-fold"><summary><img class="gimg" src="guide-denwa2.jpg" alt="" loading="lazy" width="96" height="96">もしもの時に<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="denwa.html">
         <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト">
         <div>
@@ -1032,34 +916,7 @@
     </div>
   </div>
 
-  <div class="intro-overlay" id="koyomi-modal" style="display:none">
-    <div class="intro-card">
-      <button type="button" class="intro-close" id="koyomi-close" aria-label="とじる">×</button>
-<div class="c-title">わたしの暦</div>
-    <p class="c-lead">うらないを引いた日は、ここに残ります。空いている日は、そのままで大丈夫ですよ。</p>
-    <div class="koyomi-box">
-      <div class="koyomi-title" id="koyomi-title"></div>
-      <div class="koyomi-grid" id="koyomi-grid"></div>
-      <div class="koyomi-detail" id="koyomi-detail" style="display:none"></div>
-    </div>
-    <div class="koyomi-box all-counter-wrap" id="color-record-box" style="margin-top:14px; display:none">
-      <div class="koyomi-title">あなたの色の記録</div>
-      <p class="c-p" style="text-align:center">コーナーで集めた色が、ここに貯まっていきます。</p>
-      <div class="counter-box" data-counter="all" style="border-top:none; margin-top:6px; padding-top:0"></div>
-    </div>
-    <div class="koyomi-box" style="margin-top:14px">
-      <div class="koyomi-title">記録のバックアップ</div>
-      <p class="c-p" style="text-align:center">記録は、この端末の中にあります。ブラウザが変わると、消えてしまうことがあります。ときどき書き出しておくと、安心ですよ。</p>
-      <div class="bk-btns">
-        <button type="button" class="bk-btn" id="bk-export">記録を書き出す</button>
-        <button type="button" class="bk-btn" id="bk-import-btn">記録を読み込む</button>
-      </div>
-      <input type="file" id="bk-file" accept="application/json,.json" style="display:none">
-      <p class="gs-msg" id="bk-msg"></p>
-    </div>
-      <button type="button" class="modal-close-bottom" id="koyomi-close-b">閉じる</button>
-    </div>
-  </div>
+  
 
   <div class="intro-overlay" id="negai-modal" style="display:none">
     <div class="intro-card" role="dialog" aria-modal="true" aria-label="新月の願いごとカード">
@@ -3045,22 +2902,7 @@ var shiftMoon = function(delta){
   // today's recommendation shelf (rotates daily)
 })();
 </script>
-  <div class="intro-overlay" id="aruaru-modal" style="display:none">
-    <div class="intro-card">
-      <p class="a-kicker">今日の水女子あるある</p>
-      <img class="intro-img" id="a-modal-img" alt="">
-      <div><span class="a-no" id="a-modal-no"></span></div>
-      <p id="a-modal-text"></p>
-      <div class="a-modal-wm">
-        <button type="button" class="wm-btn" id="a-modal-wm">わたしも</button>
-        <span class="wm-msg" id="a-modal-msg"></span>
-      </div>
-      <p class="a-after">「これ、私だ」と思ったら、それは性格が弱いからではありません。感じすぎるほど感じる、水の強さのサインかもしれません。</p>
-      <img src="keeper-4.webp" alt="森の番人" style="display:block; width:84px; margin:10px auto 0;" loading="lazy" width="640" height="640">
-      <button type="button" class="modal-close-bottom" id="a-modal-close-b">閉じる</button>
-      <button type="button" class="intro-close" id="a-modal-close" aria-label="とじる">×</button>
-    </div>
-  </div>
+  
 
 <script>
 (function(){
@@ -3114,18 +2956,7 @@ var shiftMoon = function(delta){
   if (ib) ib.addEventListener('click', function(){ document.getElementById('intro-close').click(); });
 })();
 </script>
-  <div class="intro-overlay" id="letter-modal" style="display:none">
-    <div class="intro-card">
-      <button type="button" class="intro-close" id="letter-close" aria-label="とじる">×</button>
-      <img src="keeper.webp" alt="森の番人" style="display:block; width:170px; max-width:60%; margin:2px auto 10px;" loading="lazy" width="640" height="640">
-      <div class="l-title">森の番人から</div>
-      <p class="modal-letter-p" id="letter-body">感じているのに、言葉にできない。僕の妻が、ずっとそうでした。<br>
-      だから、言葉にならなくても居ていい場所がほしくて、この森を作りました。<br>
-      無理に話さなくて、大丈夫。葉っぱを1枚、置いていくだけで大丈夫です。<br>
-      また来てくださいね。</p>
-      <button type="button" class="modal-close-bottom" id="letter-close-b">閉じる</button>
-    </div>
-  </div>
+  
 
   <div class="intro-overlay" id="home-modal" style="display:none">
     <div class="intro-card">
@@ -3799,179 +3630,7 @@ var shiftMoon = function(delta){
       return '<div class="area-zone' + (done[i] ? ' on' : '') + '" style="left:' + a.lx + '%;top:' + a.ty + '%;background:' + a.hex + ';color:' + tc + '">' + a.name + '</div>';
     }).join('');
     if (btns) btns.innerHTML = AREAS.map(function(a, i){
-      return '<button type="button" class="goshiki-btn' + (done[i] ? ' on' : '') + '" data-i="' + i + '"><span class="gb-dot" style="background:' + a.hex + (a.color === '白' ? ';border:1.5px solid #CFC8B4' : '') + '"></span>' + a.label + '</button>';
-    }).join('');
-    if (msg) {
-      var picked = AREAS.filter(function(a, i){ return done[i]; }).map(function(a){ return a.msg; });
-      if (!picked.length) msg.textContent = 'さすれたら、ボタンを押してくださいね。';
-      else if (picked.length === 6) msg.textContent = '全部のエリアを、さすれましたね。体が、ほっとしています。';
-      else msg.textContent = picked.join('と') + 'を、さすれましたね。';
-    }
-    if (totalEl) {
-      var tot = 0;
-      Object.keys(hist).forEach(function(d){ hist[d].forEach(function(v){ if (v) tot++; }); });
-      totalEl.textContent = tot > 0 ? 'あなたの記録：いままでに、' + tot + '回エリアをさすれました。' : '';
-    }
-    if (btns) Array.prototype.forEach.call(btns.querySelectorAll('.goshiki-btn'), function(b){
-      b.addEventListener('click', function(){
-        var i = +b.getAttribute('data-i');
-        done[i] = !done[i];
-        if (done[i]) { try { var lg = JSON.parse(localStorage.getItem('mori_color_log') || '[]'); lg.push({ d: today, c: 'body', i: [3, 1, 0, 2, 1, 4][i] }); localStorage.setItem('mori_color_log', JSON.stringify(lg)); } catch(e) {} }
-        try { localStorage.setItem('mori_body_hist', JSON.stringify(hist)); } catch(e) {}
-        render();
-      });
-    });
-  }
-  render();
-})();
-</script>
-<script>
-(function(){
-  function wire(openIds, modalId, closeIds){
-    var m = document.getElementById(modalId);
-    if (!m) return;
-    function open(){ m.style.display = 'flex'; }
-    function close(){ m.style.display = 'none'; }
-    openIds.forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', function(ev){ ev.preventDefault(); open(); }); });
-    closeIds.forEach(function(id){ var b = document.getElementById(id); if (b) b.addEventListener('click', close); });
-    m.addEventListener('click', function(ev){ if (ev.target === m) close(); });
-  }
-  wire(['nikki-open', 'today-diary'], 'nikki-modal', ['nikki-close', 'nikki-close-b']);
-  wire(['koyomi-open'], 'koyomi-modal', ['koyomi-close', 'koyomi-close-b']);
-})();
-</script>
-<script>
-(function(){
-  document.querySelectorAll('.mnav-btn').forEach(function(b){
-    b.addEventListener('click', function(){
-      var open = b.getAttribute('data-open');
-      var click = b.getAttribute('data-click');
-      var anchor = b.getAttribute('data-anchor');
-      if (open) { var m = document.getElementById(open); if (m) m.style.display = 'flex'; }
-      else if (click) { var t = document.getElementById(click); if (t) t.click(); }
-      else if (anchor) { var s = document.getElementById(anchor); if (s) s.scrollIntoView({ behavior:'auto', block:'start' }); }
-    });
-  });
-})();
-</script>
-<script>
-(function(){
-  var LETTER_VER = (function(){ var n = new Date(); var dow = (n.getDay() + 6) % 7; var m = new Date(n.getFullYear(), n.getMonth(), n.getDate() - dow); return 'letter-' + m.getFullYear() + '-' + (m.getMonth() + 1) + '-' + m.getDate(); })();
-  var ANNAI_VER = '2026-11-19';
-  function $(id){ return document.getElementById(id); }
-  function show(id, on){ var el = $(id); if (el) el.style.display = on ? '' : 'none'; }
-  function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-  var diaryNew = true;
-  try { diaryNew = localStorage.getItem('mori_diary_seen') !== todayStr(); } catch(e) {}
-  show('nb-diary', diaryNew); show('nb-diary2', diaryNew);
-  function diarySeen(){ try { localStorage.setItem('mori_diary_seen', todayStr()); } catch(e) {} show('nb-diary', false); show('nb-diary2', false); }
-  ['nikki-open', 'today-diary'].forEach(function(id){ var el = $(id); if (el) el.addEventListener('click', diarySeen); });
-  var md = document.querySelector('[data-click="nikki-open"]'); if (md) md.addEventListener('click', diarySeen);
-  var letterNew = true;
-  try { letterNew = localStorage.getItem('mori_letter_seen') !== LETTER_VER; } catch(e) {}
-  show('nb-letter', letterNew);
-  function letterSeen(){ try { localStorage.setItem('mori_letter_seen', LETTER_VER); } catch(e) {} show('nb-letter', false); var n = $('letter-new'); if (n) n.style.display = 'none'; }
-  var lo = $('letter-open'); if (lo) lo.addEventListener('click', letterSeen);
-  var ml = document.querySelector('[data-click="letter-open"]'); if (ml) ml.addEventListener('click', letterSeen);
-  var annaiNew = true;
-  try { annaiNew = localStorage.getItem('mori_annai_seen') !== ANNAI_VER; } catch(e) {}
-  show('nb-annai', annaiNew);
-  var al = document.querySelector('.mnav-annai a');
-  if (al) al.addEventListener('click', function(){ try { localStorage.setItem('mori_annai_seen', ANNAI_VER); } catch(e) {} show('nb-annai', false); });
-})();
-</script>
-<script>
-(function(){
-  var overlays = Array.prototype.slice.call(document.querySelectorAll('.intro-overlay'));
-  if (!overlays.length) return;
-  function isOpen(o){ return o.style.display !== 'none' && o.style.display !== ''; }
-  function anyOpen(){ return overlays.some(isOpen); }
-  var pushed = false, ignoring = false;
-  function sync(){
-    var open = anyOpen();
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (open && !pushed) { try { history.pushState({ moriModal: 1 }, ''); pushed = true; } catch(e) {} }
-    if (!open && pushed) { pushed = false; ignoring = true; try { history.back(); } catch(e) { ignoring = false; } }
-  }
-  window.addEventListener('popstate', function(){
-    if (ignoring) { ignoring = false; return; }
-    if (pushed) {
-      pushed = false;
-      overlays.forEach(function(o){ if (isOpen(o)) o.style.display = 'none'; });
-      document.body.style.overflow = '';
-    }
-  });
-  var mo = new MutationObserver(sync);
-  overlays.forEach(function(o){ mo.observe(o, { attributes:true, attributeFilter:['style'] }); });
-  document.addEventListener('keydown', function(e){
-    if (e.key !== 'Escape') return;
-    overlays.forEach(function(o){ if (isOpen(o)) o.style.display = 'none'; });
-    sync();
-  });
-  sync();
-})();
-</script>
-<script>
-(function(){
-  var btn = document.getElementById('top-btn');
-  if (!btn) return;
-  function sync(){ btn.classList.toggle('show', window.scrollY > 500); }
-  window.addEventListener('scroll', sync, { passive: true });
-  btn.addEventListener('click', function(){ window.scrollTo(0, 0); });
-  sync();
-})();
-</script>
-<script>
-(function(){
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.addEventListener('click', function(e){
-    var t = e.target;
-    if (t && t.tagName === 'IMG' && (t.getAttribute('src') || '').indexOf('keeper') >= 0) {
-      t.classList.remove('keeper-tap');
-      void t.offsetWidth;
-      t.classList.add('keeper-tap');
-      setTimeout(function(){ t.classList.remove('keeper-tap'); }, 700);
-    }
-  });
-})();
-</script>
-<style>
-.push-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 4px}
-.push-chip{border:1.5px solid #C4D4BA;background:#EFF3EA;color:#75846F;border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:44px}
-.push-chip[aria-pressed="true"]{background:#7FB069;border-color:#7FB069;color:#fff}
-.push-stop{background:none;border:none;color:#8a7f72;font-size:13px;text-decoration:underline;cursor:pointer;margin-top:6px;min-height:44px}
-.push-hero-note{display:block;margin:8px auto 0;background:none;border:none;color:#5E8C61;font-size:14px;text-decoration:underline;cursor:pointer;min-height:44px;padding:6px 12px}
-.hotto-hero{margin:12px 0 2px;background:linear-gradient(120deg,#eef5e6,#dfedd8);border-color:#b9d3ac;box-shadow:0 2px 8px rgba(80,120,70,.12)}
-.omoro-hero{margin:10px 0 2px;background:linear-gradient(120deg,#fdf6e0,#fdeed3);border-color:#ecd9a8;box-shadow:0 2px 8px rgba(150,120,50,.10)}
-.omoro-hero img{border-radius:50%;object-fit:cover}
-.omoro-hero .t{color:#7a5b23}
-.omoro-hero .d{color:#8a6d35}
-.hotto-hero img{border-radius:50%;object-fit:cover}
-.hotto-hero .hotto-hero-title{font-size:16.5px;color:#356045}
-.hotto-hero .d{color:#5c8266}
-.hotto-new{display:none;background:#e8837a;color:#fff;font-size:11px;font-weight:900;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap}
-.hotto-new.on{display:inline-block}
-</style>
-<script>
-(function(){
-  var API = 'https://mori-push.ankantakeshi.workers.dev';
-  var VAPID = 'BEHYjz45pDIT_4bJ1aI9OMWkiCbbuhzXVCTCDrxk8S9F8hRs3TE6eMjaPSLztrdClv-rBhOSM3qF8zq-l1TxAGg';
-  var ui = document.getElementById('push-ui');
-  var msg = document.getElementById('push-msg');
-  if (!ui) return;
-  function say(t){ if (msg) msg.textContent = t || ''; }
-  function b64u(buf){ var bytes = new Uint8Array(buf); var s = ''; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
-  function keyToBytes(s){ var pad = '='.repeat((4 - s.length % 4) % 4); var base = (s + pad).replace(/-/g, '+').replace(/_/g, '/'); var raw = atob(base); var out = new Uint8Array(raw.length); for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i); return out; }
-  function getPrefs(){ try { var p = JSON.parse(localStorage.getItem('mori_push_prefs') || 'null'); if (p && typeof p.moon === 'boolean') return p; } catch (e) {} return { moon: true, planet: true }; }
-  function setPrefs(p){ try { localStorage.setItem('mori_push_prefs', JSON.stringify(p)); } catch (e) {} }
-  function getEndpoint(){ try { return localStorage.getItem('mori_push_endpoint') || ''; } catch (e) { return ''; } }
-  function setEndpoint(ep){ try { if (ep) localStorage.setItem('mori_push_endpoint', ep); else localStorage.removeItem('mori_push_endpoint'); } catch (e) {} }
-  function post(path, body){ return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
-  var supported = ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window);
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-  var reg = null;
-  function chipsHTML(p){ function chip(id, on, label){ return '<button type="button" class="push-chip" id="' + id + '" aria-pressed="' + (on ? 'true' : 'false') + '">' + (on ? '✓ ' : '') + label + '</button>'; } return '<div class="push-chips">' + chip('push-chip-moon', p.moon, '🌙 新月・満月') + chip('push-chip-planet', p.planet, '🪐 惑星の逆行・順行') + '</div><p class="c-p" style="margin-top:6px">緑色が、受け取る設定です。</p>'; }
+      return ''; } return '<div class="push-chips">' + chip('push-chip-moon', p.moon, '🌙 新月・満月') + chip('push-chip-planet', p.planet, '🪐 惑星の逆行・順行') + '</div><p class="c-p" style="margin-top:6px">緑色が、受け取る設定です。</p>'; }
   function bindChips(onChange){
     ['moon', 'planet'].forEach(function (k) {
       var el = document.getElementById('push-chip-' + k);
