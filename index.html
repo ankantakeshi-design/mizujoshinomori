@@ -627,6 +627,10 @@
 
   /* 案内板の中のバー（2026-11-25） */
   .mori-nav > details.mnav-fold{ margin:10px 0 0; }
+
+  /* 天体暦モーダルのボタンに挿絵（2026-11-25） */
+  .sky-btn{ display:flex; align-items:center; gap:12px; text-align:left; }
+  .sky-btn img{ width:56px; height:56px; border-radius:12px; flex:none; }
 </style>
 <script type="application/ld+json">
 {
@@ -3020,8 +3024,8 @@ var shiftMoon = function(delta){
       <div class="c-title">天体暦</div>
       <p class="c-lead">月と惑星のようすが、見られます。</p>
       <p class="c-p">トップの、月の行と惑星の行からも、直接開けます。</p>
-      <button type="button" class="sky-btn" id="sky-to-moon">月のカレンダー</button>
-      <button type="button" class="sky-btn" id="sky-to-planet">惑星の順行・逆行</button>
+      <button type="button" class="sky-btn" id="sky-to-moon"><img src="guide-mooncal.jpg" alt="満月の水彩イラスト" width="256" height="256"><span>月のカレンダー</span></button>
+      <button type="button" class="sky-btn" id="sky-to-planet"><img src="planet-saturn.jpg" alt="土星の水彩イラスト" width="240" height="240"><span>惑星の順行・逆行</span></button>
       <div class="c-h">お知らせの通知</div>
       <p class="c-p">新月・満月と、惑星の逆行・順行を、3日前と当日の朝8時ごろにお知らせします。欲しいものだけ、選べます。</p>
       <div id="push-ui"></div>
