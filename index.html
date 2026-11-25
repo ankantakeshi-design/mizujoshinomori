@@ -539,6 +539,16 @@
   .mnav-fold>summary .chev{ font-size:13px; color:#7c7165; margin-left:auto; }
   .mnav-fold>summary .gimg{ width:44px; height:44px; object-fit:cover; border-radius:10px; flex:none; }
   .mnav-fold .mnav-grid{ margin-top:8px; }
+
+  .dict-fold-body{ padding-top:8px; }
+  .dict-fold-body .link-card{ margin-bottom:10px; }
+
+  .sec-fold{ border:2px solid #DCE8DC; border-radius:16px; background:#FDFEFB; overflow:hidden; }
+  .sec-fold>summary{ list-style:none; cursor:pointer; min-height:56px; display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:16.5px; font-weight:900; color:#33513B; }
+  .sec-fold>summary::-webkit-details-marker{ display:none; }
+  .sec-fold>summary .gimg{ width:44px; height:44px; object-fit:cover; border-radius:10px; flex:none; }
+  .sec-fold>summary .chev{ margin-left:auto; font-size:14px; color:#7FA88C; }
+  .sec-fold .sec-fold-body{ padding:2px 14px 14px; }
 </style>
 <style>
 /* FAQ（よくある質問） */
@@ -675,14 +685,14 @@
   <nav class="mori-nav" aria-label="森の入口">
     <div class="mnav-title">森の入口</div>
     <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="moon-mii.jpg" alt="" loading="lazy" width="96" height="96">空と暦をみる<span class="new-badge" id="nb-g-sky" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-open="sky-modal"><span class="mnav-emoji">🌙</span>天体暦<span class="new-badge" id="nb-sky" style="display:none">NEW</span></button><button type="button" class="mnav-btn" id="koyomi-open"><span class="mnav-emoji">🗓️</span>わたしの暦</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-hisodate.jpg" alt="" loading="lazy" width="96" height="96">気持ちを置く<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="leaves"><span class="mnav-emoji">🍃</span>葉っぱ</button><button type="button" class="mnav-btn" id="aruaru-open"><span class="mnav-emoji">💬</span>あるある</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">毎日をととのえる<span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" data-anchor="corners"><span class="mnav-emoji">🎨</span>彩り生活</button><button type="button" class="mnav-btn" data-anchor="uranai"><span class="mnav-emoji">🔮</span>うらない</button></div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-ehon.jpg" alt="" loading="lazy" width="96" height="96">読みもの<span class="new-badge" id="nb-g-read" style="display:none">NEW</span><span class="chev">▽</span></summary><div class="mnav-grid"><button type="button" class="mnav-btn" id="nikki-open"><span class="mnav-emoji">📖</span>日記<span class="new-badge" id="nb-diary" style="display:none">NEW</span></button><button type="button" class="mnav-btn" data-click="letter-open"><span class="mnav-emoji">✉️</span>番人の手紙<span class="new-badge" id="nb-letter" style="display:none">NEW</span></button></div></details></div></div>
-      <a class="link-card slim" href="seiza.html">
+      <details class="mnav-fold"><summary><img class="gimg" src="guide-seiza.jpg" alt="" loading="lazy" width="96" height="96">空のメモ<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="seiza.html">
         <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
           <div class="t">星座メモ</div>
           <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
         </div>
       </a>
-      <div class="inyo-acc" id="inyo-acc">
+      </div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
           <a class="link-card slim" href="https://inyo-megane.pages.dev/inyo">
@@ -742,13 +752,13 @@
           <div class="d">二十四節気ごとに、今の季節の過ごし方をまとめました。</div>
         </div>
       </a>
-      <a class="link-card slim" href="denwa.html">
+      </div></details><details class="mnav-fold"><summary><img class="gimg" src="guide-denwa2.jpg" alt="" loading="lazy" width="96" height="96">もしもの時に<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim" href="denwa.html">
         <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト">
         <div>
           <div class="t">もしもの電話番号</div>
           <div class="d">いざという時の番号をまとめました。押すと、そのまま電話がかけられます。</div>
         </div>
-      </a>
+      </a></div></details>
     <p class="mnav-annai"><a href="#annai">森の奥のご案内はこちら<span class="new-badge inline" id="nb-annai" style="display:none">NEW</span></a></p>
   </nav>
 
@@ -780,8 +790,8 @@
     <button type="button" class="push-hero-note" data-open="sky-modal">🔔 お知らせ通知も、選べます</button>
   </div>
 
-  <section id="corners">
-    <h2>彩り生活</h2>
+  <section id="corners"><details class="sec-fold"><summary><img class="gimg" src="keeper-4.webp" alt="" loading="lazy" width="96" height="96">彩り生活<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
     <p class="sec-lead">生活に彩りを。バランス豊かに。<br>生活しよう、暮らしていこう。<br>食事、色と気持ち、運動、からだ、お掃除。<br>まずは、どれかひとつから、はじめてみてくださいね。</p>
     <div class="all-counter-wrap" style="display:none; margin-top:14px">
       <p class="gs-msg" style="font-weight:700; color:#7a7264">今週の彩り</p>
@@ -795,10 +805,10 @@
       <button type="button" class="corner-card corner-wide" id="corner-body"><span class="cc-dot" style="background:#EFB7A0"></span><span class="cc-title">からだ</span><span class="cc-sub">体のエリアを、色でさする</span><span class="cc-counter" data-ccounter="body"></span></button>
       <button type="button" class="corner-card corner-wide" id="corner-clean"><span class="cc-dot" style="background:#9DBE9C"></span><span class="cc-title">お掃除</span><span class="cc-sub">色の場所を、少しだけ</span><span class="cc-counter" data-ccounter="clean"></span></button>
     </div>
-  </section>
+  </div></details></section>
 
-  <section id="leaves">
-    <h2>気持ちの葉っぱ</h2>
+  <section id="leaves"><details class="sec-fold"><summary><img class="gimg" src="keeper-6.webp" alt="" loading="lazy" width="96" height="96">気持ちの葉っぱ<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
     <img class="keeper-mini" src="keeper-6.webp" alt="森の番人" loading="lazy" width="640" height="640">
     <p class="sec-lead">今の気持ちに、いちばん近いものを1つ選んで、森に置いていってくださいね。<br>文章にしなくて、大丈夫。選ぶだけで、気持ちは外に出ます。</p>
     <div class="leaves">
@@ -820,10 +830,10 @@
       <div class="leaf-pile-label">森に集まった葉っぱ</div>
       <div class="leaf-pile" id="leaf-pile"></div>
     </div>
-  </section>
+  </div></details></section>
 
-  <section id="uranai">
-    <h2>水女子うらない</h2>
+  <section id="uranai"><details class="sec-fold"><summary><img class="gimg" src="keeper-5.webp" alt="" loading="lazy" width="96" height="96">水女子うらない<span class="chev">▽</span></summary><div class="sec-fold-body">
+    
     <img class="keeper-mini" src="keeper-5.webp" alt="森の番人" loading="lazy" width="640" height="640">
     <p class="sec-lead">今日の気持ちを、そっと占います。</p>
     <div class="uranai">
@@ -833,7 +843,7 @@
       <p class="uranai-note" id="uranai-note"></p>
       <button type="button" class="uranai-card-btn" id="uranai-card-btn" style="display:none">この言葉を、カードにする</button>
     </div>
-  </section>
+  </div></details></section>
 
   <section>
     <h2>森の休憩所</h2>
