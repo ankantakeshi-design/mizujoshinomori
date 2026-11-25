@@ -3794,7 +3794,7 @@ var shiftMoon = function(delta){
 </script>
 <script>
 (function(){
-  document.querySelectorAll('.mnav-btn').forEach(function(b){
+  document.querySelectorAll('.mnav-btn, .link-card[data-open]').forEach(function(b){
     b.addEventListener('click', function(){
       var open = b.getAttribute('data-open');
       var click = b.getAttribute('data-click');
