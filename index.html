@@ -727,7 +727,6 @@
       <div class="moon-head"><button type="button" class="moon-nav" id="moon-prev" aria-label="前の月">‹</button><div class="koyomi-title" id="moon-title"></div><button type="button" class="moon-nav" id="moon-next-btn" aria-label="次の月">›</button></div>
       <div class="koyomi-grid" id="moon-grid"></div>
       <div class="moon-legend"><span><span class="legend-dot"></span>一粒万倍日</span><span><span class="legend-box"></span>天赦日</span></div>
-      <p class="cal-next" id="cal-next-event"></p>
       <div class="cal-acc cal-acc-moon">
         <button type="button" class="cal-acc-btn" id="cal-btn-moon" aria-expanded="false" aria-controls="cal-panel-moon">🌙 月のメッセージ<span class="cal-acc-arrow">▾</span></button>
         <div class="cal-acc-panel" id="cal-panel-moon" hidden>
@@ -2355,6 +2354,15 @@ window.MOON_EVENTS = (function(){
       return cands[0][1];
     }
     function moonEventOn(y, m, d){
+      if (window.MOON_EVENTS && window.MOON_EVENTS.length) {
+        var fmtE = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' });
+        var dayMs = Date.UTC(y, m, d);
+        var evFirst = window.MOON_EVENTS[0].t, evLast = window.MOON_EVENTS[window.MOON_EVENTS.length - 1].t;
+        if (dayMs >= evFirst - 172800000 && dayMs <= evLast + 172800000) {
+          for (var ei = 0; ei < window.MOON_EVENTS.length; ei++) { var ev9 = window.MOON_EVENTS[ei]; var pp = fmtE.format(new Date(ev9.t)).split('-'); if (+pp[0] === y && +pp[1] - 1 === m && +pp[2] === d) return ev9.kind === 'n' ? '新月' : '満月'; }
+          return null;
+        }
+      }
       var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
       var a0 = sAgeAt(t0), a1 = sAgeAt(t0 + 86400000);
       if (a1 < a0 - 20) return '新月';
@@ -2851,7 +2859,7 @@ function renderMoon(vy, vm){
         var SHUN = {0:'たけのこ・あさり・さわら・よもぎ',15:'新じゃが・そら豆・かつお・たけのこ',30:'そら豆・新茶・かつお・グリーンピース',45:'新茶・そら豆・えんどう・びわ',60:'びわ・さくらんぼ・そら豆・あゆ',75:'梅・あゆ・トマト・きゅうり',90:'トマト・なす・とうもろこし・あゆ',105:'とうもろこし・枝豆・うなぎ・桃',120:'うなぎ・桃・すいか・ゴーヤ',135:'桃・ぶどう・なす・梨',150:'梨・ぶどう・さんま・栗',165:'栗・さんま・さつまいも・梨',180:'さつまいも・きのこ・さんま・新米',195:'新米・栗・さば・柿',210:'柿・りんご・さば・里芋',225:'りんご・白菜・大根・牡蠣',240:'牡蠣・白菜・みかん・ほうれん草',255:'みかん・ぶり・大根・小松菜',270:'かぼちゃ・ゆず・ぶり・れんこん',285:'せり・春菊・たら・みかん',300:'金柑・ねぎ・たら・いちご',315:'菜の花・ふきのとう・いちご・はまぐり',330:'菜の花・春キャベツ・わかめ・しらす',345:'たけのこ・新玉ねぎ・さわら・いちご'};
         var shunSeg = (Math.floor(luckySunLon(jp.y, jp.m, 15) / 15) * 15) % 360;
         var HANA = {0:'桜・チューリップ・れんげ',15:'桜・チューリップ・藤',30:'藤・牡丹・つつじ',45:'牡丹・あやめ・バラ',60:'バラ・あじさい・花菖蒲',75:'あじさい・花菖蒲・くちなし',90:'ゆり・あじさい・桔梗',105:'桔梗・朝顔・ひまわり',120:'ひまわり・朝顔・百日紅',135:'百日紅・すすき・桔梗',150:'すすき・秋桜・萩',165:'萩・秋桜・彼岸花',180:'彼岸花・金木犀・秋桜',195:'金木犀・秋バラ・秋桜',210:'菊・秋バラ・山茶花',225:'山茶花・菊・寒椿',240:'山茶花・水仙・寒椿',255:'水仙・シクラメン・ポインセチア',270:'水仙・蝋梅・シクラメン',285:'蝋梅・水仙・寒牡丹',300:'蝋梅・梅・福寿草',315:'梅・水仙・福寿草',330:'梅・沈丁花・菜の花',345:'沈丁花・木蓮・菜の花'};
-        document.getElementById('moon-shun').innerHTML = 'この月の旬：' + SHUN[shunSeg] + '。花は、' + HANA[shunSeg] + 'です。<a class="shun-link" href="shun.html">旬辞典はこちら →</a>';
+        document.getElementById('moon-shun').innerHTML = SHUN[shunSeg] + '。花は、' + HANA[shunSeg] + 'です。<a class="shun-link" href="shun.html">旬辞典はこちら →</a>';
         document.getElementById('moon-lucky').innerHTML = llines.join('<br>');
           document.getElementById('moon-prev').classList.toggle('off', viewIdx <= baseIdx - 12);
           document.getElementById('moon-next-btn').classList.toggle('off', viewIdx >= baseIdx + 12);
@@ -3870,7 +3878,16 @@ var shiftMoon = function(delta){
     return (((mlon - slon) % 360) + 360) % 360 / 360 * 29.530588853;
   }
   function moonEventOn(y, m, d){
-    var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
+    if (window.MOON_EVENTS && window.MOON_EVENTS.length) {
+        var fmtE = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' });
+        var dayMs = Date.UTC(y, m, d);
+        var evFirst = window.MOON_EVENTS[0].t, evLast = window.MOON_EVENTS[window.MOON_EVENTS.length - 1].t;
+        if (dayMs >= evFirst - 172800000 && dayMs <= evLast + 172800000) {
+          for (var ei = 0; ei < window.MOON_EVENTS.length; ei++) { var ev9 = window.MOON_EVENTS[ei]; var pp = fmtE.format(new Date(ev9.t)).split('-'); if (+pp[0] === y && +pp[1] - 1 === m && +pp[2] === d) return ev9.kind === 'n' ? '新月' : '満月'; }
+          return null;
+        }
+      }
+      var t0 = Date.UTC(y, m, d) - 9 * 3600 * 1000;
     var a0 = sAgeAt(t0), a1 = sAgeAt(t0 + 86400000);
     if (a1 < a0 - 20) return '新月';
     if (a0 < 14.7653 && a1 >= 14.7653) return '満月';
