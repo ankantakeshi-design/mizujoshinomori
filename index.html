@@ -2867,8 +2867,8 @@ function renderMoon(vy, vm){
           });
         });
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<div class="moon-ev new-ev"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + nd.d + '日（' + jstHM2(ev.newT) + '）</b>' + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + kasuiText(ns, false).replace(/（火\d+%・水\d+%）/, '') + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'について</a></div>'); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<div class="moon-ev full-ev"><span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + fd.d + '日（' + jstHM2(ev.fullT) + '）</b>' + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + kasuiText(fs, true).replace(/（火\d+%・水\d+%）/, '') + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'について</a></span></div>'); }
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<div class="moon-ev new-ev"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + nd.d + '日（' + jstHM2(ev.newT) + '）</b>' + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'について</a></div>'); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<div class="moon-ev full-ev"><span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + fd.d + '日（' + jstHM2(ev.fullT) + '）</b>' + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'について</a></span></div>'); }
         document.getElementById('moon-events').innerHTML = lines.join('');
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
