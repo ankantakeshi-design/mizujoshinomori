@@ -557,6 +557,10 @@
   .cal-acc-seiza .cal-acc-btn { color:#6A5AA8; }
   .dict-fold-body .moon-shun { font-size:16px; margin-top:0; }
   .mori-nav .link-card.t-denwa{ background:#fbfdf8; border-color:#dfe7da; }
+  #moon-title::before, #moon-title::after { content:none; }
+  #moon-title .mt-year { display:block; font-size:12.5px; font-weight:700; color:#7c8a72; letter-spacing:.14em; }
+  #moon-title .mt-month { display:block; font-size:24px; font-weight:900; line-height:1.3; }
+  #moon-title .mt-month::before, #moon-title .mt-month::after { content:'✦'; color:#E8B93E; margin:0 8px; font-size:13px; vertical-align:middle; }
   .cal-acc .cal-acc-btn{ color:#33513B; }
   .hotto-hero, .omoro-hero{ background:#FDFEFB !important; border-color:#DCE8DC !important; box-shadow:none !important; }
   .komorebi{ background:#FDFEFB !important; border-color:#DCE8DC !important; border-radius:16px; }
@@ -778,7 +782,7 @@
   <nav class="mori-nav" aria-label="森の案内板">
     <div class="mnav-title">森の案内板</div>
     <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">この月の旬<span class="chev">▽</span></summary><div class="dict-fold-body"><p class="moon-shun" id="moon-shun"></p></div></details>
-<details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
+<details class="mnav-fold"><summary><img class="gimg" src="guide-jiten.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
           <a class="link-card slim" href="https://inyo-megane.pages.dev/inyo">
@@ -2796,7 +2800,7 @@ window.MOON_EVENTS = (function(){
       var viewIdx = baseIdx;
 function renderMoon(vy, vm){
           var jp = { y: vy, m: vm, d: (vy === todayJ.y && vm === todayJ.m) ? todayJ.d : 0 };
-        document.getElementById('moon-title').textContent = jp.y + '年' + (jp.m + 1) + '月';
+        document.getElementById('moon-title').innerHTML = '<span class="mt-year">' + jp.y + '年</span><span class="mt-month">' + (jp.m + 1) + '月</span>';
         var ev = findEvents(jp.y, jp.m);
         var grid = document.getElementById('moon-grid');
         var html = '';
