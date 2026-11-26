@@ -553,7 +553,9 @@
   /* 箱の形の統一（2026-11-25）: 背景は白・枠は薄緑・角は16px にそろえる */
   #season-fx{ display:none !important; }
   .cal-acc{ border:2px solid #DCE8DC; }
-  .cal-acc-moon, .cal-acc-lucky, .cal-acc-shun{ background:#FDFEFB; }
+  .cal-acc-moon, .cal-acc-lucky, .cal-acc-shun, .cal-acc-seiza{ background:#FDFEFB; }
+  .cal-acc-seiza .cal-acc-btn { color:#6A5AA8; }
+  .dict-fold-body .moon-shun { font-size:16px; margin-top:0; }
   .cal-acc .cal-acc-btn{ color:#33513B; }
   .hotto-hero, .omoro-hero{ background:#FDFEFB !important; border-color:#DCE8DC !important; box-shadow:none !important; }
   .komorebi{ background:#FDFEFB !important; border-color:#DCE8DC !important; border-radius:16px; }
@@ -759,11 +761,8 @@
           <p id="moon-lucky" hidden></p>
         </div>
       </div>
-      <div class="cal-acc cal-acc-shun">
-        <button type="button" class="cal-acc-btn" id="cal-btn-shun" aria-expanded="false" aria-controls="cal-panel-shun">🍎 この月の旬<span class="cal-acc-arrow">▾</span></button>
-        <div class="cal-acc-panel" id="cal-panel-shun" hidden>
-          <p class="moon-shun" id="moon-shun"></p>
-        </div>
+      <div class="cal-acc cal-acc-seiza">
+        <a class="cal-acc-btn" href="seiza.html" style="text-decoration:none">✨ 星座メモ<span class="cal-acc-arrow">›</span></a>
       </div>
     </div>
     <button type="button" class="cal-negai-btn" id="negai-open">🌙 新月の願いごとカードを作る</button>
@@ -781,16 +780,9 @@
         <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト" width="256" height="256" style="height:auto">
         <div>
           <div class="t">もしもの電話番号</div>
-          <div class="d">いざという時の番号をまとめました。押すと、そのまま電話がかけられます。</div>
         </div>
       </a></div>
-<div class="mnav-grid"><a class="link-card slim" href="seiza.html">
-        <img loading="lazy" src="guide-seiza.jpg" alt="星空と星座の環の水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">星座メモ</div>
-          <div class="d">12星座の特徴を、基礎だけパッと引けるメモです。</div>
-        </div>
-      </a></div>
+<details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">この月の旬<span class="chev">▽</span></summary><div class="dict-fold-body"><p class="moon-shun" id="moon-shun"></p></div></details>
 <details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
