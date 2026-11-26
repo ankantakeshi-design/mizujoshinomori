@@ -290,6 +290,9 @@
   .small-links a { color:#41729E; text-decoration:none; margin:0 8px; }
   footer { margin-top:56px; text-align:center; font-size:12px; color:#796f62; font-weight:500; }
   footer .bgm-credit { display:block; margin-top:6px; font-size:11px; color:#7c7165; }
+  .share-lead { margin:0 0 10px; font-size:13px; color:#796f62; font-weight:700; }
+  .share-row { display:flex; gap:10px; margin:0 0 16px; }
+  .share-btn { flex:1; background:#F4F8F0; border:1.5px solid #C4D4BA; color:#4E7A51; font-family:inherit; font-size:15px; font-weight:700; border-radius:999px; padding:12px 10px; min-height:48px; cursor:pointer; }
   .bgm-btn {
     position:fixed; left:16px; bottom:16px; z-index:50;
     width:48px; height:48px; padding:0;
@@ -894,7 +897,7 @@
   
 
     
-<footer>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
+<footer><p class="share-lead">この森を、誰かにそっと届けたい時は</p><div class="share-row"><button type="button" class="share-btn" id="share-copy">🔗 リンクをコピー</button><button type="button" class="share-btn" id="share-native">📤 シェアする</button></div>心体調整塾 たけちゃん<span class="bgm-credit">BGM: もっぴーさうんど</span></footer>
 
 </div>
 
@@ -3955,6 +3958,33 @@ var shiftMoon = function(delta){
     };
     new MutationObserver(markSeen).observe(skyModal, { attributes: true, attributeFilter: ['style'] });
   }
+})();
+</script>
+<script>
+(function(){
+  var SHARE_URL='https://mizujoshinomori.pages.dev/';
+  function flash(btn,msg){ var o=btn.textContent; btn.textContent=msg; setTimeout(function(){ btn.textContent=o; },2000); }
+  function fallbackCopy(btn){
+    var ta=document.createElement('textarea');
+    ta.value=SHARE_URL; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); flash(btn,'コピーしました ✓'); }
+    catch(e){ flash(btn,'コピーできませんでした'); }
+    document.body.removeChild(ta);
+  }
+  function doCopy(btn){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(SHARE_URL).then(function(){ flash(btn,'コピーしました ✓'); }, function(){ fallbackCopy(btn); });
+    } else { fallbackCopy(btn); }
+  }
+  var c=document.getElementById('share-copy');
+  if(c){ c.addEventListener('click', function(){ doCopy(c); }); }
+  var s=document.getElementById('share-native');
+  if(s){ s.addEventListener('click', function(){
+    if(navigator.share){
+      navigator.share({ title:'集まれ水女子の森｜新月・満月カレンダー', text:'新月・満月と惑星のリズムが分かる、月のカレンダー', url:SHARE_URL }).catch(function(){});
+    } else { doCopy(s); }
+  }); }
 })();
 </script>
 </body>
