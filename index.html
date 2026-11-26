@@ -556,6 +556,7 @@
   .cal-acc-moon, .cal-acc-lucky, .cal-acc-shun, .cal-acc-seiza{ background:#FDFEFB; }
   .cal-acc-seiza .cal-acc-btn { color:#6A5AA8; }
   .dict-fold-body .moon-shun { font-size:16px; margin-top:0; }
+  .mori-nav .link-card.t-denwa{ background:#fbfdf8; border-color:#dfe7da; }
   .cal-acc .cal-acc-btn{ color:#33513B; }
   .hotto-hero, .omoro-hero{ background:#FDFEFB !important; border-color:#DCE8DC !important; box-shadow:none !important; }
   .komorebi{ background:#FDFEFB !important; border-color:#DCE8DC !important; border-radius:16px; }
@@ -776,13 +777,7 @@
 
   <nav class="mori-nav" aria-label="森の案内板">
     <div class="mnav-title">森の案内板</div>
-    <div class="mnav-groups"><div class="mnav-grid"><a class="link-card slim" href="denwa.html">
-        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト" width="256" height="256" style="height:auto">
-        <div>
-          <div class="t">もしもの電話番号</div>
-        </div>
-      </a></div>
-<details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">この月の旬<span class="chev">▽</span></summary><div class="dict-fold-body"><p class="moon-shun" id="moon-shun"></p></div></details>
+    <div class="mnav-groups"><details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">この月の旬<span class="chev">▽</span></summary><div class="dict-fold-body"><p class="moon-shun" id="moon-shun"></p></div></details>
 <details class="mnav-fold"><summary><img class="gimg" src="guide-shun.jpg" alt="" loading="lazy" width="96" height="96">食と体の辞典<span class="chev">▽</span></summary><div class="dict-fold-body"><div class="inyo-acc" id="inyo-acc">
         <button type="button" class="inyo-acc-btn" id="inyo-acc-btn" aria-expanded="false" aria-controls="inyo-acc-panel"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="陰陽メガネをかけた森の番人の水彩イラスト" width="256" height="256" style="height:auto"><span class="inyo-acc-txt"><span class="t"><span class="om">☯</span> 陰陽メガネ</span><span class="d">食の陰陽辞典・クイズ・シミュレーターの3つが入っています。</span></span><span class="inyo-acc-arrow">▾</span></button>
         <div class="inyo-acc-panel" id="inyo-acc-panel" hidden>
@@ -844,6 +839,12 @@
         </div>
       </a>
       </div></details>
+<div class="mnav-grid" style="margin-top:8px"><a class="link-card slim t-denwa" href="denwa.html">
+        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト" width="256" height="256" style="height:auto">
+        <div>
+          <div class="t">もしもの電話番号</div>
+        </div>
+      </a></div>
 <details class="mnav-fold"><summary><img class="gimg" src="keeper-1.webp" alt="" loading="lazy" width="96" height="96">おすすめのサイト<span class="chev">▽</span></summary><div class="dict-fold-body"><a class="link-card slim omoro-hero t-omoro" href="https://omoro-good.pages.dev/"><img loading="lazy" src="guide-omoro.jpg" alt="おもろグ〜"><div><div class="t">おもろグ〜</div><div class="d">くすっと笑える投稿、あつめました。笑いたい日は、こちらへどうぞ</div></div></a>
 <a class="link-card slim hotto-hero t-hotto" href="https://hotto-news.pages.dev/"><img loading="lazy" src="guide-hotto-keeper3.jpg" alt="森の番人"><div><div class="t hotto-hero-title">森のほっとニュース</div><div class="d">今日のいいニュースと、四コマ漫画のコーナーは、こちら</div></div></a>
 <a class="link-card slim t-inyo" href="https://inyo-megane.pages.dev/"><img loading="lazy" src="quiz-keeper-glasses.webp" alt="メガネ番人"><div><div class="t">陰陽メガネ</div><div class="d">陰陽の見方を、練習できます</div></div></a>
