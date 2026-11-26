@@ -671,6 +671,9 @@
   body{padding-bottom:calc(66px + env(safe-area-inset-bottom));}
   .bgm-btn{bottom:calc(72px + env(safe-area-inset-bottom));}
   .top-btn{bottom:calc(72px + env(safe-area-inset-bottom));}
+
+  .moon-ev{ overflow:hidden; }
+  .moon-ev-img{ width:54px; height:54px; border-radius:50%; object-fit:cover; object-position:50% 35%; float:left; margin:2px 10px 4px 0; }
 </style>
 <script type="application/ld+json">
 {
@@ -821,7 +824,7 @@
       })();
       </script>
       <a class="link-card slim" href="shun.html">
-        <img loading="lazy" src="guide-shun.jpg" alt="野菜と果物のかごの水彩イラスト">
+        <img loading="lazy" src="guide-shun.jpg" alt="野菜かごを持つみーちゃんの水彩イラスト">
         <div>
           <div class="t">旬辞典</div>
           <div class="d">月ごとの旬の食材と、簡単な食べ方を引ける辞典です。</div>
@@ -844,7 +847,7 @@
       </a>
       </div></details>
 <div class="mnav-grid" style="margin-top:8px"><a class="link-card slim t-denwa" href="denwa.html">
-        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホと受話器の水彩イラスト" width="256" height="256" style="height:auto">
+        <img loading="lazy" src="guide-denwa2.jpg" alt="スマホを持つみーちゃんの水彩イラスト" width="256" height="256" style="height:auto">
         <div>
           <div class="t">もしもの電話番号</div>
         </div>
@@ -1034,6 +1037,8 @@ window.MOON_EVENTS = (function(){
   var FONT = '"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif';
   var keeperImg = new Image();
   keeperImg.src = 'keeper-5.webp';
+  var miiImg = new Image();
+  miiImg.src = 'moon-mii.jpg';
   var lastURL = null;
 
   // Moon age + longitude (same algorithm as the Mori calendar / push worker).
@@ -1314,6 +1319,21 @@ window.MOON_EVENTS = (function(){
       ctx.fillStyle = '#F7F2E6'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
       if (keeperImg.complete && keeperImg.naturalWidth) {
         ctx.drawImage(keeperImg, cx - (r - 10), cy - (r - 10), (r - 10) * 2, (r - 10) * 2);
+      }
+      ctx.restore();
+    })();
+    // mii-chan sticker
+    (function(){
+      var cx = 262, cy = 868, r = 114;
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBF3DC'; ctx.fill();
+      ctx.beginPath(); ctx.arc(cx, cy, r - 10, 0, Math.PI * 2); ctx.clip();
+      ctx.fillStyle = '#F7F2E6'; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+      if (miiImg.complete && miiImg.naturalWidth) {
+        var sw = miiImg.naturalWidth, sh = miiImg.naturalHeight, s = Math.min(sw, sh);
+        var sx = (sw - s) / 2, sy = (sh - s) * 0.35;
+        ctx.drawImage(miiImg, sx, sy, s, s, cx - (r - 10), cy - (r - 10), (r - 10) * 2, (r - 10) * 2);
       }
       ctx.restore();
     })();
@@ -2237,6 +2257,7 @@ window.MOON_EVENTS = (function(){
       var diffDays = Math.round((new Date(tstr0) - new Date(lastVisit)) / 86400000);
       if (diffDays >= 2) {
         kMsg.textContent = 'おかえりなさい。待っていたよ。' + '\n' + KEEPER_DAILY[kDayIdx];
+        if (kImg) { kImg.src = 'moon-mii.jpg'; }
         localStorage.setItem('mori-welcomed', tstr0);
       }
     }
@@ -2877,8 +2898,8 @@ function renderMoon(vy, vm){
           });
         });
         var lines = [];
-        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<div class="moon-ev new-ev"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + nd.d + '日（' + jstHM2(ev.newT) + '）</b>' + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'について</a></div>'); }
-        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<div class="moon-ev full-ev"><span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + fd.d + '日（' + jstHM2(ev.fullT) + '）</b>' + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'について</a></span></div>'); }
+        if (ev.newT) { var nd = jstParts(ev.newT); var ns = moonSign(ev.newT); lines.push('<div class="moon-ev new-ev"><img class="moon-ev-img" src="newmoon-mii.jpg" alt=""><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + nd.d + '日（' + jstHM2(ev.newT) + '）</b>' + '、' + ns + 'の新月です。<br>' + NEW_MSG[ns] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(ns) + '">' + ns + 'について</a></div>'); }
+        if (ev.fullT) { var fd = jstParts(ev.fullT); var fs = moonSign(ev.fullT); lines.push('<div class="moon-ev full-ev"><img class="moon-ev-img" src="moon-mii.jpg" alt=""><span class="moon-line" id="moon-line-full"><span class="moon-star">✦</span>' + '<b>' + (jp.m + 1) + '月' + fd.d + '日（' + jstHM2(ev.fullT) + '）</b>' + '、' + fs + 'の満月『<span class="nw">' + MOON_NAMES[jp.m] + '</span>』です。<br>' + FULL_MSG[fs] + '<a class="shun-link" href="seiza.html?sign=' + encodeURIComponent(fs) + '">' + fs + 'について</a></span></div>'); }
         document.getElementById('moon-events').innerHTML = lines.join('');
         var llines = [];
         tenshaDays.forEach(function(d){ llines.push('<span class="moon-star">✦</span>' + d + '日は、天赦日です。<br>何かを始めるのに、とてもよい日とされています。'); });
