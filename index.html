@@ -2824,7 +2824,7 @@ window.MOON_EVENTS = (function(){
     if (cpo) cpo.addEventListener('click', openPlanets);
     kel.addEventListener('click', function(){
       var sec = document.getElementById('koyomi-cal');
-      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (sec) sec.scrollIntoView({ behavior: 'auto', block: 'start' });
     });
     // moon calendar: inline at the top of the page, always open
     (function(){
@@ -2890,7 +2890,7 @@ function renderMoon(vy, vm){
             setTimeout(function(){
               var el = document.getElementById('moon-line-full');
               var target = el || panel;
-              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              if (target) target.scrollIntoView({ behavior: 'auto', block: 'center' });
               if (el) {
                 el.classList.add('hl');
                 setTimeout(function(){ el.classList.remove('hl'); }, 2600);
@@ -4010,7 +4010,7 @@ var shiftMoon = function(delta){
 <script>
 (function(){
   var topBtn = document.getElementById('barTop');
-  if (topBtn) topBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+  if (topBtn) topBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'auto'}); });
   var shareBtn = document.getElementById('barShare');
   var toast = document.getElementById('shareToast');
   var toastTimer = null;

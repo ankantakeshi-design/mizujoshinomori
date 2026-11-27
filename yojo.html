@@ -60,7 +60,7 @@ var cur = curIdx();
 function period(it, nx){ return it.m+"月"+it.d+"日ごろ 〜 "+nx.m+"月"+nx.d+"日ごろ"; }
 function render(){ var it=DATA[cur], nx=DATA[(cur+1)%DATA.length];
   document.getElementById('card').innerHTML = '<div class="now-name">'+it.n+'<span class="r">'+it.r+'</span></div><div class="now-period">'+period(it,nx)+'</div><div class="now-body">'+it.body+'</div><div class="tips"><div class="tt">この季節のおすすめ</div><ul>'+it.tips.map(function(t){return '<li>'+t+'</li>'}).join('')+'</ul></div><div class="food">合う食べ物：'+it.food+'（旬辞典にもあります）</div>';
-  var g=document.getElementById('grid'); g.innerHTML=''; DATA.forEach(function(x,i){ var b=document.createElement('button'); b.textContent=x.n; if(i===cur)b.className='on'; b.onclick=function(){cur=i;render();window.scrollTo({top:0,behavior:'smooth'})}; g.appendChild(b); });
+  var g=document.getElementById('grid'); g.innerHTML=''; DATA.forEach(function(x,i){ var b=document.createElement('button'); b.textContent=x.n; if(i===cur)b.className='on'; b.onclick=function(){cur=i;render();window.scrollTo({top:0,behavior:'auto'})}; g.appendChild(b); });
 }
 document.getElementById('prev').onclick=function(){cur=(cur+DATA.length-1)%DATA.length;render()};
 document.getElementById('next').onclick=function(){cur=(cur+1)%DATA.length;render()};
